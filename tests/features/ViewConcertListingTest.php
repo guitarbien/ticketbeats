@@ -8,6 +8,9 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ViewConcertListingTest extends TestCase
 {
+    // use migration trait
+    use DatabaseMigrations;
+
     public function test_使用者可以看到音樂會lists頁面()
     {
         // Arrange
