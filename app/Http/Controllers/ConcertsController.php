@@ -8,6 +8,6 @@ class ConcertsController extends Controller
 {
     public function show()
     {
-        return view('concerts.show');
+        return view('concerts.show', ['concert' => $concert]);
     }
 }
