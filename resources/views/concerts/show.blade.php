@@ -1,1 +1,9 @@
 <h1>{{ $concert->title }}</h1>
+<h2>{{ $concert->subtitle }}</h2>
+<p>{{ $concert->date->format('F j, Y') }}</p>
+<p>Doors at {{ $concert->date->format('g:ia') }}</p>
+<p>{{ number_format($concert->ticket_price / 100, 2) }}</p>
+<h2>{{ $concert->venue }}</h2>
+<h2>{{ $concert->venue_address }}</h2>
+<h2>{{ $concert->city }}, {{ $concert->state }} {{ $concert->zip }}</h2>
+<h2>{{ $concert->additional_information }}</h2>
