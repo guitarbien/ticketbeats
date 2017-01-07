@@ -48,7 +48,7 @@ class ViewConcertListingTest extends TestCase
 
     public function test_若音樂會尚未發佈則使用者只能看到404頁面()
     {
-        $concert = factory(App\Concert::class)->create([
+        $concert = factory(Concert::class)->create([
             'published_at' => null,
         ]);
 
