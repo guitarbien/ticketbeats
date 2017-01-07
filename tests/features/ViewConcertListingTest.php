@@ -51,7 +51,7 @@ class ViewConcertListingTest extends TestCase
             'published_at' => null,
         ]);
 
-        $this->visit('/concerts/' . $concert->id);
+        $this->get('/concerts/' . $concert->id);
 
         $this->assertResponseStatus(404);
     }
