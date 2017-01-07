@@ -18,9 +18,7 @@ class ConcertTest extends TestCase
         ]);
 
         // Action
-        $date = $concert->formatted_date;
-
         // Assert
-        $this->assertEquals('December 1, 2016', $date);
+        $this->assertEquals('December 1, 2016', $concert->formatted_date);
     }
 }
