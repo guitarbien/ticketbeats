@@ -11,7 +11,7 @@ class ViewConcertListingTest extends TestCase
     // use migration trait
     use DatabaseMigrations;
 
-    public function test_使用者可以看到音樂會lists頁面()
+    public function test_使用者可以看到已發佈的音樂會lists頁面()
     {
         // Arrange
         // Create a concert
@@ -26,6 +26,7 @@ class ViewConcertListingTest extends TestCase
             'state'                  => 'ON',
             'zip'                    => '17916',
             'additional_information' => 'For tickets, call (555) 555-5555.',
+            'published_at'           => Carbon::parse('-1 week'),
         ]);
 
         // Act
