@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ConcertTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function test_取得格式化的日期()
     {
         $concert = factory(Concert::class)->make([
@@ -33,5 +35,18 @@ class ConcertTest extends TestCase
         ]);
 
         $this->assertEquals('67.50', $concert->ticket_price_in_dollars);
+    }
+
+    public function test_published_at有值的資料就是已經發佈了()
+    {
+        $publishedConcertA   = factory(Concert::class)->create(['published_at' => Carbon::parse('-1 week')]);
+        $publishedConcertB   = factory(Concert::class)->create(['published_at' => Carbon::parse('-2 week')]);
+        $unpublishedConcertC = factory(Concert::class)->create(['published_at' => null]);
+
+        $publishedConcerts = Concert::published()->get();
+
+        $this->assertTrue($publishedConcerts->contains($publishedConcertA));
+        $this->assertTrue($publishedConcerts->contains($publishedConcertB));
+        $this->assertFalse($publishedConcerts->contains($unpublishedConcertC));
     }
 }
