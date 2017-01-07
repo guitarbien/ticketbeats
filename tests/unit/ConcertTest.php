@@ -12,13 +12,19 @@ class ConcertTest extends TestCase
 
     public function test_取得格式化的日期()
     {
-        // Arrange
         $concert = factory(Concert::class)->create([
             'date' => Carbon::parse('2016-12-01 8:00pm'),
         ]);
 
-        // Action
-        // Assert
         $this->assertEquals('December 1, 2016', $concert->formatted_date);
+    }
+
+    public function test_取得格式化的開始時間()
+    {
+        $concert = factory(Concert::class)->create([
+            'date' => Carbon::parse('2016-12-01 17:00:00'),
+        ]);
+
+        $this->assertEquals('5:00pm', $concert->formatted_start_time);
     }
 }
