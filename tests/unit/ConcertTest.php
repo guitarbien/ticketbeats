@@ -8,11 +8,9 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ConcertTest extends TestCase
 {
-    use DatabaseMigrations;
-
     public function test_取得格式化的日期()
     {
-        $concert = factory(Concert::class)->create([
+        $concert = factory(Concert::class)->make([
             'date' => Carbon::parse('2016-12-01 8:00pm'),
         ]);
 
@@ -21,7 +19,7 @@ class ConcertTest extends TestCase
 
     public function test_取得格式化的開始時間()
     {
-        $concert = factory(Concert::class)->create([
+        $concert = factory(Concert::class)->make([
             'date' => Carbon::parse('2016-12-01 17:00:00'),
         ]);
 
@@ -30,7 +28,7 @@ class ConcertTest extends TestCase
 
     public function test_以美元顯示票價()
     {
-        $concert = factory(Concert::class)->create([
+        $concert = factory(Concert::class)->make([
             'ticket_price' => 6750,
         ]);
 
