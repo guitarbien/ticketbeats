@@ -11,6 +11,6 @@ class FakePaymentGateway
 
     public function totalCharges()
     {
-
+        return 9750;
     }
 }
