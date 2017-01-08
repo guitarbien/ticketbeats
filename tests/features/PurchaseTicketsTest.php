@@ -1,5 +1,6 @@
 <?php
 
+use App\Billing\FakePaymentGateway;
 use App\Concert;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -11,6 +12,8 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_使用者可以購票()
     {
+        $paymentGateway = new FakePaymentGateway;
+
         // Arrange
         // Create a concert
         $concert = factory(Concert::class)->create(['ticket_price' => 3250]);
