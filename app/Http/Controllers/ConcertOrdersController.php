@@ -19,14 +19,22 @@ class ConcertOrdersController extends Controller
     {
         $concert = Concert::find($concertId);
 
-        $amount = request('ticket_quantity') * $concert->ticket_price;
-        $token  = request('payment_token');
+        $ticketQuantity = request('ticket_quantity');
+        $amount         = $ticketQuantity * $concert->ticket_price;
+        $token          = request('payment_token');
 
         // 付款
         $this->paymentGateway->charge($amount, $token);
 
         // 寫入訂單
         $order = $concert->orders()->create(['email' => request('email')]);
+
+        // 寫入票券
+        foreach (range(1, $ticketQuantity) as $i)
+        {
+            $order->tickets()->create([]);
+        }
+
         return response()->json([], 201);
     }
 }
