@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Billing\FakePaymentGateway;
+use App\Billing\PaymentGateway;
 use App\Concert;
 use Illuminate\Http\Request;
 

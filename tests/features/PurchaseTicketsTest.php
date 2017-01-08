@@ -1,6 +1,7 @@
 <?php
 
 use App\Billing\FakePaymentGateway;
+use App\Billing\PaymentGateway;
 use App\Concert;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -13,6 +14,7 @@ class PurchaseTicketsTest extends TestCase
     public function test_使用者可以購票()
     {
         $paymentGateway = new FakePaymentGateway;
+        $this->app->instance(PaymentGateway::class, $paymentGateway);
 
         // Arrange
         // Create a concert
