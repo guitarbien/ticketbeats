@@ -4,5 +4,13 @@ namespace App\Billing;
 
 class FakePaymentGateway
 {
+    public function getValidTestToken()
+    {
 
+    }
+
+    public function totalCharges()
+    {
+
+    }
 }
