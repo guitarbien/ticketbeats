@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class ConcertOrdersController extends Controller
 {
+    private $paymentGateway;
+
+    public function __construct(PaymentGateway $paymentGateway)
+    {
+        $this->paymentGateway = $paymentGateway;
+    }
+
     public function store($concertId)
     {
         $concert = Concert::find($concertId);
@@ -15,10 +22,7 @@ class ConcertOrdersController extends Controller
         $amount = request('ticket_quantity') * $concert->ticket_price;
         $token  = request('payment_token');
 
-        $paymentGateway = new FakePaymentGateway;
-        $paymentGateway->charge($amount, $token);
-
-        // dd($paymentGateway->totalCharges());
+        $this->paymentGateway->charge($amount, $token);
 
         return response()->json([], 201);
     }
