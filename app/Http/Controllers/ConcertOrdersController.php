@@ -22,8 +22,11 @@ class ConcertOrdersController extends Controller
         $amount = request('ticket_quantity') * $concert->ticket_price;
         $token  = request('payment_token');
 
+        // 付款
         $this->paymentGateway->charge($amount, $token);
 
+        // 寫入訂單
+        $order = $concert->orders()->create(['email' => request('email')]);
         return response()->json([], 201);
     }
 }
