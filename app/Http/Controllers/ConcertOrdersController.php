@@ -8,6 +8,6 @@ class ConcertOrdersController extends Controller
 {
     public function store()
     {
-
+        return response()->json([], 201);
     }
 }
