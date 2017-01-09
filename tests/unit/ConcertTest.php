@@ -49,4 +49,8 @@ class ConcertTest extends TestCase
         $this->assertTrue($publishedConcerts->contains($publishedConcertB));
         $this->assertFalse($publishedConcerts->contains($unpublishedConcertC));
     }
+
+    public function test_寫入訂單和票券()
+    {
+    }
 }
