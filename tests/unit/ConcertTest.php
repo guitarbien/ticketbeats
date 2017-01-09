@@ -52,5 +52,11 @@ class ConcertTest extends TestCase
 
     public function test_寫入訂單和票券()
     {
+        $concert = factory(Concert::class)->create();
+
+        $order = $concert->orderTickets('jane@example.com', 3);
+
+        $this->assertEquals('jane@example.com', $order->email);
+        $this->assertEquals(3, $order->tickets()->count());
     }
 }
