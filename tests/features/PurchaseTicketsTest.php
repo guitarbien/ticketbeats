@@ -11,11 +11,16 @@ class PurchaseTicketsTest extends TestCase
 {
     use DatabaseMigrations;
 
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->paymentGateway = new FakePaymentGateway;
+        $this->app->instance(PaymentGateway::class, $this->paymentGateway);
+    }
+
     public function test_使用者可以購票()
     {
-        $paymentGateway = new FakePaymentGateway;
-        $this->app->instance(PaymentGateway::class, $paymentGateway);
-
         // Arrange
         // Create a concert
         $concert = factory(Concert::class)->create(['ticket_price' => 3250]);
@@ -25,7 +30,7 @@ class PurchaseTicketsTest extends TestCase
         $this->json('POST', "/concerts/{$concert->id}/orders", [
             'email'           => 'john@example.com',
             'ticket_quantity' => 3,
-            'payment_token'   => $paymentGateway->getValidTestToken(),
+            'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
         // Assert
@@ -33,7 +38,7 @@ class PurchaseTicketsTest extends TestCase
 
         // Make sure the customer was charged the correct amount
         // 要付多少錢會決定 token，再拿 token 來問付了多少錢
-        $this->assertEquals(9750, $paymentGateway->totalCharges());
+        $this->assertEquals(9750, $this->paymentGateway->totalCharges());
 
         // Make sure that an order exists for this customer
         $order = $concert->orders()->where('email', 'john@example.com')->first();
@@ -42,14 +47,13 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_下單時email為必填()
     {
-        $paymentGateway = new FakePaymentGateway;
-        $this->app->instance(PaymentGateway::class, $paymentGateway);
+        // $this->disableExceptionHandling();
 
         $concert = factory(Concert::class)->create();
 
         $this->json('POST', "/concerts/{$concert->id}/orders", [
             'ticket_quantity' => 3,
-            'payment_token'   => $paymentGateway->getValidTestToken(),
+            'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $this->assertResponseStatus(422);
