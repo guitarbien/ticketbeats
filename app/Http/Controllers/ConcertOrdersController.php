@@ -17,6 +17,11 @@ class ConcertOrdersController extends Controller
 
     public function store($concertId)
     {
+        // validation
+        $this->validate(request(), [
+            'email' => 'required',
+        ]);
+
         $concert = Concert::find($concertId);
 
         // 付款
