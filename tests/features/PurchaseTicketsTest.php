@@ -53,5 +53,6 @@ class PurchaseTicketsTest extends TestCase
         ]);
 
         $this->assertResponseStatus(422);
+        $this->assertArrayHasKey('email', $this->decodeResponseJson());
     }
 }
