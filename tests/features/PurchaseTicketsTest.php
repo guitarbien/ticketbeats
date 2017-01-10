@@ -84,6 +84,21 @@ class PurchaseTicketsTest extends TestCase
         ]);
 
         $this->assertResponseStatus(422);
+        $this->assertArrayHasKey('ticket_quantity', $this->decodeResponseJson());
+    }
+
+    public function test_票券數量至少要為1()
+    {
+        $concert = factory(Concert::class)->create();
+
+        $this->json('POST', "/concerts/{$concert->id}/orders", [
+            'ticket_quantity' => 0,
+            'email'           => 'error-email-format',
+            'payment_token'   => $this->paymentGateway->getValidTestToken(),
+        ]);
+
+        $this->assertResponseStatus(422);
+        $this->assertArrayHasKey('ticket_quantity', $this->decodeResponseJson());
         $this->assertArrayHasKey('email', $this->decodeResponseJson());
     }
 }
