@@ -19,7 +19,7 @@ class ConcertOrdersController extends Controller
     {
         // validation
         $this->validate(request(), [
-            'email' => 'required',
+            'email' => ['required', 'email'],
         ]);
 
         $concert = Concert::find($concertId);
