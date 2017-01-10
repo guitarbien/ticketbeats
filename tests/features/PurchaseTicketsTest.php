@@ -24,6 +24,12 @@ class PurchaseTicketsTest extends TestCase
         $this->json('POST', "/concerts/{$concert->id}/orders", $params);
     }
 
+    private function assertValidationError($field)
+    {
+        $this->assertResponseStatus(422);
+        $this->assertArrayHasKey($field, $this->decodeResponseJson());
+    }
+
     public function test_使用者可以購票()
     {
         // Arrange
@@ -61,8 +67,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertResponseStatus(422);
-        $this->assertArrayHasKey('email', $this->decodeResponseJson());
+        $this->assertValidationError('email');
     }
 
     public function test_驗證email格式()
@@ -75,8 +80,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertResponseStatus(422);
-        $this->assertArrayHasKey('email', $this->decodeResponseJson());
+        $this->assertValidationError('email');
     }
 
     public function test_票券數量為必填()
@@ -88,8 +92,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token' => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertResponseStatus(422);
-        $this->assertArrayHasKey('ticket_quantity', $this->decodeResponseJson());
+        $this->assertValidationError('ticket_quantity');
     }
 
     public function test_票券數量至少要為1()
@@ -102,8 +105,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertResponseStatus(422);
-        $this->assertArrayHasKey('ticket_quantity', $this->decodeResponseJson());
+        $this->assertValidationError('ticket_quantity');
     }
 
     public function test_token為必填()
@@ -115,7 +117,6 @@ class PurchaseTicketsTest extends TestCase
             'email'           => 'error-email-format',
         ]);
 
-        $this->assertResponseStatus(422);
-        $this->assertArrayHasKey('payment_token', $this->decodeResponseJson());
+        $this->assertValidationError('payment_token');
     }
 }
