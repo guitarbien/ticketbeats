@@ -19,6 +19,8 @@ class ConcertOrdersController extends Controller
     {
         // validation
         $this->validate(request(), [
+            'email'           => ['required', 'email'],
+            'ticket_quantity' => ['required'],
             'email' => ['required', 'email'],
         ]);
 
