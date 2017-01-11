@@ -41,9 +41,13 @@ class Concert extends Model
 
     public function orderTickets($email, $ticketQuantity)
     {
+        $tickets = $this->tickets()->whereNull('order_id')->take($ticketQuantity)->get();
         $order = $this->orders()->create(['email' => $email]);
 
-        $tickets = $this->tickets()->take($ticketQuantity)->get();
+        if ($tickets->count() < $ticketQuantity)
+        {
+            throw new NotEnoughTicketsException;
+        }
 
         // 寫入票券
         foreach ($tickets as $ticket)
