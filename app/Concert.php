@@ -53,5 +53,6 @@ class Concert extends Model
 
     public function ticketsRemaining()
     {
+        return $this->tickets()->count();
     }
 }
