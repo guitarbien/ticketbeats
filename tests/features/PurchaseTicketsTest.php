@@ -34,7 +34,7 @@ class PurchaseTicketsTest extends TestCase
     {
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->create(['ticket_price' => 3250]);
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
 
         // Action
         // Purchase concert tickets\
@@ -74,7 +74,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_若付款失敗則不會產生訂單()
     {
-        $concert = factory(Concert::class)->create(['ticket_price' => 3250]);
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
@@ -92,7 +92,7 @@ class PurchaseTicketsTest extends TestCase
     {
         // $this->disableExceptionHandling();
 
-        $concert = factory(Concert::class)->create();
+        $concert = factory(Concert::class)->states('published')->create();
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 3,
@@ -104,7 +104,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_驗證email格式()
     {
-        $concert = factory(Concert::class)->create();
+        $concert = factory(Concert::class)->states('published')->create();
 
         $this->orderTickets($concert, [
             'email'           => 'error-email-format',
@@ -117,7 +117,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_票券數量為必填()
     {
-        $concert = factory(Concert::class)->create();
+        $concert = factory(Concert::class)->states('published')->create();
 
         $this->orderTickets($concert, [
             'email'         => 'error-email-format',
@@ -129,7 +129,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_票券數量至少要為1()
     {
-        $concert = factory(Concert::class)->create();
+        $concert = factory(Concert::class)->states('published')->create();
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 0,
@@ -142,7 +142,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_token為必填()
     {
-        $concert = factory(Concert::class)->create();
+        $concert = factory(Concert::class)->states('published')->create();
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 0,
