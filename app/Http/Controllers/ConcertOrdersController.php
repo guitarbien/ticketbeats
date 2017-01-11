@@ -26,7 +26,7 @@ class ConcertOrdersController extends Controller
         ]);
 
         try {
-            $concert = Concert::find($concertId);
+            $concert = Concert::published()->find($concertId);
 
             // 付款
             $this->paymentGateway->charge(request('ticket_quantity') * $concert->ticket_price, request('payment_token'));
