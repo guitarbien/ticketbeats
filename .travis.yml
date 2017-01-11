@@ -1,6 +1,11 @@
 language: php
 php:
-  - 7.1
+  - 7.0
+  - 7.1 
+  - nightly
+
+before_install:
+  - composer self-update
 
 install:
   - composer install --prefer-dist --optimize-autoloader --quiet
@@ -9,4 +14,4 @@ before_script:
   - cp .env.example .env
   - php artisan key:generate
 
-script: phpunit -c phpunit.xml --coverage-text
+script: phpunit -c phpunit.xml --coverage-text --coverage-clover=coverage.xml
