@@ -59,4 +59,12 @@ class ConcertTest extends TestCase
         $this->assertEquals('jane@example.com', $order->email);
         $this->assertEquals(3, $order->tickets()->count());
     }
+
+    public function test_可以加入票券()
+    {
+        $concert = factory(Concert::class)->create();
+        $concert->addTickets(50);
+
+        $this->assertEquals(50, $concert->ticketsRemaining());
+    }
 }
