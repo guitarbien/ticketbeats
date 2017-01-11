@@ -64,6 +64,7 @@ class Concert extends Model
 
     public function ticketsRemaining()
     {
+        return $this->tickets()->whereNull('order_id')->count();
         return $this->tickets()->count();
     }
 }
