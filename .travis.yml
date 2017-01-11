@@ -2,9 +2,11 @@ language: php
 php:
   - 7.1
 
+install:
+  - composer install --prefer-dist --no-dev --optimize-autoloader --quiet
+
 before_script:
-  - composer install --dev --no-interaction --prefer-source
-  - cp ./.env.example ./.env
+  - cp .env.example .env
   - php artisan key:generate
 
-script: phpunit --configuration phpunit.xml
+script: phpunit -c phpunit.xml --coverate-text
