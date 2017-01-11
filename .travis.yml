@@ -3,7 +3,7 @@ php:
   - 7.1
 
 install:
-  - composer install --prefer-dist --no-dev --optimize-autoloader --quiet
+  - composer install --prefer-dist --optimize-autoloader --quiet
 
 before_script:
   - cp .env.example .env
