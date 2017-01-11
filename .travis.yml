@@ -9,4 +9,4 @@ before_script:
   - cp .env.example .env
   - php artisan key:generate
 
-script: phpunit -c phpunit.xml --coverate-text
+script: phpunit -c phpunit.xml --coverage-text
