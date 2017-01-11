@@ -67,4 +67,13 @@ class ConcertTest extends TestCase
 
         $this->assertEquals(50, $concert->ticketsRemaining());
     }
+
+    public function test_可購買的票券不應該包含已有訂單的票券()
+    {
+        $concert = factory(Concert::class)->create();
+        $concert->addTickets(50);
+        $concert->orderTickets('jane@example.com', 30);
+
+        $this->assertEquals(20, $concert->ticketsRemaining());
+    }
 }
