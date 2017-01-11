@@ -43,10 +43,12 @@ class Concert extends Model
     {
         $order = $this->orders()->create(['email' => $email]);
 
+        $tickets = $this->tickets()->take($ticketQuantity)->get();
+
         // 寫入票券
-        foreach (range(1, $ticketQuantity) as $i)
+        foreach ($tickets as $ticket)
         {
-            $order->tickets()->create([]);
+            $order->tickets()->save($ticket);
         }
 
         return $order;
