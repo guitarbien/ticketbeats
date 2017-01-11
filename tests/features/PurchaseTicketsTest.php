@@ -57,6 +57,21 @@ class PurchaseTicketsTest extends TestCase
         $this->assertEquals(3, $order->tickets()->count());
     }
 
+    public function test_不能購買尚未發佈的票()
+    {
+        $concert = factory(Concert::class)->states('unpublished')->create(['ticket_price' => 3250]);
+
+        $this->orderTickets($concert, [
+            'email'           => 'john@example.com',
+            'ticket_quantity' => 3,
+            'payment_token'   => $this->paymentGateway->getValidTestToken(),
+        ]);
+
+        $this->assertResponseStatus(404);
+        $this->assertEquals(0, $concert->orders()->count());
+        $this->assertEquals(0, $this->paymentGateway->totalCharges());
+    }
+
     public function test_若付款失敗則不會產生訂單()
     {
         $concert = factory(Concert::class)->create(['ticket_price' => 3250]);
