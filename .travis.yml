@@ -2,7 +2,7 @@ language: php
 php:
   - 7.0
   - 7.1 
-  - nightly
+  #- nightly
 
 before_install:
   - composer self-update
