@@ -77,4 +77,21 @@ class ConcertTest extends TestCase
 
         $this->assertEquals(20, $concert->ticketsRemaining());
     }
+
+    public function test_買超過可購買的票券數量會拋出例外()
+    {
+        $concert = factory(Concert::class)->create();
+        $concert->addTickets(10);
+
+        try {
+            $concert->orderTickets('jane@example.com@example.com', 11);
+        } catch (NotEnoughTicketsException $e) {
+            $order = $concert->orders()->where('email', 'jane@example.com')->first();
+            $this->assertNull($order);
+            $this->assertEquals(10, $concert->ticketsRemaining());
+            return;
+        }
+
+        $this->fail('Order succeeded even though there were not enough tickets remaining.');
+    }
 }
