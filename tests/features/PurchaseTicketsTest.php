@@ -73,8 +73,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_不能超量購買()
     {
-        $concert = factory(Concert::class)->states('published')->create();
-        $concert->addTickets(50);
+        $concert = factory(Concert::class)->states('published')->create()->addTickets(50);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
@@ -83,10 +82,7 @@ class PurchaseTicketsTest extends TestCase
         ]);
 
         $this->assertResponseStatus(422);
-
-        $order = $concert->orders()->where('email', 'john@example.com')->first();
-        $this->assertNull($order);
-
+        $this->assertFalse($concert->hasOrderFor('john@example.com'));
         $this->assertEquals(0, $this->paymentGateway->totalCharges());
         $this->assertEquals(50, $concert->ticketsRemaining());
     }
