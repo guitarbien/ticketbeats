@@ -1,6 +1,7 @@
 <?php
 
 use App\Concert;
+use App\Order;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -20,5 +21,6 @@ class OrderTest extends TestCase
         $order->cancel();
 
         $this->assertEquals(10, $concert->ticketsRemaining());
+        $this->assertNull(Order::find($order->id));
     }
 }
