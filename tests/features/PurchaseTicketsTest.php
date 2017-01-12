@@ -58,8 +58,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_不能購買尚未發佈的票()
     {
-        $concert = factory(Concert::class)->states('unpublished')->create(['ticket_price' => 3250]);
-        $concert->addTickets(3);
+        $concert = factory(Concert::class)->states('unpublished')->create(['ticket_price' => 3250])->addTickets(3);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
@@ -68,7 +67,7 @@ class PurchaseTicketsTest extends TestCase
         ]);
 
         $this->assertResponseStatus(404);
-        $this->assertEquals(0, $concert->orders()->count());
+        $this->assertFalse($concert->hasOrderFor('john@example.com'));
         $this->assertEquals(0, $this->paymentGateway->totalCharges());
     }
 
