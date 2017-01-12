@@ -93,8 +93,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_若付款失敗則不會產生訂單()
     {
-        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
-        $concert->addTickets(3);
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250])->addTickets(3);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
@@ -104,8 +103,7 @@ class PurchaseTicketsTest extends TestCase
 
         $this->assertResponseStatus(422);
 
-        $order = $concert->orders()->where('email', 'john@example.com')->first();
-        $this->assertNull($order);
+        $this->assertFalse($concert->hasOrderFor('john@example.com'));
     }
 
     public function test_下單時email為必填()
