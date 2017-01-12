@@ -59,7 +59,7 @@ class ConcertTest extends TestCase
         $order = $concert->orderTickets('jane@example.com', 3);
 
         $this->assertEquals('jane@example.com', $order->email);
-        $this->assertEquals(3, $order->tickets()->count());
+        $this->assertEquals(3, $order->ticketQuantity());
     }
 
     public function test_可以加入票券()
@@ -72,8 +72,7 @@ class ConcertTest extends TestCase
 
     public function test_可購買的票券不應該包含已有訂單的票券()
     {
-        $concert = factory(Concert::class)->create();
-        $concert->addTickets(50);
+        $concert = factory(Concert::class)->create()->addTickets(50);
         $concert->orderTickets('jane@example.com', 30);
 
         $this->assertEquals(20, $concert->ticketsRemaining());
@@ -81,14 +80,12 @@ class ConcertTest extends TestCase
 
     public function test_買超過可購買的票券數量會拋出例外()
     {
-        $concert = factory(Concert::class)->create();
-        $concert->addTickets(10);
+        $concert = factory(Concert::class)->create()->addTickets(10);
 
         try {
             $concert->orderTickets('jane@example.com@example.com', 11);
         } catch (NotEnoughTicketsException $e) {
-            $order = $concert->orders()->where('email', 'jane@example.com')->first();
-            $this->assertNull($order);
+            $this->assertFalse($concert->hasOrderFor('jane@example.com'));
             $this->assertEquals(10, $concert->ticketsRemaining());
             return;
         }
@@ -98,16 +95,14 @@ class ConcertTest extends TestCase
 
     public function test_已經被買過的票不能購買()
     {
-        $concert = factory(Concert::class)->create();
-        $concert->addTickets(10);
+        $concert = factory(Concert::class)->create()->addTickets(10);
 
         $concert->orderTickets('jane@example.com@example.com', 8);
 
         try {
             $concert->orderTickets('john@example.com@example.com', 3);
         } catch (NotEnoughTicketsException $e) {
-            $johnOrder = $concert->orders()->where('email', 'john@example.com')->first();
-            $this->assertNull($johnOrder);
+            $this->assertFalse($concert->hasOrderFor('john@example.com'));
             $this->assertEquals(2, $concert->ticketsRemaining());
             return;
         }
