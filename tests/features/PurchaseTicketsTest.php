@@ -113,9 +113,8 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_下單時email為必填()
     {
-        // $this->disableExceptionHandling();
-
         $concert = factory(Concert::class)->states('published')->create();
+        $concert->addTickets(3);
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 3,
@@ -128,6 +127,7 @@ class PurchaseTicketsTest extends TestCase
     public function test_驗證email格式()
     {
         $concert = factory(Concert::class)->states('published')->create();
+        $concert->addTickets(3);
 
         $this->orderTickets($concert, [
             'email'           => 'error-email-format',
@@ -141,6 +141,7 @@ class PurchaseTicketsTest extends TestCase
     public function test_票券數量為必填()
     {
         $concert = factory(Concert::class)->states('published')->create();
+        $concert->addTickets(3);
 
         $this->orderTickets($concert, [
             'email'         => 'error-email-format',
@@ -153,6 +154,7 @@ class PurchaseTicketsTest extends TestCase
     public function test_票券數量至少要為1()
     {
         $concert = factory(Concert::class)->states('published')->create();
+        $concert->addTickets(3);
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 0,
@@ -166,9 +168,10 @@ class PurchaseTicketsTest extends TestCase
     public function test_token為必填()
     {
         $concert = factory(Concert::class)->states('published')->create();
+        $concert->addTickets(3);
 
         $this->orderTickets($concert, [
-            'ticket_quantity' => 0,
+            'ticket_quantity' => 3,
             'email'           => 'error-email-format',
         ]);
 
