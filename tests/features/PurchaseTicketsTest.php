@@ -61,6 +61,7 @@ class PurchaseTicketsTest extends TestCase
     public function test_不能購買尚未發佈的票()
     {
         $concert = factory(Concert::class)->states('unpublished')->create(['ticket_price' => 3250]);
+        $concert->addTickets(3);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
