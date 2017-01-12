@@ -97,6 +97,7 @@ class PurchaseTicketsTest extends TestCase
     public function test_若付款失敗則不會產生訂單()
     {
         $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250]);
+        $concert->addTickets(3);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
