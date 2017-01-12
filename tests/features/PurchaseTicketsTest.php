@@ -52,8 +52,7 @@ class PurchaseTicketsTest extends TestCase
         $this->assertEquals(9750, $this->paymentGateway->totalCharges());
 
         // Make sure that an order exists for this customer
-        $order = $concert->orders()->where('email', 'john@example.com')->first();
-        $this->assertNotNull($order);
+        $this->assertTrue($concert->hasOrderFor('john@example.com'));
         $this->assertEquals(3, $order->tickets()->count());
     }
 
