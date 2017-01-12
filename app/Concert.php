@@ -66,6 +66,8 @@ class Concert extends Model
         {
             $this->tickets()->create([]);
         }
+
+        return $this;
     }
 
     public function ticketsRemaining()
