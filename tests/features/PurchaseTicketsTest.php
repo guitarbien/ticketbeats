@@ -47,7 +47,7 @@ class PurchaseTicketsTest extends TestCase
         // Assert
         $this->assertResponseStatus(201);
 
-        $this->seeJsonContains([
+        $this->seeJsonSubset([
             'email'           => 'john@example.com',
             'ticket_quantity' => 3,
             'amount'          => 9750,
