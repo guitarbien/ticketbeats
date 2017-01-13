@@ -21,3 +21,7 @@ script:
 addons:
   code_climate:
     repo_token: 5bb3f20c25e5672e4fa1f4d4a14cc4c1a0f6211b6e1db87967af12eafc17a138
+
+after_success:
+  - vendor/bin/test-reporter
+  
