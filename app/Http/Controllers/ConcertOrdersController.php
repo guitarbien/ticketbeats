@@ -30,20 +30,18 @@ class ConcertOrdersController extends Controller
 
         try {
             // Find some tickets
+            $tickets = $concert->findTickets(request('ticket_quantity'));
+
             // Charge the customer for the tickets
-            // Create an order for those tickets
-
-            // 寫入訂單
-            $order = $concert->orderTickets(request('email'), request('ticket_quantity'));
-
-            // 付款
             $this->paymentGateway->charge(request('ticket_quantity') * $concert->ticket_price, request('payment_token'));
+
+            // Create an order for those tickets
+            $order = $concert->createOrder(request('email'), $tickets);
 
             return response()->json([
                 'email'           => $order->email,
                 'ticket_quantity' => $order->ticketQuantity(),
-                // 'amount'          => $this->paymentGateway->totalCharges(),
-                'amount'          => (request('ticket_quantity') * $concert->ticket_price),
+                'amount'          => $order->amount,
             ], 201);
 
         } catch (PaymentFailedException $e) {
