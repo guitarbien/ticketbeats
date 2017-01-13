@@ -10,6 +10,11 @@ class OrderTest extends TestCase
 {
     use DatabaseMigrations;
 
+    public function test_轉換成array()
+    {
+
+    }
+
     public function test_訂單取消後應將票券釋出()
     {
         $concert = factory(Concert::class)->states('published')->create()->addTickets(10);
