@@ -14,4 +14,10 @@ before_script:
   - cp .env.example .env
   - php artisan key:generate
 
-script: phpunit -c phpunit.xml --coverage-text --coverage-clover=coverage.xml
+script:
+  - mkdir -p build/logs
+  - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
+
+addons:
+  code_climate:
+    repo_token: 5bb3f20c25e5672e4fa1f4d4a14cc4c1a0f6211b6e1db87967af12eafc17a138
