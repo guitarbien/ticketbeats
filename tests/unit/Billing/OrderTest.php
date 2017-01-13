@@ -12,7 +12,16 @@ class OrderTest extends TestCase
 
     public function test_轉換成array()
     {
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200])->addTickets(5);
+        $order = $concert->orderTickets('jane@example.com', 5);
 
+        $result = $order->toArray();
+
+        $this->assertEquals([
+            'email'           => 'jane@example.com',
+            'ticket_quantity' => 5,
+            'amount'          => 6000,
+        ], $result);
     }
 
     public function test_訂單取消後應將票券釋出()
