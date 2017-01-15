@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Exceptions\NotEnoughTicketsException;
+use App\Order;
 use Illuminate\Database\Eloquent\Model;
 
 class Concert extends Model
@@ -32,7 +33,7 @@ class Concert extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsToMany(Order::class, 'tickets');
     }
 
     public function hasOrderFor($customerEmail)
@@ -70,7 +71,8 @@ class Concert extends Model
 
     public function createOrder($email, $tickets)
     {
-        $order = $this->orders()->create([
+        $order = Order::create([
+            'concert_id' => $this->id,
             'email'  => $email,
             'amount' => $tickets->count() * $this->ticket_price,
         ]);
