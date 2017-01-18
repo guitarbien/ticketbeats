@@ -8,6 +8,10 @@ class Order extends Model
 {
     protected $guarded = [];
 
+    public static function forTickets()
+    {
+    }
+
     public function concert()
     {
         return $this->belongsTo(Concert::class);
