@@ -10,6 +10,18 @@ class Order extends Model
 
     public static function forTickets()
     {
+        $order = Order::create([
+            'email'  => $email,
+            'amount' => $tickets->sum('price'),
+        ]);
+
+        // 寫入票券
+        foreach ($tickets as $ticket)
+        {
+            $order->tickets()->save($ticket);
+        }
+
+        return $order;
     }
 
     public function concert()
