@@ -8,11 +8,11 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    public static function forTickets($tickets, $email, $amount = null)
+    public static function forTickets($tickets, $email, $amount)
     {
         $order = self::create([
             'email'  => $email,
-            'amount' => $amount === null ? $tickets->sum('price') : $amount,
+            'amount' => $amount,
         ]);
 
         // 寫入票券
