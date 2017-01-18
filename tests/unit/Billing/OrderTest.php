@@ -10,12 +10,12 @@ class OrderTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_用票券和email建立訂單()
+    public function test_用票券和email和金額建立訂單()
     {
-        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200])->addTickets(5);
+        $concert = factory(Concert::class)->states('published')->create()->addTickets(5);
         $this->assertEquals(5, $concert->ticketsRemaining());
 
-        $order = Order::forTickets($concert->findTickets(3), 'jane@example.com');
+        $order = Order::forTickets($concert->findTickets(3), 'jane@example.com', 3600);
 
         $this->assertEquals('jane@example.com', $order->email);
         $this->assertEquals(3, $order->ticketQuantity());
