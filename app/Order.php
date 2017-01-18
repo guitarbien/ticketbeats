@@ -10,7 +10,7 @@ class Order extends Model
 
     public static function forTickets($tickets, $email)
     {
-        $order = Order::create([
+        $order = self::create([
             'email'  => $email,
             'amount' => $tickets->sum('price'),
         ]);
