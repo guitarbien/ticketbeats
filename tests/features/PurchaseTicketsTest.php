@@ -93,6 +93,33 @@ class PurchaseTicketsTest extends TestCase
         $this->assertEquals(50, $concert->ticketsRemaining());
     }
 
+    public function test_票券若是在嘗試購買中則不能再被購買()
+    {
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200])->addTickets(3);
+
+        $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use($concert) {
+            $this->orderTickets($concert, [
+                'email'           => 'personB@example.com',
+                'ticket_quantity' => 1,
+                'payment_token'   => $this->paymentGateway->getValidTestToken(),
+            ]);
+
+            $this->assertResponseStatus(422);
+            $this->assertFalse($concert->hasOrderFor('personB@example.com'));
+            $this->assertEquals(0, $this->paymentGateway->totalCharges());
+        });
+
+        $this->orderTickets($concert, [
+            'email'           => 'personA@example.com',
+            'ticket_quantity' => 3,
+            'payment_token'   => $this->paymentGateway->getValidTestToken(),
+        ]);
+
+        $this->assertEquals(3600, $this->paymentGateway->totalCharges());
+        $this->assertTrue($concert->hasOrderFor('personA@example.com'));
+        $this->assertEquals(3, $concert->ordersFor('personA@example.com')->first()->ticketQuantity());
+    }
+
     public function test_若付款失敗則不會產生訂單()
     {
         $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250])->addTickets(3);
@@ -106,11 +133,6 @@ class PurchaseTicketsTest extends TestCase
         $this->assertResponseStatus(422);
 
         $this->assertFalse($concert->hasOrderFor('john@example.com'));
-    }
-
-    public function test_票券若是在嘗試購買中則不能再被購買()
-    {
-
     }
 
     public function test_下單時email為必填()
