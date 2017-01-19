@@ -28,4 +28,8 @@ class FakePaymentGateway implements PaymentGateway
 
         $this->charges[] = $amount;
     }
+
+    public function beforeFirstCharge($callback)
+    {
+    }
 }
