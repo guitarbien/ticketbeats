@@ -108,6 +108,11 @@ class PurchaseTicketsTest extends TestCase
         $this->assertFalse($concert->hasOrderFor('john@example.com'));
     }
 
+    public function test_票券若是在嘗試購買中則不能再被購買()
+    {
+
+    }
+
     public function test_下單時email為必填()
     {
         $concert = factory(Concert::class)->states('published')->create();
