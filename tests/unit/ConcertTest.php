@@ -120,4 +120,34 @@ class ConcertTest extends TestCase
         $this->assertCount(2, $reservedTickets);
         $this->assertEquals(1, $concert->ticketsRemaining());
     }
+
+    public function test_已經被購買的票券不能被保留()
+    {
+        $concert = factory(Concert::class)->create()->addTickets(3);
+        $concert->orderTickets('jane@example.com', 2);
+
+        try {
+            $reservedTickets = $concert->reserveTickets(2);
+        } catch (NotEnoughTicketsException $e) {
+            $this->assertEquals(1, $concert->ticketsRemaining());
+            return;
+        }
+
+        $this->fail("Reserving tickets succeeded even though the tickets were already sold.");
+    }
+
+    public function test_已經被保留的票券不能再被保留()
+    {
+        $concert = factory(Concert::class)->create()->addTickets(3);
+        $reservedTickets = $concert->reserveTickets(2);
+
+        try {
+            $reservedTickets = $concert->reserveTickets(2);
+        } catch (NotEnoughTicketsException $e) {
+            $this->assertEquals(1, $concert->ticketsRemaining());
+            return;
+        }
+
+        $this->fail("Reserving tickets succeeded even though the tickets were already reserved.");
+    }
 }
