@@ -95,6 +95,8 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_票券若是在嘗試購買中則不能再被購買()
     {
+        $this->disableExceptionHandling();
+
         $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200])->addTickets(3);
 
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use($concert) {
