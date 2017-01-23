@@ -20,4 +20,22 @@ class ReservationTest extends TestCase
 
         $this->assertEquals(3600, $reservation->totalCost());
     }
+
+    public function test_取消保留後保留票券應也要被釋出()
+    {
+        $ticket1 = Mockery::mock(Ticket::class);
+        $ticket1->shouldReceive('release')->once();
+
+        $ticket2 = Mockery::mock(Ticket::class);
+        $ticket2->shouldReceive('release')->once();
+
+        $ticket3 = Mockery::mock(Ticket::class);
+        $ticket3->shouldReceive('release')->once();
+
+        $tickets = collect([$ticket1, $ticket2, $ticket3]);
+
+        $reservation = new Reservation($tickets);
+
+        $reservation->cancel();
+    }
 }
