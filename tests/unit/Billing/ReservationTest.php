@@ -24,13 +24,17 @@ class ReservationTest extends TestCase
     public function test_取消保留後保留票券應也要被釋出()
     {
         $tickets = collect([
-            Mockery::mock(Ticket::class)->shouldReceive('release')->once()->getMock(),
-            Mockery::mock(Ticket::class)->shouldReceive('release')->once()->getMock(),
-            Mockery::mock(Ticket::class)->shouldReceive('release')->once()->getMock(),
+            Mockery::spy(Ticket::class),
+            Mockery::spy(Ticket::class),
+            Mockery::spy(Ticket::class),
         ]);
 
         $reservation = new Reservation($tickets);
 
         $reservation->cancel();
+
+        foreach ($tickets as $ticket) {
+            $ticket->shouldHaveReceived('release');
+        }
     }
 }
