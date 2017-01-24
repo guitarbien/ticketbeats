@@ -25,7 +25,13 @@ class OrderTest extends TestCase
 
     public function test_用Reservation建立訂單()
     {
+        $reservation = new Reservation($tickets, 'john@example.com');
 
+        $order = Order::fromReservation($reservation);
+
+        $this->assertEquals('john@example.com', $order->email);
+        $this->assertEquals(3, $order->ticketQuantity());
+        $this->assertEquals(3600, $order->amount);
     }
 
     public function test_轉換成array()
