@@ -34,6 +34,13 @@ class ReservationTest extends TestCase
         $this->assertEquals($tickets, $reservation->tickets());
     }
 
+    public function test_取得客戶email()
+    {
+        $reservation = new Reservation(collect(), 'john@example.com');
+
+        $this->assertEquals('john@example.com', $reservation->email());
+    }
+
     public function test_取消保留後保留票券應也要被釋出()
     {
         $tickets = collect([
