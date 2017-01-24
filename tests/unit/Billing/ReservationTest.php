@@ -1,5 +1,6 @@
 <?php
 
+use App\Concert;
 use App\Reservation;
 use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -8,6 +9,8 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class ReservationTest extends TestCase
 {
+    use DatabaseMigrations;
+
     public function test_計算總金額()
     {
         $tickets = collect([
@@ -56,5 +59,19 @@ class ReservationTest extends TestCase
         foreach ($tickets as $ticket) {
             $ticket->shouldHaveReceived('release');
         }
+    }
+
+    public function test_完成保留操作()
+    {
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200]);
+        $tickets = factory(Ticket::class, 3)->create(['concert_id' => $concert->id]);
+
+        $reservation = new Reservation($tickets, 'john@example.com');
+
+        $order = $reservation->complete();
+
+        $this->assertEquals('john@example.com', $order->email);
+        $this->assertEquals(3, $order->ticketQuantity());
+        $this->assertEquals(3600, $order->amount);
     }
 }
