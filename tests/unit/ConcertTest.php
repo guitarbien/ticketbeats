@@ -128,7 +128,7 @@ class ConcertTest extends TestCase
         $concert->orderTickets('jane@example.com', 2);
 
         try {
-            $concert->reserveTickets(2);
+            $concert->reserveTickets(2, 'john@example.com');
         } catch (NotEnoughTicketsException $e) {
             $this->assertEquals(1, $concert->ticketsRemaining());
             return;
@@ -140,10 +140,10 @@ class ConcertTest extends TestCase
     public function test_已經被保留的票券不能再被保留()
     {
         $concert = factory(Concert::class)->create()->addTickets(3);
-        $concert->reserveTickets(2);
+        $concert->reserveTickets(2, 'jane@example.com');
 
         try {
-            $concert->reserveTickets(2);
+            $concert->reserveTickets(2, 'john@example.com');
         } catch (NotEnoughTicketsException $e) {
             $this->assertEquals(1, $concert->ticketsRemaining());
             return;
