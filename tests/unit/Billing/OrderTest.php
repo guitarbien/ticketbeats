@@ -2,6 +2,8 @@
 
 use App\Concert;
 use App\Order;
+use App\Reservation;
+use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -25,6 +27,9 @@ class OrderTest extends TestCase
 
     public function test_用Reservation建立訂單()
     {
+        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200]);
+        $tickets = factory(Ticket::class, 3)->create(['concert_id' => $concert->id]);
+
         $reservation = new Reservation($tickets, 'john@example.com');
 
         $order = Order::fromReservation($reservation);
