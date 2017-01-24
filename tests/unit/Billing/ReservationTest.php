@@ -21,6 +21,19 @@ class ReservationTest extends TestCase
         $this->assertEquals(3600, $reservation->totalCost());
     }
 
+    public function test_取得被保留的票券()
+    {
+        $tickets = collect([
+            (object) ['price' => 1200],
+            (object) ['price' => 1200],
+            (object) ['price' => 1200],
+        ]);
+
+        $reservation = new Reservation($tickets);
+
+        $this->assertEquals($tickets, $reservation->tickets());
+    }
+
     public function test_取消保留後保留票券應也要被釋出()
     {
         $tickets = collect([
