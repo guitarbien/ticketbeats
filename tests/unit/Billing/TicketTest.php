@@ -23,7 +23,7 @@ class TicketTest extends TestCase
 
     public function test_票券可以被釋出()
     {
-        $ticket = factory(Ticket::class)->create(['reserved_at' => Carbon::now()]);
+        $ticket = factory(Ticket::class)->states('reserved')->create();
         $this->assertNotNull($ticket->reserved_at);
 
         $ticket->release();
