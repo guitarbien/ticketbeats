@@ -23,6 +23,11 @@ class OrderTest extends TestCase
         $this->assertEquals(2, $concert->ticketsRemaining());
     }
 
+    public function test_用Reservation建立訂單()
+    {
+
+    }
+
     public function test_轉換成array()
     {
         $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200])->addTickets(5);
