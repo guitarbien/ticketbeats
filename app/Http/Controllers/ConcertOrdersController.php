@@ -38,7 +38,7 @@ class ConcertOrdersController extends Controller
             $this->paymentGateway->charge($reservation->totalCost(), request('payment_token'));
 
             // Create an order for those tickets
-            $order = Order::forTickets($reservation->tickets(), $reservation->email(), $reservation->totalCost());
+            $order = Order::fromReservation($reservation);
 
             return response()->json([
                 'email'           => $order->email,
