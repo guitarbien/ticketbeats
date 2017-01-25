@@ -10,7 +10,7 @@ class StripePaymentGatewayTest extends TestCase
     public function test_以合法token付款成功()
     {
         // Create a new Stripe paymentGateway
-        $paymentGateway = new StripePaymentGateway;
+        $paymentGateway = new StripePaymentGateway(config('services.stripe.secret'));
 
         // get real token
         $token = \Stripe\Token::create([
