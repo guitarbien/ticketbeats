@@ -13,6 +13,7 @@ install:
 before_script:
   - cp .env.example .env
   - php artisan key:generate
+  - echo $'\nSTRIPE_SECRET=sk_test_O0v1qLvKpeF5MWfm7f8Nuaku\n' >> .env
 
 script:
   - phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
