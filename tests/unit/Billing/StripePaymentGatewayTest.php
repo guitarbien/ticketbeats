@@ -23,10 +23,18 @@ class StripePaymentGatewayTest extends TestCase
             ]
         ], ['api_key' => config('services.stripe.secret')])->id;
 
+
         // Create a new charge with some amount using a valid token
         $paymentGateway->charge(2500, $token);
 
         // Verify that the charge was completed successfully
         $this->assertEquals(2500, $paymentGateway->totalCharges());
+
+        $lastCharge = \Stripe\Charge::all(
+            ["limit" => 1],
+            ['api_key' => config('services.stripe.secret')]
+        )->data[0];
+
+        $this->assertEquals(2500, $lastCharge->amount);
     }
 }
