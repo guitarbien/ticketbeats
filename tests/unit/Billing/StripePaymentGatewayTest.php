@@ -7,18 +7,28 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class StripePaymentGatewayTest extends TestCase
 {
-    public function test_以合法token付款成功()
+    private function lastCharge()
     {
-        $lastCharge = \Stripe\Charge::all(
+        return \Stripe\Charge::all(
             ["limit" => 1],
             ['api_key' => config('services.stripe.secret')]
         )->data[0];
+    }
 
-        // Create a new Stripe paymentGateway
-        $paymentGateway = new StripePaymentGateway(config('services.stripe.secret'));
+    private function newCharges($endingBefore)
+    {
+        return \Stripe\Charge::all(
+            [
+                "limit"         => 1,
+                "ending_before" => $endingBefore->id,
+            ],
+            ['api_key' => config('services.stripe.secret')]
+        )->data;
+    }
 
-        // get real token
-        $token = \Stripe\Token::create([
+    private function validToken()
+    {
+        return \Stripe\Token::create([
             "card" => [
                 // give fake card info
                 "number"    => "4242424242424242",
@@ -27,22 +37,20 @@ class StripePaymentGatewayTest extends TestCase
                 "cvc"       => "123",
             ]
         ], ['api_key' => config('services.stripe.secret')])->id;
+    }
 
+    public function test_以合法token付款成功()
+    {
+        $lastCharge = $this->lastCharge();
+
+        // Create a new Stripe paymentGateway
+        $paymentGateway = new StripePaymentGateway(config('services.stripe.secret'));
 
         // Create a new charge with some amount using a valid token
-        $paymentGateway->charge(2500, $token);
+        $paymentGateway->charge(2500, $this->validToken());
 
         // Verify that the charge was completed successfully
-        $this->assertEquals(2500, $paymentGateway->totalCharges());
-
-        $newCharge = \Stripe\Charge::all(
-            [
-                "limit"         => 1,
-                "ending_before" => $lastCharge->id,
-            ],
-            ['api_key' => config('services.stripe.secret')]
-        )->data[0];
-
-        $this->assertEquals(2500, $lastCharge->amount);
+        $this->assertCount(1, $this->newCharges($lastCharge));
+        $this->assertEquals(2500, $this->lastCharge()->amount);
     }
 }
