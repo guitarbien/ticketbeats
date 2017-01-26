@@ -9,7 +9,7 @@ before_install:
 
 install:
   - composer install --prefer-dist --optimize-autoloader --quiet
-  - yarn install
+  - npm install
 
 before_script:
   - cp .env.example .env
