@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class FakePaymentGatewayTest extends TestCase
 {
+    use PaymentGatewayContractTests;
+
     protected function getPaymentGateway()
     {
         return new FakePaymentGateway;
@@ -26,18 +28,6 @@ class FakePaymentGatewayTest extends TestCase
 
         $this->assertCount(2, $newCharges);
         $this->assertEquals([4000, 5000], $newCharges->all());
-    }
-
-    public function test_以合法token付款成功()
-    {
-        $paymentGateway = $this->getPaymentGateway();
-
-        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
-            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
-        });
-
-        $this->assertCount(1, $newCharges);
-        $this->assertEquals(2500, $newCharges->sum());
     }
 
     /**
