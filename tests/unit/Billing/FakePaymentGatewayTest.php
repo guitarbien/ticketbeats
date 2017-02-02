@@ -1,7 +1,6 @@
 <?php
 
 use App\Billing\FakePaymentGateway;
-// use App\Billing\PaymentFailedException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -11,6 +10,22 @@ class FakePaymentGatewayTest extends TestCase
     protected function getPaymentGateway()
     {
         return new FakePaymentGateway;
+    }
+
+    public function test_可以透過callback取得付款的物件()
+    {
+        $paymentGateway = $this->getPaymentGateway();
+
+        $paymentGateway->charge(2000, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(3000, $paymentGateway->getValidTestToken());
+
+        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
+            $paymentGateway->charge(4000, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(5000, $paymentGateway->getValidTestToken());
+        });
+
+        $this->assertCount(2, $newCharges);
+        $this->assertEquals([4000, 5000], $newCharges->all());
     }
 
     public function test_以合法token付款成功()
