@@ -16,4 +16,19 @@ trait PaymentGatewayContractTests
         $this->assertEquals(2500, $newCharges->sum());
     }
 
+    public function test_可以透過callback取得付款的物件()
+    {
+        $paymentGateway = $this->getPaymentGateway();
+
+        $paymentGateway->charge(2000, $paymentGateway->getValidTestToken());
+        $paymentGateway->charge(3000, $paymentGateway->getValidTestToken());
+
+        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
+            $paymentGateway->charge(4000, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(5000, $paymentGateway->getValidTestToken());
+        });
+
+        $this->assertCount(2, $newCharges);
+        $this->assertEquals([4000, 5000], $newCharges->all());
+    }
 }
