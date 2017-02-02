@@ -29,6 +29,6 @@ trait PaymentGatewayContractTests
         });
 
         $this->assertCount(2, $newCharges);
-        $this->assertEquals([4000, 5000], $newCharges->all());
+        $this->assertEquals([5000, 4000], $newCharges->all());
     }
 }
