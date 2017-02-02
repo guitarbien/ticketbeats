@@ -30,14 +30,14 @@ class FakePaymentGatewayTest extends TestCase
 
     public function test_以合法token付款成功()
     {
-        // 以 gateway 取得 token
         $paymentGateway = $this->getPaymentGateway();
 
-        // 付款
-        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+        $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
+            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+        });
 
-        // 驗證金額
-        $this->assertEquals(2500, $paymentGateway->totalCharges());
+        $this->assertCount(1, $newCharges);
+        $this->assertEquals(2500, $newCharges->sum());
     }
 
     /**
