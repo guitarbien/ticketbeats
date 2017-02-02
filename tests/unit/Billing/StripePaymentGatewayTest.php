@@ -11,12 +11,14 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
  */
 class StripePaymentGatewayTest extends TestCase
 {
+    private $lastCharge;
+
     private function lastCharge()
     {
-        return \Stripe\Charge::all(
+        return array_first(\Stripe\Charge::all(
             ["limit" => 1],
             ['api_key' => config('services.stripe.secret')]
-        )->data[0];
+        )->data);
     }
 
     private function newCharges()
@@ -24,7 +26,7 @@ class StripePaymentGatewayTest extends TestCase
         return \Stripe\Charge::all(
             [
                 "limit"         => 1,
-                "ending_before" => $this->lastCharge->id,
+                "ending_before" => $this->lastCharge ? $this->lastCharge->id : null,
             ],
             ['api_key' => config('services.stripe.secret')]
         )->data;
