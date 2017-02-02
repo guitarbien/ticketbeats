@@ -8,10 +8,15 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class FakePaymentGatewayTest extends TestCase
 {
+    protected function getPaymentGateway()
+    {
+        return new FakePaymentGateway;
+    }
+
     public function test_以合法token付款成功()
     {
         // 以 gateway 取得 token
-        $paymentGateway = new FakePaymentGateway;
+        $paymentGateway = $this->getPaymentGateway();
 
         // 付款
         $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
