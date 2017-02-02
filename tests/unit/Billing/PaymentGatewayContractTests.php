@@ -2,6 +2,8 @@
 
 trait PaymentGatewayContractTests
 {
+    abstract protected function getPaymentGateway();
+
     public function test_以合法token付款成功()
     {
         $paymentGateway = $this->getPaymentGateway();
