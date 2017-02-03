@@ -23,9 +23,24 @@ class PurchaseTicketsTest extends TestCase
     {
         $savedRequest = $this->app['request'];
 
-        $this->json('POST', "/concerts/{$concert->id}/orders", $params);
+        $this->response = $this->json('POST', "/concerts/{$concert->id}/orders", $params);
 
         $this->app['request'] = $savedRequest;
+    }
+
+    private function assertResponseStatus($status)
+    {
+        return $this->response->assertStatus($status);
+    }
+
+    private function seeJsonSubset($data)
+    {
+        return $this->response->assertJson($data);
+    }
+
+    private function decodeResponseJson()
+    {
+        return $this->response->decodeResponseJson();
     }
 
     private function assertValidationError($field)
