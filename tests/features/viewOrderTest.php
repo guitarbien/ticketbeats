@@ -26,8 +26,9 @@ class viewOrderTest extends TestCase
         ]);
 
         // visit thr order confirmation page
-        $this->get("/orders/ORDERCONFIRMATION1234");
+        $response = $this->get("/orders/ORDERCONFIRMATION1234");
 
         // Assert we see the correct order details
+        $response->assertStatus(200);
     }
 }
