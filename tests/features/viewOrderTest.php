@@ -30,5 +30,10 @@ class viewOrderTest extends TestCase
 
         // Assert we see the correct order details
         $response->assertStatus(200);
+
+        // Assert the view has an variable; Assert closure is true.
+        $response->assertViewHas('order', function($viewOrder) use($order) {
+            return $order->id === $viewOrder->id;
+        });
     }
 }
