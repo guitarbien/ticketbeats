@@ -4,6 +4,7 @@ use App\Concert;
 use App\Order;
 use App\Reservation;
 use App\Ticket;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -34,6 +35,17 @@ class OrderTest extends TestCase
         $foundOrder = Order::findByConfirmationNumber('ORDERCONFIRMATION1234');
 
         $this->assertEquals($order->id, $foundOrder->id);
+    }
+
+    public function test_用確認碼查詢不存在的訂單資訊拋出例外()
+    {
+        try {
+            Order::findByConfirmationNumber('NONEXISTENTCONFIRMATIONNUMBER');
+        } catch (ModelNotFoundException $e) {
+            return;
+        }
+
+        $this->fail('No matching order was found for the specified confirmation number, but an exception was not thrown.');
     }
 
     public function test_轉換成array()
