@@ -25,6 +25,17 @@ class OrderTest extends TestCase
         $this->assertEquals(2, $concert->ticketsRemaining());
     }
 
+    public function test_用確認碼取得訂單資訊()
+    {
+        $order = factory(Order::class)->create([
+            'confirmation_number' => 'ORDERCONFIRMATION1234',
+        ]);
+
+        $foundOrder = Order::findByConfirmationNumber('ORDERCONFIRMATION1234');
+
+        $this->assertEquals($order->id, $foundOrder->id);
+    }
+
     public function test_轉換成array()
     {
         $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200])->addTickets(5);
