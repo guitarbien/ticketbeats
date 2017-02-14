@@ -35,5 +35,7 @@ class viewOrderTest extends TestCase
         $response->assertViewHas('order', function($viewOrder) use($order) {
             return $order->id === $viewOrder->id;
         });
+
+        $response->assertSee('ORDERCONFIRMATION1234');
     }
 }
