@@ -25,6 +25,7 @@ class viewOrderTest extends TestCase
         $ticket = factory(Ticket::class)->create([
             'concert_id' => $concert->id,
             'order_id'   => $order->id,
+            'code'       => 'TICKETCODE123',
         ]);
 
         // visit thr order confirmation page
@@ -41,5 +42,6 @@ class viewOrderTest extends TestCase
         $response->assertSee('ORDERCONFIRMATION1234');
         $response->assertSee('$85.00');
         $response->assertSee('**** **** **** 1881');
+        $response->assertSee('TICKETCODE123');
     }
 }
