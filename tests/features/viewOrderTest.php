@@ -21,11 +21,16 @@ class viewOrderTest extends TestCase
             'card_last_four'      => '1881',
             'amount'              => 8500,
         ]);
-        // create a ticket
-        $ticket = factory(Ticket::class)->create([
+        // create tickets
+        $ticketA = factory(Ticket::class)->create([
             'concert_id' => $concert->id,
             'order_id'   => $order->id,
             'code'       => 'TICKETCODE123',
+        ]);
+        $ticketB = factory(Ticket::class)->create([
+            'concert_id' => $concert->id,
+            'order_id'   => $order->id,
+            'code'       => 'TICKETCODE456',
         ]);
 
         // visit thr order confirmation page
@@ -43,5 +48,6 @@ class viewOrderTest extends TestCase
         $response->assertSee('$85.00');
         $response->assertSee('**** **** **** 1881');
         $response->assertSee('TICKETCODE123');
+        $response->assertSee('TICKETCODE456');
     }
 }
