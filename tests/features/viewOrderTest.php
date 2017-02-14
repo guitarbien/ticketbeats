@@ -18,6 +18,7 @@ class viewOrderTest extends TestCase
         // create a order
         $order = factory(Order::class)->create([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
+            'amount'              => 8500,
         ]);
         // create a ticket
         $ticket = factory(Ticket::class)->create([
@@ -37,5 +38,6 @@ class viewOrderTest extends TestCase
         });
 
         $response->assertSee('ORDERCONFIRMATION1234');
+        $response->assertSee('$85.00');
     }
 }

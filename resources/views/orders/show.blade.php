@@ -11,7 +11,7 @@
                 </div>
                 <div class="p-xs-y-4 border-b">
                     <p>
-                        <strong>Order Total: $65.00</strong>
+                        <strong>Order Total: ${{ number_format($order->amount/100, 2) }}</strong>
                     </p>
                     <p class="text-dark-soft">Billed to Card #: **** **** **** 4242</p>
                 </div>
