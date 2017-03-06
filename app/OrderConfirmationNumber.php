@@ -6,6 +6,6 @@ class OrderConfirmationNumber
 {
     public function generate()
     {
-        return 'aaaaaaaaaaaaaaaa';
+        return 'IIIIIIIIIIIIIIII';
     }
 }

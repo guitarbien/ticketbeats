@@ -21,4 +21,11 @@ class OrderConfirmationNumberTest extends TestCase
 
         $this->assertEquals(16, strlen($confirmationNumber));
     }
+
+    public function test_確認碼只能有大寫英文字和數字()
+    {
+        $confirmationNumber = (new OrderConfirmationNumber)->generate();
+
+        $this->assertRegexp('/^[A-Z0-9]+$/', $confirmationNumber);
+    }
 }
