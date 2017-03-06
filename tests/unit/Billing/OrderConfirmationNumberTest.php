@@ -28,4 +28,14 @@ class OrderConfirmationNumberTest extends TestCase
 
         $this->assertRegexp('/^[A-Z0-9]+$/', $confirmationNumber);
     }
+
+    public function test_確認碼不能有模糊字元()
+    {
+        $confirmationNumber = (new OrderConfirmationNumber)->generate();
+
+        $this->assertFalse(strpos($confirmationNumber, 'I'));
+        $this->assertFalse(strpos($confirmationNumber, '1'));
+        $this->assertFalse(strpos($confirmationNumber, '0'));
+        $this->assertFalse(strpos($confirmationNumber, 'O'));
+    }
 }
