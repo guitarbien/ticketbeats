@@ -38,4 +38,13 @@ class OrderConfirmationNumberTest extends TestCase
         $this->assertFalse(strpos($confirmationNumber, '0'));
         $this->assertFalse(strpos($confirmationNumber, 'O'));
     }
+
+    public function test_確認碼要是不重複唯一值()
+    {
+        $confirmationNumbers = collect(range(1, 50))->map(function() {
+            return (new OrderConfirmationNumber)->generate();
+        });
+
+        $this->assertCount(50, $confirmationNumbers->unique());
+    }
 }
