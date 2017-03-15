@@ -1,37 +1,43 @@
 <?php
 
-use App\OrderConfirmationNumber;
+use App\RandomOrderConfirmationNumberGenerator;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class OrderConfirmationNumberTest extends TestCase
+class RandomOrderConfirmationNumberGeneratorTest extends TestCase
 {
     // Must be unique
     // Can only contain uppercase letters and numbers
     // Cannot contain ambiguous characters (1, I, 0, O)
-    // Must be 16 charaters long
+    // Must be 24 charaters long
     //
     // ABCDEFGHJKLMNPQRSTUVWXYZ
     // 23456789
 
-    public function test_確認碼長度要為16()
+    public function test_確認碼長度要為24()
     {
-        $confirmationNumber = (new OrderConfirmationNumber)->generate();
+        $generator = new RandomOrderConfirmationNumberGenerator;
 
-        $this->assertEquals(16, strlen($confirmationNumber));
+        $confirmationNumber = $generator->generate();
+
+        $this->assertEquals(24, strlen($confirmationNumber));
     }
 
     public function test_確認碼只能有大寫英文字和數字()
     {
-        $confirmationNumber = (new OrderConfirmationNumber)->generate();
+        $generator = new RandomOrderConfirmationNumberGenerator;
+
+        $confirmationNumber = $generator->generate();
 
         $this->assertRegexp('/^[A-Z0-9]+$/', $confirmationNumber);
     }
 
     public function test_確認碼不能有模糊字元()
     {
-        $confirmationNumber = (new OrderConfirmationNumber)->generate();
+        $generator = new RandomOrderConfirmationNumberGenerator;
+
+        $confirmationNumber = $generator->generate();
 
         $this->assertFalse(strpos($confirmationNumber, 'I'));
         $this->assertFalse(strpos($confirmationNumber, '1'));
@@ -41,10 +47,12 @@ class OrderConfirmationNumberTest extends TestCase
 
     public function test_確認碼要是不重複唯一值()
     {
-        $confirmationNumbers = collect(range(1, 50))->map(function() {
-            return (new OrderConfirmationNumber)->generate();
+        $generator = new RandomOrderConfirmationNumberGenerator;
+
+        $confirmationNumbers = collect(range(1, 100))->map(function() use($generator) {
+            return $generator->generate();
         });
 
-        $this->assertCount(50, $confirmationNumbers->unique());
+        $this->assertCount(100, $confirmationNumbers->unique());
     }
 }
