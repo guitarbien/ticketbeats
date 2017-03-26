@@ -51,7 +51,12 @@ class StripePaymentGateway implements PaymentGateway
 
         $callback($this);
 
-        return $this->newChargesSince($lastCharge)->pluck('amount');
+        return $this->newChargesSince($lastCharge)->map(function($stripeCharge) {
+            return new Charge([
+                'amount'         => $stripeCharge['amount'],
+                'card_last_four' => $stripeCharge['source']['last4'],
+            ]);
+        });
     }
 
     private function lastCharge()
