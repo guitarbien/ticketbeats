@@ -22,7 +22,9 @@ trait PaymentGatewayContractTests
     {
         $paymentGateway = $this->getPaymentGateway();
         $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken('0000000000004242'));
+
         $this->assertEquals('4242', $charge->cardLastFour());
+        $this->assertEquals(2500, $charge->amount());
     }
 
     public function test_可以透過callback取得付款的物件()
