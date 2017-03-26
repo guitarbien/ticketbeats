@@ -2,6 +2,7 @@
 
 use App\Concert;
 use App\Exceptions\NotEnoughTicketsException;
+use App\Order;
 use App\Ticket;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -99,7 +100,8 @@ class ConcertTest extends TestCase
     public function test_已經被購買的票券不能被保留()
     {
         $concert = factory(Concert::class)->create()->addTickets(3);
-        $concert->orderTickets('jane@example.com', 2);
+        $order = factory(Order::class)->create();
+        $order->tickets()->saveMany($concert->tickets->take(2));
 
         try {
             $concert->reserveTickets(2, 'john@example.com');
