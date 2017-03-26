@@ -6,6 +6,8 @@ use Stripe\Error\InvalidRequest;
 
 class StripePaymentGateway implements PaymentGateway
 {
+    const TEST_CARD_NUMBER = '4242424242424242';
+
     private $apiKey;
 
     public function __construct($apiKey)
@@ -32,7 +34,7 @@ class StripePaymentGateway implements PaymentGateway
         }
     }
 
-    public function getValidTestToken($cardNumber = "4242424242424242")
+    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
     {
         return \Stripe\Token::create([
             "card" => [
