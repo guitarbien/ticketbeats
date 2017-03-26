@@ -23,7 +23,10 @@ class FakePaymentGateway implements PaymentGateway
 
     public function totalCharges()
     {
-        return $this->charges->sum();
+        return $this->charges->map(function($item) {
+            return $item->amount();
+        })
+        ->sum();
     }
 
     public function charge($amount, $token)
