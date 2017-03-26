@@ -15,7 +15,7 @@ trait PaymentGatewayContractTests
         });
 
         $this->assertCount(1, $newCharges);
-        $this->assertEquals(2500, $newCharges->sum());
+        $this->assertEquals(2500, $newCharges->map->amount()->sum());
     }
 
     public function test_成功付款之後可以得到詳細資訊()
@@ -40,7 +40,7 @@ trait PaymentGatewayContractTests
         });
 
         $this->assertCount(2, $newCharges);
-        $this->assertEquals([5000, 4000], $newCharges->all());
+        $this->assertEquals([5000, 4000], $newCharges->map->amount()->all());
     }
 
     public function test_以不合法token付款失敗()
