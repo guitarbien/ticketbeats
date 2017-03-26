@@ -29,7 +29,7 @@ before_script:
 
 script:
   - gulp
-  - ./vendor/bin/phpunit -c phpunit.xml --coverage-clover build/logs/clover.xml
+  - ./vendor/bin/phpunit -c phpunit.xml --exclude-group none --coverage-clover build/logs/clover.xml
 
 after_success:
   - travis_retry php vendor/bin/coveralls
