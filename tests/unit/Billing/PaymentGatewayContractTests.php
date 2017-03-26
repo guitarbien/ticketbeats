@@ -21,7 +21,7 @@ trait PaymentGatewayContractTests
     public function test_成功付款之後可以得到詳細資訊()
     {
         $paymentGateway = $this->getPaymentGateway();
-        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken('0000000000004242'));
         $this->assertEquals('4242', $charge->cardLastFour());
     }
 
