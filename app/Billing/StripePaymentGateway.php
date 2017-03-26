@@ -32,12 +32,12 @@ class StripePaymentGateway implements PaymentGateway
         }
     }
 
-    public function getValidTestToken()
+    public function getValidTestToken($cardNumber = "4242424242424242")
     {
         return \Stripe\Token::create([
             "card" => [
                 // give fake card info
-                "number"    => "4242424242424242",
+                "number"    => $cardNumber,
                 "exp_month" => 1,
                 "exp_year"  => date('Y') + 1,
                 "cvc"       => "123",
