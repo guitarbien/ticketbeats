@@ -51,17 +51,6 @@ class ConcertTest extends TestCase
         $this->assertFalse($publishedConcerts->contains($unpublishedConcertC));
     }
 
-    public function test_寫入訂單和票券()
-    {
-        $concert = factory(Concert::class)->create();
-        $concert->addTickets(3);
-
-        $order = $concert->orderTickets('jane@example.com', 3);
-
-        $this->assertEquals('jane@example.com', $order->email);
-        $this->assertEquals(3, $order->ticketQuantity());
-    }
-
     public function test_可以加入票券()
     {
         $concert = factory(Concert::class)->create();
