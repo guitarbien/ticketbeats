@@ -1,5 +1,6 @@
 <?php
 
+use App\Billing\Charge;
 use App\Concert;
 use App\Order;
 use App\Reservation;
@@ -13,15 +14,17 @@ class OrderTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_用票券和email和金額建立訂單()
+    public function test_用票券和email和付款物件建立訂單()
     {
         $tickets = factory(Ticket::class, 3)->create();
+        $charge = new Charge(['amount' => 3600, 'card_last_four' => '1234']);
 
-        $order = Order::forTickets($tickets, 'jane@example.com', 3600);
+        $order = Order::forTickets($tickets, 'jane@example.com', $charge);
 
         $this->assertEquals('jane@example.com', $order->email);
         $this->assertEquals(3, $order->ticketQuantity());
         $this->assertEquals(3600, $order->amount);
+        $this->assertEquals('1234', $order->card_last_four);
     }
 
     public function test_用確認碼取得訂單資訊()
