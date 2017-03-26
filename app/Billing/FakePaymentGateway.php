@@ -35,7 +35,9 @@ class FakePaymentGateway implements PaymentGateway
             throw new PaymentFailedException;
         }
 
-        $this->charges[] = $amount;
+        return $this->charges[] = new Charge([
+            'amount' => $amount,
+        ]);
     }
 
     public function newChargesDuring($callback)
