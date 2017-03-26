@@ -15,15 +15,13 @@ class OrderTest extends TestCase
 
     public function test_用票券和email和金額建立訂單()
     {
-        $concert = factory(Concert::class)->states('published')->create()->addTickets(5);
-        $this->assertEquals(5, $concert->ticketsRemaining());
+        $tickets = factory(Ticket::class, 3)->create();
 
-        $order = Order::forTickets($concert->findTickets(3), 'jane@example.com', 3600);
+        $order = Order::forTickets($tickets, 'jane@example.com', 3600);
 
         $this->assertEquals('jane@example.com', $order->email);
         $this->assertEquals(3, $order->ticketQuantity());
         $this->assertEquals(3600, $order->amount);
-        $this->assertEquals(2, $concert->ticketsRemaining());
     }
 
     public function test_用確認碼取得訂單資訊()
