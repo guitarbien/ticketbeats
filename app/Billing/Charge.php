@@ -4,8 +4,15 @@ namespace App\Billing;
 
 class Charge
 {
+    private $data;
+
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
     public function cardLastFour()
     {
-        return '4242';
+        return $this->data['card_last_four'];
     }
 }

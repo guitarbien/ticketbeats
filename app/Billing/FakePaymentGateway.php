@@ -4,16 +4,21 @@ namespace App\Billing;
 
 class FakePaymentGateway implements PaymentGateway
 {
+    private $charges;
+    private $tokens;
     private $beforeFirstChargeCallback;
 
     public function __construct()
     {
         $this->charges = collect();
+        $this->tokens = collect();
     }
 
-    public function getValidTestToken()
+    public function getValidTestToken($cardNumber = '4242424242424242')
     {
-        return 'valid-token';
+        $token = 'fake-tok_' . str_random(24);
+        $this->tokens[$token] = $cardNumber;
+        return $token;
     }
 
     public function totalCharges()
@@ -30,13 +35,14 @@ class FakePaymentGateway implements PaymentGateway
             $callback($this);
         }
 
-        if ($token !== $this->getValidTestToken())
+        if (!$this->tokens->has($token))
         {
             throw new PaymentFailedException;
         }
 
         return $this->charges[] = new Charge([
             'amount' => $amount,
+            'card_last_four' => substr($this->tokens[$token], -4),
         ]);
     }
 
