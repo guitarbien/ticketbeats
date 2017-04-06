@@ -3,8 +3,8 @@
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
 use App\Concert;
+use App\Facades\OrderConfirmationNumber;
 use App\OrderConfirmationNumberGenerator;
-use Facades\App\OrderConfirmationNumber;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -55,11 +55,7 @@ class PurchaseTicketsTest extends TestCase
     {
         $this->disableExceptionHandling();
 
-        $orderConfirmationNumberGenerator = Mockery::mock(OrderConfirmationNumberGenerator::class, [
-            'generate' => 'ORDERCONFIRMATION1234',
-        ]);
-
-        $this->app->instance(OrderConfirmationNumberGenerator::class, $orderConfirmationNumberGenerator);
+        OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
 
         // Arrange
         // Create a concert
