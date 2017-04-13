@@ -4,6 +4,7 @@ use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
 use App\Concert;
 use App\Facades\OrderConfirmationNumber;
+use App\Facades\TicketCode;
 use App\OrderConfirmationNumberGenerator;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -56,6 +57,7 @@ class PurchaseTicketsTest extends TestCase
         $this->disableExceptionHandling();
 
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
+        TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
 
         // Arrange
         // Create a concert
@@ -75,8 +77,12 @@ class PurchaseTicketsTest extends TestCase
         $this->seeJsonSubset([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
             'email'           => 'john@example.com',
-            'ticket_quantity' => 3,
             'amount'          => 9750,
+            'tickets'         => [
+                ['code' => 'TICKETCODE1'],
+                ['code' => 'TICKETCODE2'],
+                ['code' => 'TICKETCODE3'],
+            ]
         ]);
 
         // Make sure the customer was charged the correct amount
