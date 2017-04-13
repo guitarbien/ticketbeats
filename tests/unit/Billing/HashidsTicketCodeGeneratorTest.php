@@ -11,14 +11,16 @@ class HashidsTicketCodeGeneratorTest extends TestCase
     public function test_票券代碼至少為六位數()
     {
         $ticketCodeGenerator = new HashidTicketCodeGenerator();
-        $code = $ticketCodeGenerator->generate();
+        $code = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
+
         $this->assertTrue(strlen($code) >= 6);
     }
 
     public function test_票券代碼只能有大寫字母()
     {
         $ticketCodeGenerator = new HashidTicketCodeGenerator();
-        $code = $ticketCodeGenerator->generate();
+        $code = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
+
         $this->assertRegexp('/^[A-Z]+$/', $code);
     }
 
