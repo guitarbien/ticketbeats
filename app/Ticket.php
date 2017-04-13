@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Facades\TicketCode;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +27,7 @@ class Ticket extends Model
 
     public function claimFor($order)
     {
+        $this->code = TicketCode::generate();
         $order->tickets()->save($this);
     }
 

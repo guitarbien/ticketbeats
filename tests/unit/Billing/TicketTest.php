@@ -1,6 +1,7 @@
 <?php
 
 use App\Concert;
+use App\Facades\TicketCode;
 use App\Order;
 use App\Ticket;
 use Carbon\Carbon;
@@ -35,7 +36,9 @@ class TicketTest extends TestCase
     public function test_票券可以被宣告為屬於某張訂單()
     {
         $order  = factory(Order::class)->create();
-        $ticket = factory(Ticket::class)->create();
+        $ticket = factory(Ticket::class)->create(['code' => null]);
+
+        TicketCode::shouldReceive('generate')->andReturn('TICKETCODE1');
 
         $ticket->claimFor($order);
 
@@ -43,5 +46,6 @@ class TicketTest extends TestCase
         $this->assertContains($ticket->id, $order->tickets->pluck('id'));
 
         // Assert that the ticket had expected ticket code generated
+        $this->assertEquals('TICKETCODE1', $ticket->code);
     }
 }
