@@ -19,10 +19,7 @@ class Order extends Model
         ]);
 
         // 寫入票券
-        foreach ($tickets as $ticket)
-        {
-            $order->tickets()->save($ticket);
-        }
+        $tickets->each->claimFor($order);
 
         return $order;
     }
