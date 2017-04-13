@@ -43,4 +43,15 @@ class HashidsTicketCodeGeneratorTest extends TestCase
 
         $this->assertNotEquals($code1, $code2);
     }
+
+    public function test_不同salt產生的代碼是不同的()
+    {
+        $ticketCodeGenerator1 = new HashidTicketCodeGenerator('testsalt1');
+        $ticketCodeGenerator2 = new HashidTicketCodeGenerator('testsalt2');
+
+        $code1 = $ticketCodeGenerator1->generateFor(new Ticket(['id' => 1]));
+        $code2 = $ticketCodeGenerator2->generateFor(new Ticket(['id' => 1]));
+
+        $this->assertNotEquals($code1, $code2);
+    }
 }
