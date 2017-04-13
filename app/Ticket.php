@@ -24,6 +24,11 @@ class Ticket extends Model
         $this->update(['reserved_at' => null]);
     }
 
+    public function claimFor($order)
+    {
+        $order->tickets()->save($this);
+    }
+
     public function concert()
     {
         return $this->belongsTo(Concert::class);

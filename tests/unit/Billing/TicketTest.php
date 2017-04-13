@@ -1,6 +1,7 @@
 <?php
 
 use App\Concert;
+use App\Order;
 use App\Ticket;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -29,5 +30,18 @@ class TicketTest extends TestCase
         $ticket->release();
 
         $this->assertNull($ticket->fresh()->reserved_at);
+    }
+
+    public function test_票券可以被宣告為屬於某張訂單()
+    {
+        $order  = factory(Order::class)->create();
+        $ticket = factory(Ticket::class)->create();
+
+        $ticket->claimFor($order);
+
+        // Assert that the ticket is saved to the order
+        $this->assertContains($ticket->id, $order->tickets->pluck('id'));
+
+        // Assert that the ticket had expected ticket code generated
     }
 }
