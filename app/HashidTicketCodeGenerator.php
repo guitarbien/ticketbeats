@@ -4,7 +4,7 @@ namespace App;
 
 class HashidTicketCodeGenerator implements TicketCodeGenerator
 {
-    public function generate()
+    public function generateFor($ticket)
     {
         return 'AAAAAA';
     }

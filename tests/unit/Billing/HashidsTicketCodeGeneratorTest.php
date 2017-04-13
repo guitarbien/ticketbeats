@@ -21,4 +21,14 @@ class HashidsTicketCodeGeneratorTest extends TestCase
         $code = $ticketCodeGenerator->generate();
         $this->assertRegexp('/^[A-Z]+$/', $code);
     }
+
+    public function test_同一個票券id產生的票券代碼是一樣的()
+    {
+        $ticketCodeGenerator = new HashidTicketCodeGenerator();
+
+        $code1 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
+        $code2 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
+
+        $this->assertEquals($code1, $code2);
+    }
 }
