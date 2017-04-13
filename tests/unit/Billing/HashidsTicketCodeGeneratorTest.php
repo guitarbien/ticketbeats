@@ -33,4 +33,14 @@ class HashidsTicketCodeGeneratorTest extends TestCase
 
         $this->assertEquals($code1, $code2);
     }
+
+    public function test_不同票券id產生的票券代碼是不同的()
+    {
+        $ticketCodeGenerator = new HashidTicketCodeGenerator();
+
+        $code1 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
+        $code2 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 2]));
+
+        $this->assertNotEquals($code1, $code2);
+    }
 }
