@@ -30,6 +30,6 @@ class OrderConfirmationEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.order-confirmation-email');
+        return $this->view('emails.order-confirmation-email')->subject('Your TicketBeats Order');
     }
 }
