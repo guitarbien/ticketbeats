@@ -96,11 +96,14 @@ class PurchaseTicketsTest extends TestCase
 
         // Make sure that an order exists for this customer
         $this->assertTrue($concert->hasOrderFor('john@example.com'));
-        $this->assertEquals(3, $concert->ordersFor('john@example.com')->first()->ticketQuantity());
+
+        $order = $concert->ordersFor('john@example.com')->first();
+
+        $this->assertEquals(3, $order->ticketQuantity());
 
         // 傳入 mailable class
-        mail::assertSent(OrderConfirmationEmail::class, function($mail) {
-            return $mail->hasTo('john@example.com');
+        mail::assertSent(OrderConfirmationEmail::class, function($mail) use($order) {
+            return $mail->hasTo('john@example.com') && $mail->order->id == $order->id;
         });
     }
 
