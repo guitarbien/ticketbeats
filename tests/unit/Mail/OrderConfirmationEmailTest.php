@@ -19,6 +19,9 @@ class OrderConfirmationEmailTest extends TestCase
         // get the html rendering content
         $rendered = $this->render($email);
 
+        // In Laravel 5.5
+        // $rendered = $email->render();
+
         $this->assertContains(url('/orders/ORDERCONFIRMATION1234'), $rendered);
     }
 
