@@ -9,6 +9,7 @@ use App\OrderConfirmationNumberGenerator;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Mail;
 
 class PurchaseTicketsTest extends TestCase
 {
@@ -55,6 +56,9 @@ class PurchaseTicketsTest extends TestCase
     public function test_使用者可以購票()
     {
         $this->disableExceptionHandling();
+
+        // tell the IOC container to switch to MailFake
+        Mail::fake();
 
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
