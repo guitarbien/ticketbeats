@@ -99,7 +99,9 @@ class PurchaseTicketsTest extends TestCase
         $this->assertEquals(3, $concert->ordersFor('john@example.com')->first()->ticketQuantity());
 
         // 傳入 mailable class
-        mail::assertSent(OrderConfirmationEmail::class);
+        mail::assertSent(OrderConfirmationEmail::class, function($mail) {
+            return $mail->hasTo('john@example.com');
+        });
     }
 
     public function test_不能購買尚未發佈的票()
