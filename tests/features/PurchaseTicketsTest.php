@@ -22,6 +22,9 @@ class PurchaseTicketsTest extends TestCase
 
         $this->paymentGateway = new FakePaymentGateway;
         $this->app->instance(PaymentGateway::class, $this->paymentGateway);
+
+        // tell the IOC container to switch to MailFake
+        Mail::fake();
     }
 
     private function orderTickets($concert, $params)
@@ -57,9 +60,6 @@ class PurchaseTicketsTest extends TestCase
     public function test_使用者可以購票()
     {
         $this->disableExceptionHandling();
-
-        // tell the IOC container to switch to MailFake
-        Mail::fake();
 
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
