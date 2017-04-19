@@ -6,6 +6,7 @@ use App\Billing\PaymentFailedException;
 use App\Billing\PaymentGateway;
 use App\Concert;
 use App\Exceptions\NotEnoughTicketsException;
+use App\Mail\OrderConfirmationEmail;
 use App\Order;
 use App\Reservation;
 use Illuminate\Http\Request;
