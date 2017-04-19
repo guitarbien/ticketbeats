@@ -96,6 +96,9 @@ class PurchaseTicketsTest extends TestCase
         // Make sure that an order exists for this customer
         $this->assertTrue($concert->hasOrderFor('john@example.com'));
         $this->assertEquals(3, $concert->ordersFor('john@example.com')->first()->ticketQuantity());
+
+        // 傳入 mailable class
+        mail::assertSent(OrderConfirmationEmail::class);
     }
 
     public function test_不能購買尚未發佈的票()
