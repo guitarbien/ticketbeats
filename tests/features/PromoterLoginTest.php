@@ -21,7 +21,7 @@ class PromoterLoginTest extends TestCase
 
         $response = $this->post('/login', [
             'email'    => 'jane@example.com',
-            'password' => bcrypt('super-secret-password'),
+            'password' => 'super-secret-password',
         ]);
 
         $response->assertRedirect('/backstage/concerts');
