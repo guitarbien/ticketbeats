@@ -10,7 +10,13 @@ class LoginController extends Controller
 {
     public function login()
     {
-        Auth::attempt(request(['email', 'password']));
+        if (!Auth::attempt(request(['email', 'password']))) {
+
+            return redirect('/login')->withErrors([
+                'email' => ['These credentials do not match our record'],
+            ]);
+        }
+
         return redirect('/backstage/concerts');
     }
 }
