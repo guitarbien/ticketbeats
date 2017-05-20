@@ -47,4 +47,18 @@ class PromoterLoginTest extends TestCase
         $response->assertSessionHasErrors('email');
         $this->assertFalse(Auth::check());
     }
+
+    public function test_以不存在的帳號登入()
+    {
+        $this->disableExceptionHandling();
+
+        $response = $this->post('/login', [
+            'email'    => 'xxxx@example.com',
+            'password' => 'not-the-right-password',
+        ]);
+
+        $response->assertRedirect('/login');
+        $response->assertSessionHasErrors('email');
+        $this->assertFalse(Auth::check());
+    }
 }
