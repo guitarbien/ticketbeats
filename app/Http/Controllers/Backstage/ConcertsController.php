@@ -10,4 +10,9 @@ class ConcertsController extends Controller
     {
         return view('backstage.concerts.create');
     }
+
+    public function store()
+    {
+
+    }
 }
