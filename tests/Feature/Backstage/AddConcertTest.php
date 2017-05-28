@@ -67,4 +67,26 @@ class AddConcertTest extends TestCase
             $this->assertEquals(75, $concert->ticketsRemaining());
         });
     }
+
+    public function test_geusts不能新增音樂會()
+    {
+        $response = $this->post('/backstage/concerts', [
+            'title'                  => 'No Warning',
+            'subtitle'               => 'with Cruel Hand and Backtrack',
+            'additional_information' => "You must be 19 years of age to attend this concert.",
+            'date'                   => '2017-11-18',
+            'time'                   => '8:00pm',
+            'venue'                  => 'The Mosh Pit',
+            'venue_address'          => '123 Fake St.',
+            'city'                   => 'Laraville',
+            'state'                  => 'ON',
+            'zip'                    => '12345',
+            'ticket_price'           => '32.50',
+            'ticket_quantity'        => '75',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertRedirect("/login");
+        $this->assertEquals(0, Concert::count());
+    }
 }
