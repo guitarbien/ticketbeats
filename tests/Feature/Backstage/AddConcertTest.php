@@ -21,7 +21,7 @@ class AddConcertTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_未登入的人不能看到新增音樂會的表單新增頁()
+    public function test_guests不能看到新增音樂會的表單新增頁()
     {
         $response = $this->get('/backstage/concerts/new');
 
@@ -29,7 +29,7 @@ class AddConcertTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_加入一個合法的音樂會()
+    public function test_管理者可以加入一個合法的音樂會()
     {
         $this->disableExceptionHandling();
 
