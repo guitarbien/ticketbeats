@@ -15,7 +15,7 @@ Route::get('/', function() {
     return 'Laravel';
 });
 
-Route::get('/concerts/{id}', 'ConcertsController@show');
+Route::get('/concerts/{id}', 'ConcertsController@show')->name('concerts.show');
 Route::post('/concerts/{id}/orders', 'ConcertOrdersController@store');
 Route::get('/orders/{confirmationNumber}', 'OrdersController@show');
 
