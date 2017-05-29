@@ -12,6 +12,12 @@ class AddConcertTest extends TestCase
 {
     use DatabaseMigrations;
 
+    private function from($url)
+    {
+        session()->setPreviousUrl($url);
+        return $this;
+    }
+
     public function test_管理者可以看到新增音樂會的表單新增頁()
     {
         $user = factory(User::class)->create();
@@ -94,8 +100,7 @@ class AddConcertTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        session()->setPreviousUrl(url('/backstage/concerts/new'));
-        $response = $this->actingAs($user)->post('/backstage/concerts', [
+        $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', [
             'title'                  => '',
             'subtitle'               => 'with Cruel Hand and Backtrack',
             'additional_information' => "You must be 19 years of age to attend this concert.",
