@@ -107,6 +107,8 @@ class AddConcertTest extends TestCase
             'zip'                    => '12345',
             'ticket_price'           => '32.50',
             'ticket_quantity'        => '75',
+        ], [
+            'referer' => url('/backstage/concerts/new')
         ]);
 
         $response->assertStatus(302);
