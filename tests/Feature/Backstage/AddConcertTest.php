@@ -94,6 +94,7 @@ class AddConcertTest extends TestCase
     {
         $user = factory(User::class)->create();
 
+        session()->setPreviousUrl(url('/backstage/concerts/new'));
         $response = $this->actingAs($user)->post('/backstage/concerts', [
             'title'                  => '',
             'subtitle'               => 'with Cruel Hand and Backtrack',
@@ -107,12 +108,10 @@ class AddConcertTest extends TestCase
             'zip'                    => '12345',
             'ticket_price'           => '32.50',
             'ticket_quantity'        => '75',
-        ], [
-            'referer' => url('/backstage/concerts/new')
         ]);
 
         $response->assertStatus(302);
-        $response->assertRedirect("/backstage/concerts/new");
+        $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('title');
         $this->assertEquals(0, Concert::count());
     }
