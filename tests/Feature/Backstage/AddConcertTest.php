@@ -134,6 +134,7 @@ class AddConcertTest extends TestCase
             $response->assertRedirect("/concerts/{$concert->id}");
 
             $this->assertTrue($concert->user->is($user));
+            $this->assertTrue($concert->isPublished());
 
             $this->assertNull($concert->subtitle);
         });
@@ -154,6 +155,7 @@ class AddConcertTest extends TestCase
             $response->assertRedirect("/concerts/{$concert->id}");
 
             $this->assertTrue($concert->user->is($user));
+            $this->assertTrue($concert->isPublished());
 
             $this->assertNull($concert->additional_information);
         });
