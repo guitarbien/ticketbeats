@@ -3,12 +3,18 @@
 namespace App;
 
 use App\Exceptions\NotEnoughTicketsException;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Concert extends Model
 {
     protected $guarded = [];
     protected $dates   = ['date'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function scopePublished()
     {

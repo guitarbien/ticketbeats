@@ -5,6 +5,7 @@ use App\Concert;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConcertsController extends Controller
 {
@@ -29,6 +30,7 @@ class ConcertsController extends Controller
         ]);
 
         $concert = Concert::create([
+            'user_id'                => Auth::user()->id,
             'title'                  => request('title'),
             'subtitle'               => request('subtitle'),
             'date'                   => Carbon::parse(vsprintf('%s %s', [
