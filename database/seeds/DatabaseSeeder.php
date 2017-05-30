@@ -1,6 +1,7 @@
 <?php
 
 use App\Concert;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
