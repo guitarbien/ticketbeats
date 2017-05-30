@@ -54,6 +54,16 @@ class ConcertTest extends TestCase
         $this->assertFalse($publishedConcerts->contains($unpublishedConcertC));
     }
 
+    public function test_concert可以被發佈()
+    {
+        $concert = factory(Concert::class)->create(['published_at' => null]);
+        $this->assertFalse($concert->isPublished());
+
+        $concert->publish();
+
+        $this->assertTrue($concert->isPublished());
+    }
+
     public function test_可以加入票券()
     {
         $concert = factory(Concert::class)->create();
