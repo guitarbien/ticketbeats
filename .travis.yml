@@ -16,6 +16,7 @@ services:
   #- elasticsearch
 
 before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS homestead;'
   - nvm install 6.9.4
   - nvm use 6.9.4
 
