@@ -28,6 +28,7 @@ install:
   - npm install
 
 before_script:
+  - gulp
   - cp .env.example .env
   - php artisan key:generate
   # for dusk testing
@@ -37,7 +38,6 @@ before_script:
   - php artisan serve &
 
 script:
-  - gulp
   - ./vendor/bin/phpunit -c phpunit.xml --exclude-group none --coverage-clover build/logs/clover.xml
   - php artisan dusk
 
