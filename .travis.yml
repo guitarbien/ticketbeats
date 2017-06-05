@@ -5,12 +5,12 @@ php:
   - 7.1
   #- nightly
 
-sudo: required
-dist: trusty
+#sudo: required
+#dist: trusty
 
 cache:
   directories:
-      #- node_modules
+      - node_modules
       - vendor
       - $HOME/.composer/cache
 
