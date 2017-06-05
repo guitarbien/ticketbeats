@@ -5,6 +5,9 @@ php:
   - 7.1
   #- nightly
 
+sudo: required
+dist: trusty
+
 cache:
   directories:
       - node_modules
@@ -27,16 +30,16 @@ install:
 before_script:
   - cp .env.example .env
   - php artisan key:generate
-  ## for dusk testing
-  #- export DISPLAY=:99.0
-  #- sh -e /etc/init.d/xvfb start
-  #- ./vendor/laravel/dusk/bin/chromedriver-linux &
-  #- php artisan serve &
+  # for dusk testing
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - ./vendor/laravel/dusk/bin/chromedriver-linux &
+  - php artisan serve &
 
 script:
   - gulp
   - ./vendor/bin/phpunit -c phpunit.xml --exclude-group none --coverage-clover build/logs/clover.xml
-  #- php artisan dusk
+  - php artisan dusk
 
 after_success:
   - travis_retry php vendor/bin/coveralls
