@@ -96,7 +96,7 @@ class AddConcertTest extends TestCase
         });
     }
 
-    public function test_geusts不能新增音樂會()
+    public function test_guests不能新增音樂會()
     {
         $response = $this->post('/backstage/concerts', $this->validParams());
 
