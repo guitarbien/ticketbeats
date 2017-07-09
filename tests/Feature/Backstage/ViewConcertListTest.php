@@ -22,9 +22,11 @@ class ViewConcertListTest extends TestCase
     public function test_管理者可以看到音樂會的列表()
     {
         $user = factory(User::class)->create();
-        factory(Concert::class, 3)->create(['user_id' => $user->id]);
+        $concerts = factory(Concert::class, 3)->create(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)->get('/backstage/concerts');
         $response->assertStatus(200);
+
+        $this->assertTrue($response->original->getData()['concerts']->contains($concerts[0]));
     }
 }
