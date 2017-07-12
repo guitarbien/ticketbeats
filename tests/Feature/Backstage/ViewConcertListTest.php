@@ -19,16 +19,20 @@ class ViewConcertListTest extends TestCase
         $response->assertRedirect('/login');
     }
 
-    public function test_管理者可以看到音樂會的列表()
+    public function test_管理者只可以看到自己的音樂會的列表()
     {
         $user = factory(User::class)->create();
         $concerts = factory(Concert::class, 3)->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->get('/backstage/concerts');
-        $response->assertStatus(200);
+        $otherUser = factory(User::class)->create();
+        $otherConcerts = factory(Concert::class)->create(['user_id' => $otherUser->id]);
 
+        $response = $this->actingAs($user)->get('/backstage/concerts');
+
+        $response->assertStatus(200);
         $this->assertTrue($response->original->getData()['concerts']->contains($concerts[0]));
         $this->assertTrue($response->original->getData()['concerts']->contains($concerts[1]));
         $this->assertTrue($response->original->getData()['concerts']->contains($concerts[2]));
+        $this->assertFalse($response->original->getData()['concerts']->contains($otherConcerts));
     }
 }
