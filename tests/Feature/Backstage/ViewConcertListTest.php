@@ -25,6 +25,10 @@ class ViewConcertListTest extends TestCase
         Collection::macro('assertContains', function($value) {
             Assert::AssertTrue($this->contains($value), "Failed asserting that the collection contained the specified value.");
         });
+
+        Collection::macro('assertNotContains', function($value) {
+            Assert::assertFalse($this->contains($value), "Failed asserting that the collection did not contain the specified value.");
+        });
     }
 
     public function test_一般使用者不能看到管理者的音樂列表頁()
@@ -51,6 +55,6 @@ class ViewConcertListTest extends TestCase
         $response->data('concerts')->assertContains($concertA);
         $response->data('concerts')->assertContains($concertB);
         $response->data('concerts')->assertContains($concertD);
-        $this->assertFalse($response->data('concerts')->contains($concertC));
+        $response->data('concerts')->assertNotContains($concertC);
     }
 }
