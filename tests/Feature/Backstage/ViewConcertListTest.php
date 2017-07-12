@@ -5,11 +5,21 @@ namespace Tests\Feature\Backstage;
 use App\Concert;
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
 
 class ViewConcertListTest extends TestCase
 {
     use DatabaseMigrations;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        TestResponse::macro('data', function($key) {
+            return $this->original->getData()[$key];
+        });
+    }
 
     public function test_一般使用者不能看到管理者的音樂列表頁()
     {
