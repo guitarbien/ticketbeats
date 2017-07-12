@@ -42,6 +42,7 @@ class ViewConcertListTest extends TestCase
         $response = $this->actingAs($user)->get('/backstage/concerts');
 
         $response->assertStatus(200);
+        $response->data('concerts')->assertContains($concertA);
         $this->assertTrue($response->data('concerts')->contains($concertA));
         $this->assertTrue($response->data('concerts')->contains($concertB));
         $this->assertTrue($response->data('concerts')->contains($concertD));
