@@ -4,8 +4,10 @@ namespace Tests\Feature\Backstage;
 
 use App\Concert;
 use App\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestResponse;
+use PHPUnit\Framework\Assert;
 use Tests\TestCase;
 
 class ViewConcertListTest extends TestCase
@@ -18,6 +20,10 @@ class ViewConcertListTest extends TestCase
 
         TestResponse::macro('data', function($key) {
             return $this->original->getData()[$key];
+        });
+
+        Collection::macro('assertContains', function($value) {
+            Assert::AssertTrue($this->contains($value), "Failed asserting that the collection contained the specified value.");
         });
     }
 
@@ -43,9 +49,8 @@ class ViewConcertListTest extends TestCase
 
         $response->assertStatus(200);
         $response->data('concerts')->assertContains($concertA);
-        $this->assertTrue($response->data('concerts')->contains($concertA));
-        $this->assertTrue($response->data('concerts')->contains($concertB));
-        $this->assertTrue($response->data('concerts')->contains($concertD));
+        $response->data('concerts')->assertContains($concertB);
+        $response->data('concerts')->assertContains($concertD);
         $this->assertFalse($response->data('concerts')->contains($concertC));
     }
 }
