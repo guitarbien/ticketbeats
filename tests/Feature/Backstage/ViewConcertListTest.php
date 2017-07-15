@@ -36,6 +36,7 @@ class ViewConcertListTest extends TestCase
 
     public function test_管理者只可以看到自己的音樂會的列表()
     {
+        $this->disableExceptionHandling();
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
 
