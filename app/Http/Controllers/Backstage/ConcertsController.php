@@ -68,6 +68,24 @@ class ConcertsController extends Controller
 
     public function update($id)
     {
+        $concert = Concert::findOrFail($id);
+
+        $concert->update([
+            'title'                  => request('title'),
+            'subtitle'               => request('subtitle'),
+            'date'                   => Carbon::parse(vsprintf('%s %s', [
+                request('date'),
+                request('time'),
+            ])),
+            'ticket_price'           => request('ticket_price') * 100,
+            'venue'                  => request('venue'),
+            'venue_address'          => request('venue_address'),
+            'city'                   => request('city'),
+            'state'                  => request('state'),
+            'zip'                    => request('zip'),
+            'additional_information' => request('additional_information'),
+        ]);
+
         return redirect()->route('backstage.concerts.index');
     }
 }

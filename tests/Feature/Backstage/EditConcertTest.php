@@ -101,7 +101,7 @@ class EditConcertTest extends TestCase
             'city'                   => 'new city',
             'state'                  => 'new state',
             'zip'                    => '99999',
-            'ticket_price'           => '72,50',
+            'ticket_price'           => '72.50',
         ]);
 
         $response->assertRedirect("/backstage/concerts");
