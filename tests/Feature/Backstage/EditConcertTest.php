@@ -68,4 +68,54 @@ class EditConcertTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/login');
     }
+
+    public function test_管理者可以編輯自己尚未發布的音樂會()
+    {
+        $this->disableExceptionHandling();
+        $user = factory(User::class)->create();
+
+        $concert = factory(Concert::class)->create([
+            'user_id'                => $user->id,
+            'title'                  => 'old title',
+            'subtitle'               => 'old subtitle',
+            'additional_information' => 'old additional_information',
+            'date'                   => Carbon::parse('2017-01-01 5:00pm'),
+            'venue'                  => 'old venue',
+            'venue_address'          => 'old venue_address',
+            'city'                   => 'old city',
+            'state'                  => 'old state',
+            'zip'                    => '00000',
+            'ticket_price'           => 2000,
+        ]);
+
+        $this->assertFalse($concert->isPublished());
+
+        $response = $this->actingAs($user)->patch("/backstage/concerts/{$concert->id}", [
+            'title'                  => 'new title',
+            'subtitle'               => 'new subtitle',
+            'additional_information' => 'new additional_information',
+            'date'                   => '2018-12-12',
+            'time'                   => '8:00pm',
+            'venue'                  => 'new venue',
+            'venue_address'          => 'new venue_address',
+            'city'                   => 'new city',
+            'state'                  => 'new state',
+            'zip'                    => '99999',
+            'ticket_price'           => '72,50',
+        ]);
+
+        $response->assertRedirect("/backstage/concerts");
+        tap($concert->fresh(), function($concert) {
+            $this->assertEquals('new title', $concert->title);
+            $this->assertEquals('new subtitle', $concert->subtitle);
+            $this->assertEquals('new additional_information', $concert->additional_information);
+            $this->assertEquals(Carbon::parse('2018-12-12 8:00pm'), $concert->date);
+            $this->assertEquals('new venue', $concert->venue);
+            $this->assertEquals('new venue_address', $concert->venue_address);
+            $this->assertEquals('new city', $concert->city);
+            $this->assertEquals('new state', $concert->state);
+            $this->assertEquals('99999', $concert->zip);
+            $this->assertEquals(7250, $concert->ticket_price);
+        });
+    }
 }
