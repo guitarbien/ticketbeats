@@ -10,6 +10,23 @@ class EditConcertTest extends TestCase
 {
     use DatabaseMigrations;
 
+    private function validParams($overrides = [])
+    {
+        return array_merge([
+            'title'                  => 'new title',
+            'subtitle'               => 'new subtitle',
+            'additional_information' => 'new additional_information',
+            'date'                   => '2018-12-12',
+            'time'                   => '8:00pm',
+            'venue'                  => 'new venue',
+            'venue_address'          => 'new venue_address',
+            'city'                   => 'new city',
+            'state'                  => 'new state',
+            'zip'                    => '99999',
+            'ticket_price'           => '72.50',
+        ], $overrides);
+    }
+
     public function test_管理者可以看到自己還沒發佈的音樂會修改頁()
     {
         $this->disableExceptionHandling();

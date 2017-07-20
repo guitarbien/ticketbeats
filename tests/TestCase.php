@@ -32,4 +32,10 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
     {
         $this->app->instance(ExceptionHandler::class, new DisableExceptionHandler);
     }
+
+    protected function from($url)
+    {
+        session()->setPreviousUrl($url);
+        return $this;
+    }
 }
