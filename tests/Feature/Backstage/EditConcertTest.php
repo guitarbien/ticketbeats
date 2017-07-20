@@ -286,7 +286,6 @@ class EditConcertTest extends TestCase
 
     public function test_title欄位為必填()
     {
-        $this->disableExceptionHandling();
         $user = factory(User::class)->create();
 
         $concert = factory(Concert::class)->create([
