@@ -66,4 +66,8 @@ class ConcertsController extends Controller
         ]);
     }
 
+    public function update($id)
+    {
+        return redirect()->route('backstage.concerts.index');
+    }
 }
