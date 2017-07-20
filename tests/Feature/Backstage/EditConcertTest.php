@@ -220,7 +220,6 @@ class EditConcertTest extends TestCase
 
     public function test_一般使用者不能編輯音樂會()
     {
-        $this->disableExceptionHandling();
         $user = factory(User::class)->create();
 
         $concert = factory(Concert::class)->create([
