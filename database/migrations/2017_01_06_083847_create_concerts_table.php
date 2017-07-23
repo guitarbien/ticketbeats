@@ -27,7 +27,7 @@ class CreateConcertsTable extends Migration
             $table->string('zip');
             $table->text('additional_information')->nullable();
             $table->datetime('published_at')->nullable();
-            $table->integer('ticket_quantity')->nullable();
+            $table->integer('ticket_quantity');
             $table->timestamps();
         });
     }
