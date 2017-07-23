@@ -4,6 +4,7 @@ namespace Feature\Backstage;
 
 use App\Concert;
 use App\User;
+use ConcertFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -30,4 +31,23 @@ class PublishConcertTest extends TestCase
         $this->assertTrue($concert->isPublished());
         $this->assertEquals(3, $concert->ticketsRemaining());
     }
+
+    public function test_一場音樂會只能被發佈一次()
+    {
+        $this->disableExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $concert = ConcertFactory::createPublished([
+            'user_id' => $user->id,
+            'ticket_quantity' => 3,
+        ]);
+
+        $response = $this->actingAs($user)->post('/backstage/published-concerts', [
+            'concert_id' => $concert->id,
+        ]);
+
+        $response->assertStatus(422);
+        $this->assertEquals(3, $concert->fresh()->ticketsRemaining());
+    }
+
 }
