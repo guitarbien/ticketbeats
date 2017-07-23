@@ -7,6 +7,7 @@ use App\Exceptions\NotEnoughTicketsException;
 use App\Order;
 use App\Ticket;
 use Carbon\Carbon;
+use ConcertFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -69,14 +70,6 @@ class ConcertTest extends TestCase
         $this->assertEquals(5, $concert->ticketsRemaining());
     }
 
-    public function test_可以加入票券()
-    {
-        $concert = factory(Concert::class)->create();
-        $concert->addTickets(50);
-
-        $this->assertEquals(50, $concert->ticketsRemaining());
-    }
-
     public function test_可購買的票券不應該包含已有訂單的票券()
     {
         $concert = factory(Concert::class)->create();
@@ -88,7 +81,7 @@ class ConcertTest extends TestCase
 
     public function test_保留超過可購買的票券數量會拋出例外()
     {
-        $concert = factory(Concert::class)->create()->addTickets(10);
+        $concert = ConcertFactory::createPublished(['ticket_quantity' => 10]);
 
         try {
             $reservation = $concert->reserveTickets(11, 'john@example.com');
@@ -103,7 +96,7 @@ class ConcertTest extends TestCase
 
     public function test_能保留可用票券()
     {
-        $concert = factory(Concert::class)->create()->addTickets(3);
+        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
         $this->assertEquals(3, $concert->ticketsRemaining());
 
         $reservation = $concert->reserveTickets(2, 'john@example.com');
@@ -115,7 +108,7 @@ class ConcertTest extends TestCase
 
     public function test_已經被購買的票券不能被保留()
     {
-        $concert = factory(Concert::class)->create()->addTickets(3);
+        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
         $order = factory(Order::class)->create();
         $order->tickets()->saveMany($concert->tickets->take(2));
 
@@ -131,7 +124,7 @@ class ConcertTest extends TestCase
 
     public function test_已經被保留的票券不能再被保留()
     {
-        $concert = factory(Concert::class)->create()->addTickets(3);
+        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
         $concert->reserveTickets(2, 'jane@example.com');
 
         try {
