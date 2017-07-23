@@ -34,8 +34,6 @@ class PublishConcertTest extends TestCase
 
     public function test_一場音樂會只能被發佈一次()
     {
-        $this->disableExceptionHandling();
-
         $user = factory(User::class)->create();
         $concert = ConcertFactory::createPublished([
             'user_id' => $user->id,
