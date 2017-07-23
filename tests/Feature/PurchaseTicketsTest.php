@@ -8,7 +8,6 @@ use App\Concert;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
 use App\Mail\OrderConfirmationEmail;
-use App\OrderConfirmationNumberGenerator;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
@@ -67,7 +66,9 @@ class PurchaseTicketsTest extends TestCase
 
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250])->addTickets(3);
+//        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3250])->addTickets(3);
+        $concert = factory(Concert::class)->create(['ticket_price' => 3250, 'ticket_quantity' => 3]);
+        $concert->publish();
 
         // Action
         // Purchase concert tickets\
