@@ -598,4 +598,24 @@ class EditConcertTest extends TestCase
             $this->assertEquals(5, $concert->ticket_quantity);
         });
     }
+
+    public function test_ticket_quantity至少要為1()
+    {
+        $user = factory(User::class)->create();
+        $concert = factory(Concert::class)->create([
+            'user_id' => $user->id,
+            'ticket_quantity' => 5,
+        ]);
+        $this->assertFalse($concert->isPublished());
+
+        $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
+            'ticket_quantity' => '0',
+        ]));
+
+        $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
+        $response->assertSessionHasErrors('ticket_quantity');
+        tap($concert->fresh(), function ($concert) {
+            $this->assertEquals(5, $concert->ticket_quantity);
+        });
+    }
 }
