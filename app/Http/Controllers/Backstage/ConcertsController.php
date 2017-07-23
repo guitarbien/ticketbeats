@@ -49,9 +49,10 @@ class ConcertsController extends Controller
             'state'                  => request('state'),
             'zip'                    => request('zip'),
             'ticket_price'           => request('ticket_price') * 100,
-        ])->addTickets(request('ticket_quantity'));
+            'ticket_quantity'        => (int) request('ticket_quantity'),
+        ]);
 
-        $concert->update(['published_at' => $concert->freshTimestamp()]);
+        $concert->publish();
 
         return redirect()->route('concerts.show', $concert);
     }
