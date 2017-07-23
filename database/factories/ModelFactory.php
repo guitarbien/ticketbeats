@@ -31,14 +31,15 @@ $factory->define(App\Concert::class, function(Faker\Generator $faker) {
         },
         'title'                  => 'sample title',
         'subtitle'               => 'sample subtitle',
+        'additional_information' => 'sample additional_information',
         'date'                   => Carbon::parse('2016-12-01 8:00pm'),
-        'ticket_price'           => 5566,
         'venue'                  => 'sample venue',
         'venue_address'          => 'sample venue_address',
         'city'                   => 'sample city',
         'state'                  => 'sample state',
         'zip'                    => 'sample zip',
-        'additional_information' => 'sample additional_information',
+        'ticket_price'           => 5566,
+        'ticket_quantity'        => 5,
     ];
 });
 
