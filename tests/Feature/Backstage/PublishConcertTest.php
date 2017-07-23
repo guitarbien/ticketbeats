@@ -18,6 +18,7 @@ class PublishConcertTest extends TestCase
         $user = factory(User::class)->create();
         $concert = factory(Concert::class)->states('unpublished')->create([
             'user_id' => $user->id,
+            'ticket_quantity' => 3,
         ]);
 
         $response = $this->actingAs($user)->post('/backstage/published-concerts', [
@@ -25,6 +26,8 @@ class PublishConcertTest extends TestCase
         ]);
 
         $response->assertRedirect('backstage/concerts');
-        $this->assertTrue($concert->fresh()->isPublished());
+        $concert = $concert->fresh();
+        $this->assertTrue($concert->isPublished());
+        $this->assertEquals(3, $concert->ticketsRemaining());
     }
 }
