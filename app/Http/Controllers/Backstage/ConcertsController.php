@@ -13,7 +13,6 @@ class ConcertsController extends Controller
     public function index()
     {
         return view('backstage.concerts.index', [
-            'concerts'            => Auth::user()->concerts,
             'publishedConcerts'   => Auth::user()->concerts->filter->isPublished(),
             'unpublishedConcerts' => Auth::user()->concerts->reject->isPublished(),
         ]);
