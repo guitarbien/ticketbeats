@@ -68,4 +68,21 @@ class PublishConcertTest extends TestCase
         $this->assertEquals(0, $concert->ticketsRemaining());
     }
 
+    public function test_一般使用者不能發佈音樂會()
+    {
+        $concert = factory(Concert::class)->states('unpublished')->create([
+            'ticket_quantity' => 3,
+        ]);
+
+        $response = $this->post('/backstage/published-concerts', [
+            'concert_id' => $concert->id,
+        ]);
+
+        $response->assertRedirect('/login');
+
+        $concert = $concert->fresh();
+        $this->assertFalse($concert->isPublished());
+        $this->assertEquals(0, $concert->ticketsRemaining());
+    }
+
 }
