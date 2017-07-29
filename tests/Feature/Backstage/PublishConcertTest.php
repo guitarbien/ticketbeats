@@ -85,4 +85,14 @@ class PublishConcertTest extends TestCase
         $this->assertEquals(0, $concert->ticketsRemaining());
     }
 
+    public function test_不存在的音樂會不能被發佈()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->post('/backstage/published-concerts', [
+            'concert_id' => 999,
+        ]);
+
+        $response->assertStatus(404);
+    }
 }
