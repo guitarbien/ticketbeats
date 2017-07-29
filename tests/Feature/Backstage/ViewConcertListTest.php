@@ -25,6 +25,15 @@ class ViewConcertListTest extends TestCase
         Collection::macro('assertNotContains', function($value) {
             Assert::assertFalse($this->contains($value), "Failed asserting that the collection did not contain the specified value.");
         });
+
+        Collection::macro('assertEquals', function($items) {
+            Assert::assertEquals(count($this), count($items));
+
+            $this->zip($items)->each(function ($pair) {
+                list($a, $b) = $pair;
+                Assert::assertTrue($a->is($b));
+            });
+        });
     }
 
     public function test_一般使用者不能看到管理者的音樂列表頁()
@@ -62,19 +71,5 @@ class ViewConcertListTest extends TestCase
             $unpublishedConcertA,
             $unpublishedConcertC,
         ]);
-
-        $response->data('publishedConcerts')->assertContains($publishedConcertA);
-        $response->data('publishedConcerts')->assertNotContains($publishedConcertB);
-        $response->data('publishedConcerts')->assertContains($publishedConcertC);
-        $response->data('publishedConcerts')->assertNotContains($unpublishedConcertA);
-        $response->data('publishedConcerts')->assertNotContains($unpublishedConcertB);
-        $response->data('publishedConcerts')->assertNotContains($unpublishedConcertC);
-
-        $response->data('unpublishedConcerts')->assertNotContains($publishedConcertA);
-        $response->data('unpublishedConcerts')->assertNotContains($publishedConcertB);
-        $response->data('unpublishedConcerts')->assertNotContains($publishedConcertC);
-        $response->data('unpublishedConcerts')->assertContains($unpublishedConcertA);
-        $response->data('unpublishedConcerts')->assertNotContains($unpublishedConcertB);
-        $response->data('unpublishedConcerts')->assertContains($unpublishedConcertC);
     }
 }
