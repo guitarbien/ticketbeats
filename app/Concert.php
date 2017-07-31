@@ -16,9 +16,9 @@ class Concert extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopePublished()
+    public function scopePublished($query)
     {
-        return Concert::whereNotNull('published_at');
+        return $query->whereNotNull('published_at');
     }
 
     public function isPublished()

@@ -35,6 +35,17 @@ class ViewPublishedConcertOrdersTest extends TestCase
         $response->assertStatus(404);
     }
 
+    public function test_管理者不能看別人已發佈的音樂會的訂單()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+
+        $concert = ConcertFactory::createPublished(['user_id' => $otherUser->id]);
+
+        $response = $this->actingAs($user)->get("/backstage/published-concerts/{$concert->id}/orders");
+        $response->assertStatus(404);
+    }
+
     public function test_一般使用者不能看到任何已發佈的音樂會的訂單()
     {
         $concert = ConcertFactory::createPublished();
