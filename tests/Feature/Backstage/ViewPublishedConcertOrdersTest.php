@@ -21,7 +21,7 @@ class ViewPublishedConcertOrdersTest extends TestCase
         $response = $this->actingAs($user)->get("/backstage/published-concerts/{$concert->id}/orders");
 
         $response->assertStatus(200);
-        $response->assertEquals('backstage.published-concert-orders.index', $this->original->name());
-        $this->assertTrue($response->data('concert')->is('concert'));
+
+        $this->assertTrue($response->data('concert')->is($concert));
     }
 }

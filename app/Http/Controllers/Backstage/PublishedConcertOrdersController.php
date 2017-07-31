@@ -8,8 +8,12 @@ use Illuminate\Support\Facades\Auth;
 
 class PublishedConcertOrdersController extends Controller
 {
-    public function index()
+    public function index($concertId)
     {
+        $concert = Auth::user()->concerts()->published()->findOrFail($concertId);
 
+        return view('backstage.published-concert-orders.index', [
+            'concert' => $concert,
+        ]);
     }
 }
