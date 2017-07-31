@@ -24,4 +24,14 @@ class ViewPublishedConcertOrdersTest extends TestCase
         $response->assertViewIs('backstage.published-concert-orders.index');
         $this->assertTrue($response->data('concert')->is($concert));
     }
+
+    public function test_管理者不能看尚未發佈的音樂會的訂單()
+    {
+        $user = factory(User::class)->create();
+
+        $concert = ConcertFactory::createUnpublished(['user_id' => $user->id]);
+
+        $response = $this->actingAs($user)->get("/backstage/published-concerts/{$concert->id}/orders");
+        $response->assertStatus(404);
+    }
 }
