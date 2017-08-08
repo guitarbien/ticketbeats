@@ -79,6 +79,15 @@ class ConcertTest extends TestCase
         $this->assertEquals(2, $concert->ticketsRemaining());
     }
 
+    public function test_已售出的票券應關聯到訂單()
+    {
+        $concert = factory(Concert::class)->create();
+        $concert->tickets()->saveMany(factory(Ticket::class, 3)->create(['order_id' => 1]));
+        $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => null]));
+
+        $this->assertEquals(3, $concert->ticketsSold());
+    }
+
     public function test_保留超過可購買的票券數量會拋出例外()
     {
         $concert = ConcertFactory::createPublished(['ticket_quantity' => 10]);
