@@ -105,6 +105,6 @@ class Concert extends Model
 
     public function ticketsSold()
     {
-        return $this->tickets()->whereNotNull('order_id')->count();
+        return $this->tickets()->sold()->count();
     }
 }
