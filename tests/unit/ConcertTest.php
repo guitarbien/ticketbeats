@@ -97,6 +97,15 @@ class ConcertTest extends TestCase
         $this->assertEquals(5, $concert->totalTickets());
     }
 
+    public function test_計算票券售出百分比()
+    {
+        $concert = factory(Concert::class)->create();
+        $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => 1]));
+        $concert->tickets()->saveMany(factory(Ticket::class, 5)->create(['order_id' => null]));
+
+        $this->assertEquals(0.285714286, $concert->percentSoldOut());
+    }
+
     public function test_保留超過可購買的票券數量會拋出例外()
     {
         $concert = ConcertFactory::createPublished(['ticket_quantity' => 10]);
