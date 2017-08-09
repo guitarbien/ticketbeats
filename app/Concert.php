@@ -112,4 +112,9 @@ class Concert extends Model
     {
         return $this->tickets()->count();
     }
+
+    public function percentSoldOut()
+    {
+        return $this->ticketsSold() / $this->totalTickets();
+    }
 }
