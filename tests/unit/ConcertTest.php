@@ -106,6 +106,18 @@ class ConcertTest extends TestCase
         $this->assertEquals(28.57, $concert->percentSoldOut());
     }
 
+    public function test_計算票券售出總金額()
+    {
+        $concert = factory(Concert::class)->create();
+        $orderA = factory(Order::class)->create(['amount' => 3850]);
+        $orderB = factory(Order::class)->create(['amount' => 9625]);
+        $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => $orderA->id]));
+        $concert->tickets()->saveMany(factory(Ticket::class, 5)->create(['order_id' => $orderB->id]));
+
+        // DB 欄位以 cent 為單位，畫面上是以 dollar 為單位
+        $this->assertEquals(134.75, $concert->revenueInDollars());
+    }
+
     public function test_保留超過可購買的票券數量會拋出例外()
     {
         $concert = ConcertFactory::createPublished(['ticket_quantity' => 10]);
