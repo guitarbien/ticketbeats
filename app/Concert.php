@@ -49,6 +49,7 @@ class Concert extends Model
 
     public function orders()
     {
+        return Order::whereIn('id', $this->tickets()->pluck('order_id'));
         return $this->belongsToMany(Order::class, 'tickets');
     }
 
