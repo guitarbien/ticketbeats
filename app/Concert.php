@@ -117,4 +117,9 @@ class Concert extends Model
     {
         return number_format(($this->ticketsSold() / $this->totalTickets()) * 100, 2);
     }
+
+    public function revenueInDollars()
+    {
+        return $this->orders()->sum('amount') / 100;
+    }
 }
