@@ -21,6 +21,10 @@ class ConcertMessagesController extends Controller
         /** @var Concert $concert */
         $concert = Auth::user()->concerts()->findOrFail($id);
 
+        $this->validate(request(), [
+            'subject' => ['required'],
+        ]);
+
         $message = $concert->attendeeMessages()->create(request(['subject', 'message']));
 
         return redirect()->route('backstage.concert-messages.new', $concert->id)
