@@ -14,6 +14,7 @@ class PublishedConcertOrdersController extends Controller
 
         return view('backstage.published-concert-orders.index', [
             'concert' => $concert,
+            'orders' => $concert->orders()->get(),
         ]);
     }
 }
