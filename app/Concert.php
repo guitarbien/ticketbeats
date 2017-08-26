@@ -3,8 +3,8 @@
 namespace App;
 
 use App\Exceptions\NotEnoughTicketsException;
-use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 class Concert extends Model
 {
@@ -16,6 +16,9 @@ class Concert extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @param Builder $query
+     */
     public function scopePublished($query)
     {
         return $query->whereNotNull('published_at');
@@ -50,7 +53,6 @@ class Concert extends Model
     public function orders()
     {
         return Order::whereIn('id', $this->tickets()->pluck('order_id'));
-        return $this->belongsToMany(Order::class, 'tickets');
     }
 
     public function hasOrderFor($customerEmail)
@@ -63,6 +65,9 @@ class Concert extends Model
         return $this->orders()->where('email', $customerEmail)->get();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|Ticket
+     */
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
@@ -70,7 +75,7 @@ class Concert extends Model
 
     public function reserveTickets($quantity, $email)
     {
-        $tickets = $this->findTickets($quantity)->each(function($ticket) {
+        $tickets = $this->findTickets($quantity)->each(function(Ticket $ticket) {
             $ticket->reserve();
         });
 

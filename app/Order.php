@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Billing\Charge;
 use App\Facades\OrderConfirmationNumber;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +10,7 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    public static function forTickets($tickets, $email, $charge)
+    public static function forTickets($tickets, $email, Charge $charge)
     {
         $order = self::create([
             'confirmation_number' => OrderConfirmationNumber::generate(),
