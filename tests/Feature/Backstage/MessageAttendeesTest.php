@@ -53,7 +53,7 @@ class MessageAttendeesTest extends TestCase
         $this->disableExceptionHandling();
 
         /** @var User $user */
-        $user    = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
         /** @var Concert $concert */
         $concert = ConcertFactory::createPublished([
