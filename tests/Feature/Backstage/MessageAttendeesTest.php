@@ -73,4 +73,26 @@ class MessageAttendeesTest extends TestCase
         $this->assertEquals('My subject', $message->subject);
         $this->assertEquals('My message', $message->message);
     }
+
+    public function test_subject_為必填()
+    {
+        /** @var User $user */
+        $user = factory(User::class)->create();
+
+        /** @var Concert $concert */
+        $concert = ConcertFactory::createPublished([
+            'user_id' => $user->id,
+        ]);
+
+        $response = $this->from("/backstage/concerts/{$concert->id}/messages/new")
+                         ->actingAs($user)
+                         ->post("/backstage/concerts/{$concert->id}/messages", [
+                             'subject' => '',
+                             'message' => 'My message',
+                         ]);
+
+        $response->assertRedirect("/backstage/concerts/{$concert->id}/messages/new");
+        $response->assertSessionHasErrors('subject');
+        $this->assertEquals(0, AttendeeMessage::count());
+    }
 }
