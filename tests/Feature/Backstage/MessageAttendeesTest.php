@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Backstage;
 
+use App\AttendeeMessage;
 use App\Concert;
 use App\User;
 use ConcertFactory;
