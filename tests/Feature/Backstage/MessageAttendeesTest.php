@@ -74,6 +74,19 @@ class MessageAttendeesTest extends TestCase
         $this->assertEquals('My message', $message->message);
     }
 
+    public function test_一般使用者不能發訊息到任何一個音樂會()
+    {
+        $concert = ConcertFactory::createPublished();
+
+        $response = $this->post("/backstage/concerts/{$concert->id}/messages", [
+            'subject' => 'My subject',
+            'message' => 'My message',
+        ]);
+
+        $response->assertRedirect('/login');
+        $this->assertEquals(0, AttendeeMessage::count());
+    }
+
     public function test_subject_為必填()
     {
         /** @var User $user */
