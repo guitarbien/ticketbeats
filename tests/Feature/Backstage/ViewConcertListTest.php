@@ -14,28 +14,6 @@ class ViewConcertListTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function setUp()
-    {
-        parent::setUp();
-
-        Collection::macro('assertContains', function($value) {
-            Assert::AssertTrue($this->contains($value), "Failed asserting that the collection contained the specified value.");
-        });
-
-        Collection::macro('assertNotContains', function($value) {
-            Assert::assertFalse($this->contains($value), "Failed asserting that the collection did not contain the specified value.");
-        });
-
-        Collection::macro('assertEquals', function($items) {
-            Assert::assertEquals(count($this), count($items));
-
-            $this->zip($items)->each(function ($pair) {
-                list($a, $b) = $pair;
-                Assert::assertTrue($a->is($b));
-            });
-        });
-    }
-
     public function test_一般使用者不能看到管理者的音樂列表頁()
     {
         $response = $this->get('/backstage/concerts');
