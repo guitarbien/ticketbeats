@@ -15,6 +15,9 @@ class CreateAttendeeMessagesTable extends Migration
     {
         Schema::create('attendee_messages', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('concert_id');
+            $table->string('subject');
+            $table->text('message');
             $table->timestamps();
         });
     }
