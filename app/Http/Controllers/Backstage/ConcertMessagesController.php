@@ -17,6 +17,6 @@ class ConcertMessagesController extends Controller
 
     public function store($id)
     {
-
+        return redirect()->route('backstage.concert-messages.new');
     }
 }

@@ -49,6 +49,8 @@ class MessageAttendeesTest extends TestCase
 
     public function test_管理者可以發送訊息給所有參加者()
     {
+        $this->disableExceptionHandling();
+
         /** @var User $user */
         $user    = factory(User::class)->create();
 
