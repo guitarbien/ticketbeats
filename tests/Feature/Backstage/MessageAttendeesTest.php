@@ -74,6 +74,24 @@ class MessageAttendeesTest extends TestCase
         $this->assertEquals('My message', $message->message);
     }
 
+    public function test_管理者不能發訊息到別人的音樂會()
+    {
+        $user = factory(User::class)->create();
+        $otherUser = factory(User::class)->create();
+
+        $concert = ConcertFactory::createPublished([
+            'user_id' => $otherUser->id,
+        ]);
+
+        $response = $this->actingAs($user)->post("/backstage/concerts/{$concert->id}/messages", [
+            'subject' => 'My subject',
+            'message' => 'My message',
+        ]);
+
+        $response->assertStatus(404);
+        $this->assertEquals(0, AttendeeMessage::count());
+    }
+
     public function test_一般使用者不能發訊息到任何一個音樂會()
     {
         $concert = ConcertFactory::createPublished();
