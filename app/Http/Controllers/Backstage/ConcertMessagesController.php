@@ -23,6 +23,7 @@ class ConcertMessagesController extends Controller
 
         $this->validate(request(), [
             'subject' => ['required'],
+            'message' => ['required'],
         ]);
 
         $message = $concert->attendeeMessages()->create(request(['subject', 'message']));
