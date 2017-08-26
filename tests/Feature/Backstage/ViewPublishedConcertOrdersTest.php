@@ -20,6 +20,18 @@ class ViewPublishedConcertOrdersTest extends TestCase
         $user = factory(User::class)->create();
         $concert = ConcertFactory::createPublished(['user_id' => $user->id]);
 
+        $response = $this->actingAs($user)->get("/backstage/published-concerts/{$concert->id}/orders");
+
+        $response->assertStatus(200);
+        $response->assertViewIs('backstage.published-concert-orders.index');
+        $this->assertTrue($response->data('concert')->is($concert));
+    }
+
+    public function test_管理者可以看到最多十筆自己已發佈的音樂會的訂單()
+    {
+        $user = factory(User::class)->create();
+        $concert = ConcertFactory::createPublished(['user_id' => $user->id]);
+
         $oldOrder = OrderFactory::createForConcert($concert, ['created_at' => Carbon::parse('11 days ago')]);
         $recentOrder10 = OrderFactory::createForConcert($concert, ['created_at' => Carbon::parse('10 days ago')]);
         $recentOrder9 = OrderFactory::createForConcert($concert, ['created_at' => Carbon::parse('9 days ago')]);
@@ -33,10 +45,6 @@ class ViewPublishedConcertOrdersTest extends TestCase
         $recentOrder1 = OrderFactory::createForConcert($concert, ['created_at' => Carbon::parse('1 days ago')]);
 
         $response = $this->actingAs($user)->get("/backstage/published-concerts/{$concert->id}/orders");
-
-        $response->assertStatus(200);
-        $response->assertViewIs('backstage.published-concert-orders.index');
-        $this->assertTrue($response->data('concert')->is($concert));
 
         $response->data('orders')->assertNotContains($oldOrder);
         $response->data('orders')->assertEquals([
