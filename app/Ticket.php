@@ -7,6 +7,29 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 
+/**
+ * App\Ticket
+ *
+ * @property int $id
+ * @property int $concert_id
+ * @property int|null $order_id
+ * @property string|null $reserved_at
+ * @property string|null $code
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Concert $concert
+ * @property-read mixed $price
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket available()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket sold()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket whereCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket whereConcertId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket whereReservedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Ticket whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Ticket extends Model
 {
     protected $guarded = [];
