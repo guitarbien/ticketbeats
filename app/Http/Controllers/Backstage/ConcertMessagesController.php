@@ -14,4 +14,9 @@ class ConcertMessagesController extends Controller
 
         return view('backstage.concert-messages.new', ['concert' => $concert]);
     }
+
+    public function store($id)
+    {
+
+    }
 }
