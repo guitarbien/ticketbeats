@@ -39,6 +39,15 @@ class ViewPublishedConcertOrdersTest extends TestCase
         $this->assertTrue($response->data('concert')->is($concert));
 
         $response->data('orders')->assertContains($recentOrder1);
+        $response->data('orders')->assertContains($recentOrder2);
+        $response->data('orders')->assertContains($recentOrder3);
+        $response->data('orders')->assertContains($recentOrder4);
+        $response->data('orders')->assertContains($recentOrder5);
+        $response->data('orders')->assertContains($recentOrder6);
+        $response->data('orders')->assertContains($recentOrder7);
+        $response->data('orders')->assertContains($recentOrder8);
+        $response->data('orders')->assertContains($recentOrder9);
+        $response->data('orders')->assertContains($recentOrder10);
     }
 
     public function test_管理者不能看尚未發佈的音樂會的訂單()
