@@ -24,8 +24,7 @@ before_install:
   - nvm use 6.9.4
 
 install:
-  #- composer install --prefer-dist --optimize-autoloader --quiet
-  - composer update
+  - composer install --dev --prefer-dist --optimize-autoloader --quiet
   - npm install
 
 before_script:
