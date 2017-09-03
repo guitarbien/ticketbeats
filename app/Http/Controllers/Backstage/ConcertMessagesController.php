@@ -28,6 +28,8 @@ class ConcertMessagesController extends Controller
 
         $message = $concert->attendeeMessages()->create(request(['subject', 'message']));
 
+        SendAttendeeMessage::dispatch($message);
+
         return redirect()->route('backstage.concert-messages.new', $concert->id)
             ->with('flash', 'Your message has been sent.');
     }
