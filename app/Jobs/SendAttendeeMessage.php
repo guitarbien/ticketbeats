@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\AttendeeMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -12,14 +13,17 @@ class SendAttendeeMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /** @var AttendeeMessage $attendeeMessage */
+    public $attendeeMessage;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(AttendeeMessage $attendeeMessage)
     {
-        //
+        $this->attendeeMessage = $attendeeMessage;
     }
 
     /**
