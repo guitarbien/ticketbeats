@@ -6,6 +6,7 @@ use App\AttendeeMessage;
 use App\Concert;
 use App\User;
 use ConcertFactory;
+use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -52,6 +53,8 @@ class MessageAttendeesTest extends TestCase
     {
         $this->disableExceptionHandling();
 
+        Queue::fake();
+
         /** @var User $user */
         $user = factory(User::class)->create();
 
@@ -72,6 +75,10 @@ class MessageAttendeesTest extends TestCase
         $this->assertEquals($concert->id, $message->concert_id);
         $this->assertEquals('My subject', $message->subject);
         $this->assertEquals('My message', $message->message);
+
+        Queue::assertPushed(SendAttendeeMessage::class, function($job) use($message) {
+            $job->attendeeMessage->is($message);
+        });
     }
 
     public function test_管理者不能發訊息到別人的音樂會()
