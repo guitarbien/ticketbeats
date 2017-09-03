@@ -4,6 +4,7 @@ namespace Tests\Feature\Backstage;
 
 use App\AttendeeMessage;
 use App\Concert;
+use App\Jobs\SendAttendeeMessage;
 use App\User;
 use ConcertFactory;
 use Illuminate\Support\Facades\Queue;

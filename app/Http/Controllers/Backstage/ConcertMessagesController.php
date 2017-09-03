@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backstage;
 
 use App\Concert;
+use App\Jobs\SendAttendeeMessage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
