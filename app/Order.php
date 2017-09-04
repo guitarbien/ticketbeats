@@ -31,7 +31,7 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    public static function forTickets($tickets, $email, Charge $charge)
+    public static function forTickets($tickets, $email, Charge $charge): Order
     {
         $order = self::create([
             'confirmation_number' => OrderConfirmationNumber::generate(),
