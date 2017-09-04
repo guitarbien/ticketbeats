@@ -84,6 +84,7 @@ class MessageAttendeesTest extends TestCase
 
     public function test_管理者不能發訊息到別人的音樂會()
     {
+        Queue::fake();
         $user = factory(User::class)->create();
         $otherUser = factory(User::class)->create();
 
@@ -98,10 +99,12 @@ class MessageAttendeesTest extends TestCase
 
         $response->assertStatus(404);
         $this->assertEquals(0, AttendeeMessage::count());
+        Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 
     public function test_一般使用者不能發訊息到任何一個音樂會()
     {
+        Queue::fake();
         $concert = ConcertFactory::createPublished();
 
         $response = $this->post("/backstage/concerts/{$concert->id}/messages", [
@@ -111,10 +114,12 @@ class MessageAttendeesTest extends TestCase
 
         $response->assertRedirect('/login');
         $this->assertEquals(0, AttendeeMessage::count());
+        Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 
     public function test_subject_為必填()
     {
+        Queue::fake();
         /** @var User $user */
         $user = factory(User::class)->create();
 
@@ -133,10 +138,12 @@ class MessageAttendeesTest extends TestCase
         $response->assertRedirect("/backstage/concerts/{$concert->id}/messages/new");
         $response->assertSessionHasErrors('subject');
         $this->assertEquals(0, AttendeeMessage::count());
+        Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 
     public function test_message_為必填()
     {
+        Queue::fake();
         /** @var User $user */
         $user = factory(User::class)->create();
 
@@ -155,5 +162,6 @@ class MessageAttendeesTest extends TestCase
         $response->assertRedirect("/backstage/concerts/{$concert->id}/messages/new");
         $response->assertSessionHasErrors('message');
         $this->assertEquals(0, AttendeeMessage::count());
+        Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 }
