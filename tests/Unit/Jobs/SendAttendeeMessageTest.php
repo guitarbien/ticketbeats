@@ -33,6 +33,9 @@ class SendAttendeeMessageTest extends TestCase
         $orderB = OrderFactory::createForConcert($concert, ['email' => 'sam@example.com']);
         $orderC = OrderFactory::createForConcert($concert, ['email' => 'taylor@example.com']);
 
+        $otherConcert = ConcertFactory::createPublished();
+        $otherOrder = OrderFactory::createForConcert($otherConcert, ['email' => 'jane@example.com']);
+
         // $job = new SendAttendeeMessage($message);
         // $job->handle();
         // 使用 dispatch() 相當於 handle()
@@ -46,6 +49,9 @@ class SendAttendeeMessageTest extends TestCase
         });
         Mail::assertSent(AttendeeMessageEmail::class, function($mail) use ($message) {
             return $mail->hasTo('taylor@example.com') && $mail->attendeeMessage->is($message);
+        });
+        Mail::assertNotSent(AttendeeMessageEmail::class, function($mail) {
+            return $mail->hasTo('jane@example.com');
         });
     }
 }
