@@ -20,6 +20,6 @@ class AttendeeMessage extends Model
 
     public function recipients()
     {
-        return $this->concert->orders()->pluck('emails');
+        return $this->concert->orders()->pluck('email');
     }
 }
