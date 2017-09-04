@@ -38,14 +38,14 @@ class SendAttendeeMessageTest extends TestCase
         // 使用 dispatch() 相當於 handle()
         SendAttendeeMessage::dispatch($message);
 
-        Mail::assertSent(AttendeeMessageEmail::class, function($mail) {
-            return $mail->hasTo('alex@example.com');
+        Mail::assertSent(AttendeeMessageEmail::class, function($mail) use ($message) {
+            return $mail->hasTo('alex@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertSent(AttendeeMessageEmail::class, function($mail) {
-            return $mail->hasTo('sam@example.com');
+        Mail::assertSent(AttendeeMessageEmail::class, function($mail) use ($message) {
+            return $mail->hasTo('sam@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertSent(AttendeeMessageEmail::class, function($mail) {
-            return $mail->hasTo('taylor@example.com');
+        Mail::assertSent(AttendeeMessageEmail::class, function($mail) use ($message) {
+            return $mail->hasTo('taylor@example.com') && $mail->attendeeMessage->is($message);
         });
     }
 }
