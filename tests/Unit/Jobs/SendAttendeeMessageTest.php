@@ -7,6 +7,7 @@ use OrderFactory;
 use Tests\TestCase;
 use App\AttendeeMessage;
 use App\Jobs\SendAttendeeMessage;
+use App\Mail\AttendeeMessageEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -37,13 +38,13 @@ class SendAttendeeMessageTest extends TestCase
         // 使用 dispatch() 相當於 handle()
         SendAttendeeMessage::dispatch($message);
 
-        Mail::assertSent(AttendeeMessage::class, function($mail) {
+        Mail::assertSent(AttendeeMessageEmail::class, function($mail) {
             return $mail->hasTo('alex@example.com');
         });
-        Mail::assertSent(AttendeeMessage::class, function($mail) {
-            return $mail->hasTo('asam@example.com');
+        Mail::assertSent(AttendeeMessageEmail::class, function($mail) {
+            return $mail->hasTo('sam@example.com');
         });
-        Mail::assertSent(AttendeeMessage::class, function($mail) {
+        Mail::assertSent(AttendeeMessageEmail::class, function($mail) {
             return $mail->hasTo('taylor@example.com');
         });
     }
