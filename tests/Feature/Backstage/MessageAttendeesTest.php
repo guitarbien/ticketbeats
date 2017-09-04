@@ -78,7 +78,7 @@ class MessageAttendeesTest extends TestCase
         $this->assertEquals('My message', $message->message);
 
         Queue::assertPushed(SendAttendeeMessage::class, function($job) use($message) {
-            $job->attendeeMessage->is($message);
+            return $job->attendeeMessage->is($message);
         });
     }
 
