@@ -37,7 +37,7 @@ before_script:
   #- php artisan serve &
 
 script:
-  - gulp
+  - npm run prod
   - ./vendor/bin/phpunit -c phpunit.xml --exclude-group none --coverage-clover build/logs/clover.xml
   #- php artisan dusk
 
