@@ -27,9 +27,9 @@ class AttendeeMessage extends Model
         return $this->concert->orders();
     }
 
-    public function withRecipients(Closure $callback)
+    public function withChunkedRecipients(int $chunkSize, Closure $callback)
     {
-        $this->orders()->chunk(20, function(Collection $orders) use($callback) {
+        $this->orders()->chunk($chunkSize, function(Collection $orders) use($callback) {
             $callback($orders->pluck('email'));
         });
     }
