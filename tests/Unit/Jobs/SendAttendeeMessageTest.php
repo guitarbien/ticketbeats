@@ -3,6 +3,7 @@
 namespace Tests\Unit\Jobs;
 
 use ConcertFactory;
+use Illuminate\Mail\Mailable;
 use OrderFactory;
 use Tests\TestCase;
 use App\AttendeeMessage;
@@ -24,15 +25,16 @@ class SendAttendeeMessageTest extends TestCase
         $concert = ConcertFactory::createPublished();
         $message = AttendeeMessage::create([
             'concert_id' => $concert->id,
-            'subject' => 'My subject',
-            'message' => 'My message',
+            'subject'    => 'My subject',
+            'message'    => 'My message',
         ]);
 
-        // 這三個人都應該要收到 message
+        // 這三個購買人都應該要收到 message
         $orderA = OrderFactory::createForConcert($concert, ['email' => 'alex@example.com']);
         $orderB = OrderFactory::createForConcert($concert, ['email' => 'sam@example.com']);
         $orderC = OrderFactory::createForConcert($concert, ['email' => 'taylor@example.com']);
 
+        // 這個購買人不應該要收到 message
         $otherConcert = ConcertFactory::createPublished();
         $otherOrder = OrderFactory::createForConcert($otherConcert, ['email' => 'jane@example.com']);
 
@@ -41,16 +43,16 @@ class SendAttendeeMessageTest extends TestCase
         // 使用 dispatch() 相當於 handle()
         SendAttendeeMessage::dispatch($message);
 
-        Mail::assertSent(AttendeeMessageEmail::class, function($mail) use ($message) {
+        Mail::assertSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
             return $mail->hasTo('alex@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertSent(AttendeeMessageEmail::class, function($mail) use ($message) {
+        Mail::assertSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
             return $mail->hasTo('sam@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertSent(AttendeeMessageEmail::class, function($mail) use ($message) {
+        Mail::assertSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
             return $mail->hasTo('taylor@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertNotSent(AttendeeMessageEmail::class, function($mail) {
+        Mail::assertNotSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) {
             return $mail->hasTo('jane@example.com');
         });
     }
