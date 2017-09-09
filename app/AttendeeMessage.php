@@ -2,8 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
+
 
 /**
  * App\AttendeeMessage
@@ -19,8 +20,8 @@ class AttendeeMessage extends Model
         return $this->belongsTo(Concert::class);
     }
 
-    public function recipients(): Collection
+    public function orders(): Builder
     {
-        return $this->concert->orders()->pluck('email');
+        return $this->concert->orders();
     }
 }

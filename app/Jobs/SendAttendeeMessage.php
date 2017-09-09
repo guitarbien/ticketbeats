@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\AttendeeMessage;
 use App\Mail\AttendeeMessageEmail;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,8 +36,10 @@ class SendAttendeeMessage implements ShouldQueue
      */
     public function handle()
     {
-        $this->attendeeMessage->recipients()->each(function($recipient) {
-            Mail::to($recipient)->queue(new AttendeeMessageEmail($this->attendeeMessage));
+        $this->attendeeMessage->orders()->chunk(20, function(Collection $orders) {
+            $orders->each(function($recipient) {
+                Mail::to($recipient)->queue(new AttendeeMessageEmail($this->attendeeMessage));
+            });
         });
     }
 }
