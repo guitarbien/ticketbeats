@@ -5,11 +5,11 @@ namespace App\Jobs;
 use App\AttendeeMessage;
 use App\Mail\AttendeeMessageEmail;
 use Illuminate\Bus\Queueable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 
 class SendAttendeeMessage implements ShouldQueue
@@ -36,8 +36,8 @@ class SendAttendeeMessage implements ShouldQueue
      */
     public function handle()
     {
-        $this->attendeeMessage->orders()->chunk(20, function(Collection $orders) {
-            $orders->each(function($recipient) {
+        $this->attendeeMessage->withRecipients(function(Collection $recipients) {
+            $recipients->each(function($recipient) {
                 Mail::to($recipient)->queue(new AttendeeMessageEmail($this->attendeeMessage));
             });
         });

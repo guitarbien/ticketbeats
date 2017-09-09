@@ -2,8 +2,10 @@
 
 namespace App;
 
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 
 /**
@@ -24,4 +26,12 @@ class AttendeeMessage extends Model
     {
         return $this->concert->orders();
     }
+
+    public function withRecipients(Closure $callback)
+    {
+        $this->orders()->chunk(20, function(Collection $orders) use($callback) {
+            $callback($orders->pluck('email'));
+        });
+    }
+
 }
