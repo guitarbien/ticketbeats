@@ -36,23 +36,23 @@ class SendAttendeeMessageTest extends TestCase
 
         // 這個購買人不應該要收到 message
         $otherConcert = ConcertFactory::createPublished();
-        $otherOrder = OrderFactory::createForConcert($otherConcert, ['email' => 'jane@example.com']);
+        OrderFactory::createForConcert($otherConcert, ['email' => 'jane@example.com']);
 
         // $job = new SendAttendeeMessage($message);
         // $job->handle();
         // 使用 dispatch() 相當於 handle()
         SendAttendeeMessage::dispatch($message);
 
-        Mail::assertSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
+        Mail::assertQueued(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
             return $mail->hasTo('alex@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
+        Mail::assertQueued(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
             return $mail->hasTo('sam@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
+        Mail::assertQueued(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) use ($message) {
             return $mail->hasTo('taylor@example.com') && $mail->attendeeMessage->is($message);
         });
-        Mail::assertNotSent(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) {
+        Mail::assertNotQueued(AttendeeMessageEmail::class, function(AttendeeMessageEmail $mail) {
             return $mail->hasTo('jane@example.com');
         });
     }

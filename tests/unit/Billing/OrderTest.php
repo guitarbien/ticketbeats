@@ -46,13 +46,8 @@ class OrderTest extends TestCase
 
     public function test_用確認碼查詢不存在的訂單資訊拋出例外()
     {
-        try {
-            Order::findByConfirmationNumber('NONEXISTENTCONFIRMATIONNUMBER');
-        } catch (ModelNotFoundException $e) {
-            return;
-        }
-
-        $this->fail('No matching order was found for the specified confirmation number, but an exception was not thrown.');
+        $this->expectException(ModelNotFoundException::class);
+        Order::findByConfirmationNumber('NONEXISTENTCONFIRMATIONNUMBER');
     }
 
     public function test_轉換成array()
