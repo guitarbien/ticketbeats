@@ -36,6 +36,7 @@ class ConcertsController extends Controller
             'zip'             => ['required'],
             'ticket_price'    => ['required', 'numeric', 'min:5'],
             'ticket_quantity' => ['required', 'numeric', 'min:1'],
+            'poster_image'    => ['image'],
         ]);
 
         $concert = Auth::user()->concerts()->create([
