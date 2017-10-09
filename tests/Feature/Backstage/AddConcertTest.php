@@ -375,4 +375,19 @@ class AddConcertTest extends TestCase
             );
         });
     }
+
+    public function test_poster_image必須要是image()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::create('not-a-poster.pdf');
+
+        $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());
+    }
 }
