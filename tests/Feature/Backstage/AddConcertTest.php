@@ -361,7 +361,7 @@ class AddConcertTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
-            'post_image' => File::image('concert-poster.png'),
+            'poster_image' => File::image('concert-poster.png'),
         ]));
 
         // make sure there's a file in the public folder that matches the file that we uploaded
