@@ -6,7 +6,7 @@
         <h1 class="text-lg">Add a concert</h1>
     </div>
 </div>
-<form class="bg-soft p-xs-y-5" action="/backstage/concerts" method="POST">
+<form class="bg-soft p-xs-y-5" action="/backstage/concerts" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     @if ($errors->any())
@@ -47,7 +47,7 @@
                             </div>
                             <div class="form-group {{ $errors->first('additional_information', 'has-error') }}">
                                 <label class="form-label">Additional Information</label>
-                                <textarea name="additional_information" class="form-control" rows="4" placeholder="This concert is 19+ (optional)">{{ old('additional_information') }}</textarea>
+                                <textarea name="additional_information" class="form-control" rows="4" placeholder="This concert is 19 (optional)">{{ old('additional_information') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -171,6 +171,30 @@
             </div>
         </div>
     </div>
+        <div class="border-b p-xs-b-4 m-xs-b-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col col-lg-4">
+                        <div class="p-xs-y-4">
+                            <h2 class="text-base wt-medium m-xs-b-4">Concert Poster</h2>
+                            <p class="text-dark-soft text-sm">
+                            Have a sweet poster for this concert? Upload it here and it'll be included on the checkout page.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col col-lg-8">
+                        <div class="card">
+                            <div class="card-section">
+                                <div class="form-group {{ $errors->first('poster_image', 'has-error') }}">
+                                    <label class="form-label m-xs-b-2">Poster Image</label>
+                                    <input type="file" name="poster_image" class="form-control-file">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     <div class="container text-right">
         <button type="submit" class="btn btn-primary">Add Concert</button>
     </div>
