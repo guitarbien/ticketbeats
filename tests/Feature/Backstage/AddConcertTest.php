@@ -358,7 +358,7 @@ class AddConcertTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $file = File::image('concert-poster.png', 400);
+        $file = File::image('concert-poster.png', 850, 1100);
         $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
             'poster_image' => $file,
         ]));
@@ -395,7 +395,7 @@ class AddConcertTest extends TestCase
     {
         Storage::fake('s3');
         $user = factory(User::class)->create();
-        $file = File::image('poster.png', 399);
+        $file = File::image('poster.png', 399, 516);
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'poster_image' => $file,
