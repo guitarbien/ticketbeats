@@ -360,12 +360,19 @@ class AddConcertTest extends TestCase
 
         $user = factory(User::class)->create();
 
+        $file = File::image('concert-poster.png');
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
-            'poster_image' => File::image('concert-poster.png'),
+            'poster_image' => $file,
         ]));
 
         // make sure there's a file in the public folder that matches the file that we uploaded
         $this->assertNotNull(Concert::first()->poster_image_path);
         Storage::disk('s3')->assertExists(Concert::first()->poster_image_path);
+
+        // make sure the content of the two files are the same
+        $this->assertFileEquals(
+            $file->getPathname(),
+            Storage::disk('s3')->path(Concert::first()->poster_image_path)
+        );
     }
 }
