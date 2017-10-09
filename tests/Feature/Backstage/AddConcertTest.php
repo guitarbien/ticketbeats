@@ -354,25 +354,25 @@ class AddConcertTest extends TestCase
 
     public function test_如果有選擇圖檔的話可以上傳成功()
     {
-        $this->disableExceptionHandling();
-
         Storage::fake('s3');
 
         $user = factory(User::class)->create();
 
         $file = File::image('concert-poster.png');
-        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+        $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
             'poster_image' => $file,
         ]));
 
-        // make sure there's a file in the public folder that matches the file that we uploaded
-        $this->assertNotNull(Concert::first()->poster_image_path);
-        Storage::disk('s3')->assertExists(Concert::first()->poster_image_path);
+        tap(Concert::first(), function ($concert) use($file) {
+            // make sure there's a file in the public folder that matches the file that we uploaded
+            $this->assertNotNull($concert->poster_image_path);
+            Storage::disk('s3')->assertExists($concert->poster_image_path);
 
-        // make sure the content of the two files are the same
-        $this->assertFileEquals(
-            $file->getPathname(),
-            Storage::disk('s3')->path(Concert::first()->poster_image_path)
-        );
+            // make sure the content of the two files are the same
+            $this->assertFileEquals(
+                $file->getPathname(),
+                Storage::disk('s3')->path($concert->poster_image_path)
+            );
+        });
     }
 }
