@@ -420,4 +420,19 @@ class AddConcertTest extends TestCase
         $response->assertSessionHasErrors('poster_image');
         $this->assertEquals(0, Concert::count());
     }
+
+    public function test_poster_image為非必填()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'poster_image' => null,
+        ]));
+
+        tap(Concert::first(), function ($concert) use($response, $user) {
+            $response->assertRedirect('/backstage/concerts');
+            $this->assertTrue($concert->user->is($user));
+            $this->assertNull($concert->poster_image_path);
+        });
+    }
 }
