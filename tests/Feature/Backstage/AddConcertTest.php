@@ -6,6 +6,8 @@ use App\Concert;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Testing\File;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AddConcertTest extends TestCase
@@ -348,5 +350,22 @@ class AddConcertTest extends TestCase
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_quantity');
         $this->assertEquals(0, Concert::count());
+    }
+
+    public function test_如果有選擇圖檔的話可以上傳成功()
+    {
+        $this->disableExceptionHandling();
+
+        Storage::fake('s3');
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'post_image' => File::image('concert-poster.png'),
+        ]));
+
+        // make sure there's a file in the public folder that matches the file that we uploaded
+        $this->assertNotNull(Concert::first()->poster_image_path);
+        Storage::disk('s3')->assertExists(Concert::first()->poster_image_path);
     }
 }
