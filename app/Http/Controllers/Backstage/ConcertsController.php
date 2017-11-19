@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers\Backstage;
 
-use App\Concert;
 use App\NullFile;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
+/**
+ * Class ConcertsController
+ * @package App\Http\Controllers\Backstage
+ */
 class ConcertsController extends Controller
 {
+    /**
+     * list
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         return view('backstage.concerts.index', [
@@ -20,11 +26,19 @@ class ConcertsController extends Controller
         ]);
     }
 
+    /**
+     * show create form
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         return view('backstage.concerts.create');
     }
 
+    /**
+     * process store
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store()
     {
         $this->validate(request(), [
@@ -41,7 +55,7 @@ class ConcertsController extends Controller
             'poster_image'    => ['nullable', 'image', Rule::dimensions()->minWidth(400)->ratio(8.5/11)],
         ]);
 
-        $concert = Auth::user()->concerts()->create([
+        Auth::user()->concerts()->create([
             'title'                  => request('title'),
             'subtitle'               => request('subtitle'),
             'additional_information' => request('additional_information'),
@@ -62,8 +76,14 @@ class ConcertsController extends Controller
         return redirect()->route('backstage.concerts.index');
     }
 
+    /**
+     * show edit form
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit($id)
     {
+        /** @var \App\Concert $concert */
         $concert = Auth::user()->concerts()->findOrFail($id);
 
         abort_if($concert->isPublished(), 403);
@@ -73,6 +93,11 @@ class ConcertsController extends Controller
         ]);
     }
 
+    /**
+     * process update
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update($id)
     {
         $this->validate(request(), [
@@ -88,6 +113,7 @@ class ConcertsController extends Controller
             'ticket_quantity'  => ['required', 'integer', 'min:1'],
         ]);
 
+        /** @var \App\Concert $concert */
         $concert = Auth::user()->concerts()->findOrFail($id);
 
         abort_if($concert->isPublished(), 403);

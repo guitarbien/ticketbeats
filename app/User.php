@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Concert;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -47,6 +46,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+     * relation with concert
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function concerts()
     {
         return $this->hasMany(Concert::class);

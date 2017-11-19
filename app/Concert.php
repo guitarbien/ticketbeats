@@ -54,11 +54,19 @@ class Concert extends Model
     protected $guarded = [];
     protected $dates   = ['date'];
 
+    /**
+     * relation with user
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * relation with attendeeMessages
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function attendeeMessages()
     {
         return $this->hasMany(AttendeeMessage::class);
@@ -72,6 +80,9 @@ class Concert extends Model
         return $query->whereNotNull('published_at');
     }
 
+    /**
+     * @return bool
+     */
     public function isPublished()
     {
         return $this->published_at !== null;
