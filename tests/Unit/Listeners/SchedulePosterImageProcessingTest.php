@@ -3,6 +3,7 @@
 namespace Tests\Unit\Listeners;
 
 use App\Events\ConcertAdded;
+use App\Jobs\ProcessPosterImage;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
