@@ -5,6 +5,7 @@ namespace App;
 use App\Exceptions\NotEnoughTicketsException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Concert
@@ -186,5 +187,15 @@ class Concert extends Model
     public function revenueInDollars()
     {
         return $this->orders()->sum('amount') / 100;
+    }
+
+    public function hasPoster()
+    {
+        return $this->post_image_path !== null;
+    }
+
+    public function posterUrl()
+    {
+        return Storage::disk('public')->url($this->poster_image_path);
     }
 }
