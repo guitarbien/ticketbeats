@@ -354,7 +354,7 @@ class AddConcertTest extends TestCase
 
     public function test_如果有選擇圖檔的話可以上傳成功()
     {
-        Storage::fake('s3');
+        Storage::fake('public');
 
         $user = factory(User::class)->create();
 
@@ -366,19 +366,19 @@ class AddConcertTest extends TestCase
         tap(Concert::first(), function ($concert) use($file) {
             // make sure there's a file in the public folder that matches the file that we uploaded
             $this->assertNotNull($concert->poster_image_path);
-            Storage::disk('s3')->assertExists($concert->poster_image_path);
+            Storage::disk('public')->assertExists($concert->poster_image_path);
 
             // make sure the content of the two files are the same
             $this->assertFileEquals(
                 $file->getPathname(),
-                Storage::disk('s3')->path($concert->poster_image_path)
+                Storage::disk('public')->path($concert->poster_image_path)
             );
         });
     }
 
     public function test_poster_image必須要是image()
     {
-        Storage::fake('s3');
+        Storage::fake('public');
         $user = factory(User::class)->create();
         $file = File::create('not-a-poster.pdf');
 
@@ -393,7 +393,7 @@ class AddConcertTest extends TestCase
 
     public function test_poster_image寬度必須大於400px()
     {
-        Storage::fake('s3');
+        Storage::fake('public');
         $user = factory(User::class)->create();
         $file = File::image('poster.png', 399, 516);
 
@@ -408,7 +408,7 @@ class AddConcertTest extends TestCase
 
     public function test_poster_image要符合某個長寬比例()
     {
-        Storage::fake('s3');
+        Storage::fake('public');
         $user = factory(User::class)->create();
         $file = File::image('poster.png', 851, 1100);
 
