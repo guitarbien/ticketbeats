@@ -23,6 +23,8 @@ class SchedulePosterImageProcessingTest extends TestCase
         // It will push a job (ProcessPosterImage) to a queue when dispatch an event
         ConcertAdded::dispatch($concert);
 
-        Queue::assertPushed(ProcessPosterImage::class);
+        Queue::assertPushed(ProcessPosterImage::class, function($job) use($concert) {
+            return $job->concert->is($concert);
+        });
     }
 }
