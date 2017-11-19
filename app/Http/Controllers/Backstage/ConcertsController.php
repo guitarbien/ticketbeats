@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backstage;
 
+use App\Events\ConcertAdded;
 use App\NullFile;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;

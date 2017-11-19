@@ -3,6 +3,7 @@
 namespace Tests\Feature\Backstage;
 
 use App\Concert;
+use App\Events\ConcertAdded;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
