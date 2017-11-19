@@ -449,6 +449,10 @@ class AddConcertTest extends TestCase
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams());
 
         // assert that a concertAdded event was dispatched
-        Event::assertDispatched(ConcertAdded::class);
+        Event::assertDispatched(ConcertAdded::class, function ($event) {
+            // 使用 firstOrFail() 確保找不到會 exception
+            $concert = Concert::firstOrFail();
+            return $event->concert->is($concert);
+        });
     }
 }
