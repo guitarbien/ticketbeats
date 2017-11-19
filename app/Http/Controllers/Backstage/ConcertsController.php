@@ -56,7 +56,7 @@ class ConcertsController extends Controller
             'poster_image'    => ['nullable', 'image', Rule::dimensions()->minWidth(600)->ratio(8.5/11)],
         ]);
 
-        Auth::user()->concerts()->create([
+        $concert = Auth::user()->concerts()->create([
             'title'                  => request('title'),
             'subtitle'               => request('subtitle'),
             'additional_information' => request('additional_information'),
@@ -75,7 +75,7 @@ class ConcertsController extends Controller
         ]);
 
         // Queue a job to process the poster image
-        ConcertAdded::dispatch();
+        ConcertAdded::dispatch($concert);
 
         return redirect()->route('backstage.concerts.index');
     }
