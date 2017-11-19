@@ -439,6 +439,8 @@ class AddConcertTest extends TestCase
 
     public function test_新增concert時會發送一個event()
     {
+        $this->disableExceptionHandling();
+
         Event::fake([ConcertAdded::class]);
 
         $user = factory(User::class)->create();

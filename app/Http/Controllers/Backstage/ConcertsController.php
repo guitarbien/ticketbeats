@@ -74,6 +74,7 @@ class ConcertsController extends Controller
         ]);
 
         // Queue a job to process the poster image
+        ConcertAdded::dispatch();
 
         return redirect()->route('backstage.concerts.index');
     }
