@@ -73,6 +73,8 @@ class ConcertsController extends Controller
             'poster_image_path'      => request('poster_image', new NullFile)->store('posters', 'public'),
         ]);
 
+        // Queue a job to process the poster image
+
         return redirect()->route('backstage.concerts.index');
     }
 

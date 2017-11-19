@@ -7,6 +7,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Http\Testing\File;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
@@ -434,5 +435,17 @@ class AddConcertTest extends TestCase
             $this->assertTrue($concert->user->is($user));
             $this->assertNull($concert->poster_image_path);
         });
+    }
+
+    public function test_新增concert時會發送一個event()
+    {
+        Event::fake([ConcertAdded::class]);
+
+        $user = factory(User::class)->create();
+
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams());
+
+        // assert that a concertAdded event was dispatched
+        Event::assertDispatched(ConcertAdded::class);
     }
 }
