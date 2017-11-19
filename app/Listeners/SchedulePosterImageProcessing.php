@@ -9,6 +9,9 @@ class SchedulePosterImageProcessing
 {
     public function handle(ConcertAdded $event)
     {
-        ProcessPosterImage::dispatch($event->concert);
+        if ($event->concert->hasPoster())
+        {
+            ProcessPosterImage::dispatch($event->concert);
+        }
     }
 }
