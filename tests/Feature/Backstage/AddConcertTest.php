@@ -391,11 +391,11 @@ class AddConcertTest extends TestCase
         $this->assertEquals(0, Concert::count());
     }
 
-    public function test_poster_image寬度必須大於400px()
+    public function test_poster_image寬度必須大於600px()
     {
         Storage::fake('public');
         $user = factory(User::class)->create();
-        $file = File::image('poster.png', 399, 516);
+        $file = File::image('poster.png', 599, 775);
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'poster_image' => $file,
