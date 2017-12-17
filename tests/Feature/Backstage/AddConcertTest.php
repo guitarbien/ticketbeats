@@ -356,6 +356,7 @@ class AddConcertTest extends TestCase
 
     public function test_如果有選擇圖檔的話可以上傳成功()
     {
+        Event::fake([ConcertAdded::class]);
         Storage::fake('public');
 
         $user = factory(User::class)->create();
