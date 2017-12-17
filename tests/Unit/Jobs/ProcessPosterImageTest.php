@@ -37,4 +37,24 @@ class ProcessPosterImageTest extends TestCase
         // 600/(8.5/11) = 776
         $this->assertEquals(776, $height);
     }
+
+    public function test_優化圖片大小()
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put(
+            'posters/example-poster.png',
+            file_get_contents(base_path('tests/__fixtures__/small-unoptimized-poster.png'))
+        );
+
+        $concert = ConcertFactory::createUnpublished([
+            'poster_image_path' => 'posters/example-poster.png',
+        ]);
+
+        ProcessPosterImage::dispatch($concert);
+
+        $optimizedImageSize = Storage::disk('public')->size('posters/example-poster.png');
+        $originalSize = filesize(base_path('tests/__fixtures__/small-unoptimized-poster.png'));
+        $this->assertLessThan($originalSize, $optimizedImageSize);
+
+    }
 }
