@@ -60,7 +60,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_使用者可以購票()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
@@ -141,7 +141,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_票券若是在嘗試購買中則不能再被購買()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $concert = ConcertFactory::createPublished(['ticket_price' => 1200, 'ticket_quantity' => 3]);
 

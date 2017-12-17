@@ -53,7 +53,7 @@ class AddConcertTest extends TestCase
 
     public function test_管理者可以加入一個合法的音樂會()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
 
@@ -120,7 +120,7 @@ class AddConcertTest extends TestCase
 
     public function test_subtitle欄位為非必填()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
 
@@ -141,7 +141,7 @@ class AddConcertTest extends TestCase
 
     public function test_additional_information欄位為非必填()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
 
@@ -440,7 +440,7 @@ class AddConcertTest extends TestCase
 
     public function test_新增concert時會發送一個event()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         Event::fake([ConcertAdded::class]);
 

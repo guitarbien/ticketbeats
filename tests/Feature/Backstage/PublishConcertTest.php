@@ -14,7 +14,7 @@ class PublishConcertTest extends TestCase
 
     public function test_管理者可以發佈自己的音樂會()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
         $concert = factory(Concert::class)->states('unpublished')->create([

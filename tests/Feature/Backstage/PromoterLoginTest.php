@@ -13,7 +13,7 @@ class PromoterLoginTest extends TestCase
 
     public function test_以合法資訊登入()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create([
             'email'    => 'jane@example.com',
@@ -32,7 +32,7 @@ class PromoterLoginTest extends TestCase
 
     public function test_以不合法資訊登入()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create([
             'email'    => 'jane@example.com',
@@ -53,7 +53,7 @@ class PromoterLoginTest extends TestCase
 
     public function test_以不存在的帳號登入()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $response = $this->post('/login', [
             'email'    => 'xxxx@example.com',

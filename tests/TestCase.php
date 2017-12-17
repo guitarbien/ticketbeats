@@ -29,10 +29,6 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
             return $this->original->getData()[$key];
         });
 
-        TestResponse::macro('assertViewIs', function ($name) {
-           Assert::assertEquals($name, $this->original->name());
-        });
-
         EloquentCollection::macro('assertContains', function($value) {
             Assert::AssertTrue($this->contains($value), "Failed asserting that the collection contained the specified value.");
         });
@@ -49,16 +45,5 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
                 Assert::assertTrue($a->is($b));
             });
         });
-    }
-
-    protected function disableExceptionHandling()
-    {
-        $this->app->instance(ExceptionHandler::class, new DisableExceptionHandler);
-    }
-
-    protected function from($url)
-    {
-        session()->setPreviousUrl($url);
-        return $this;
     }
 }

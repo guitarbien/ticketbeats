@@ -17,7 +17,7 @@ class MessageAttendeesTest extends TestCase
 
     public function test_管理者可以看到自己的音樂會訊息()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
         $concert = ConcertFactory::createPublished([
@@ -52,7 +52,7 @@ class MessageAttendeesTest extends TestCase
 
     public function test_管理者可以發送訊息給所有參加者()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         Queue::fake();
 

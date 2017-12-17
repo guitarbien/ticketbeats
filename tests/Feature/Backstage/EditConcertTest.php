@@ -47,7 +47,7 @@ class EditConcertTest extends TestCase
 
     public function test_管理者可以看到自己還沒發佈的音樂會修改頁()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
         $concert = factory(Concert::class)->create(['user_id' => $user->id]);
@@ -106,7 +106,7 @@ class EditConcertTest extends TestCase
 
     public function test_管理者可以編輯自己尚未發布的音樂會()
     {
-        $this->disableExceptionHandling();
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
 
         $concert = factory(Concert::class)->create([
@@ -253,7 +253,7 @@ class EditConcertTest extends TestCase
     }
 
     public function test_additional_information欄位為非必填()
-    {$this->disableExceptionHandling();
+    {$this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $concert = factory(Concert::class)->create([
             'user_id' => $user->id,
