@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Invitation;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -45,5 +46,28 @@ class AcceptInvitationTest extends TestCase
         $response = $this->get('/invitations/TESTCODE1234');
 
         $response->assertStatus(404);
+    }
+
+    public function test_使用合格的邀請碼註冊成功()
+    {
+        $invitation = factory(Invitation::class)->create([
+            'user_id' => null,
+            'code'    => 'TESTCODE1234',
+        ]);
+
+        $response = $this->post('/register', [
+            'email'           => 'john@example.com',
+            'password'        => 'secret',
+            'invitation_code' => 'TESTCODE1234',
+        ]);
+
+        $response->assertRedirect('/backstage/concerts');
+
+        $this->assertEquals(1, User::count());
+
+        $user = User::first();
+        $this->assertEquals('john@example.com', $user->email);
+        $this->assertTrue(Hash::check('secret', $user->password));
+        $this->assertTrue($invitation->fresh()->user->is($user));
     }
 }
