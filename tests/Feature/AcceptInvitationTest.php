@@ -112,7 +112,7 @@ class AcceptInvitationTest extends TestCase
             'code'    => 'TESTCODE1234',
         ]);
 
-        $response = $this->post('/register', [
+        $response = $this->from('/invitations/TESTCODE1234')->post('/register', [
             'email'           => '',
             'password'        => 'secret',
             'invitation_code' => 'TESTCODE1234',
