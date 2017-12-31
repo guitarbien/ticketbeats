@@ -92,4 +92,16 @@ class AcceptInvitationTest extends TestCase
         $response->assertStatus(404);
         $this->assertEquals(1, User::count());
     }
+
+    public function test_使用不存在的邀請碼會得到404()
+    {
+        $response = $this->post('/register', [
+            'email'           => 'john@example.com',
+            'password'        => 'secret',
+            'invitation_code' => 'TESTCODE1234',
+        ]);
+
+        $response->assertStatus(404);
+        $this->assertEquals(0, User::count());
+    }
 }
