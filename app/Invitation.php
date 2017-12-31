@@ -10,4 +10,9 @@ class Invitation extends Model
     {
         return self::where('code', $code)->first();
     }
+
+    public function hasBeenUsed()
+    {
+        return $this->user_id !== null;
+    }
 }
