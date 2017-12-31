@@ -15,7 +15,7 @@ class RegisterController extends Controller
     {
         $user = User::create([
             'email'    => request('email'),
-            'password' => request('password'),
+            'password' => bcrypt(request('password')),
         ]);
 
         return redirect()->route('backstage.concerts.index');
