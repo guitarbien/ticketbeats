@@ -11,6 +11,10 @@ class InvitationsController extends Controller
     {
         $invitation = Invitation::findByCode($code);
 
+        if ($invitation->hasBeenUsed()) {
+            abort(404);
+        }
+
         return view('invitations.show', [
             'invitation' => $invitation,
         ]);
