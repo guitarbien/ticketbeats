@@ -22,6 +22,9 @@ class Invitation extends Model
         return self::where('code', $code)->firstOrFail();
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

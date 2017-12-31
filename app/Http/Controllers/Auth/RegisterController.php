@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Auth;
  */
 class RegisterController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function register()
     {
         $invitation = Invitation::findByCode(request('invitation_code'));
