@@ -81,6 +81,8 @@ class AcceptInvitationTest extends TestCase
             'code'    => 'TESTCODE1234',
         ]);
 
+        $this->assertEquals(1, User::count());
+
         $response = $this->post('/register', [
             'email'           => 'john@example.com',
             'password'        => 'secret',
@@ -88,6 +90,6 @@ class AcceptInvitationTest extends TestCase
         ]);
 
         $response->assertStatus(404);
-        $this->assertEquals(0, User::count());
+        $this->assertEquals(1, User::count());
     }
 }
