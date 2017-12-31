@@ -29,9 +29,7 @@ class AcceptInvitationTest extends TestCase
 
     public function test_查看一個已使用的邀請碼會得到404()
     {
-        $this->withoutExceptionHandling();
-
-        $invitation = factory(Invitation::class)->create([
+        factory(Invitation::class)->create([
             'user_id' => factory(User::class)->create(),
             'code' => 'TESTCODE1234',
         ]);
