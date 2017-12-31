@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Invitation
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Invitation extends Model
 {
+    protected $guarded = [];
+
     /**
      * @param string $code
      * @return mixed
@@ -17,6 +20,11 @@ class Invitation extends Model
     public static function findByCode(string $code): Invitation
     {
         return self::where('code', $code)->firstOrFail();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
