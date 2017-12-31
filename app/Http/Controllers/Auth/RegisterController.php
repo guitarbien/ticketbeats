@@ -22,7 +22,8 @@ class RegisterController extends Controller
         abort_if($invitation->hasBeenUsed(), 404);
 
         request()->validate([
-            'email' => ['required', 'email', 'unique:users'],
+            'email'    => ['required', 'email', 'unique:users'],
+            'password' => ['required'],
         ]);
 
         $user = User::create([
