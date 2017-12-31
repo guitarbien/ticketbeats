@@ -12,6 +12,6 @@ class RegisterController extends Controller
 {
     public function register()
     {
-        
+        return redirect()->route('backstage.concerts.index');
     }
 }
