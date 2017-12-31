@@ -13,6 +13,8 @@ class AcceptInvitationTest extends TestCase
 
     public function test_看到一個尚未使用的邀請()
     {
+        $this->withoutExceptionHandling();
+
         $invitation = factory(Invitation::class)->create([
             'code' => 'TESTCODE1234',
         ]);
