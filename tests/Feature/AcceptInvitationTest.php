@@ -73,4 +73,21 @@ class AcceptInvitationTest extends TestCase
         $this->assertTrue(Hash::check('secret', $user->password));
         $this->assertTrue($invitation->fresh()->user->is($user));
     }
+
+    public function test_使用已註冊過的邀請碼會得到404()
+    {
+        factory(Invitation::class)->create([
+            'user_id' => factory(User::class)->create(),
+            'code'    => 'TESTCODE1234',
+        ]);
+
+        $response = $this->post('/register', [
+            'email'           => 'john@example.com',
+            'password'        => 'secret',
+            'invitation_code' => 'TESTCODE1234',
+        ]);
+
+        $response->assertStatus(404);
+        $this->assertEquals(0, User::count());
+    }
 }
