@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\User;
 use Tests\TestCase;
 use App\Invitation;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -24,5 +25,19 @@ class AcceptInvitationTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('invitations.show');
         $this->assertTrue($response->data('invitation')->is($invitation));
+    }
+
+    public function test_查看一個已使用的邀請碼會得到404()
+    {
+        $this->withoutExceptionHandling();
+
+        $invitation = factory(Invitation::class)->create([
+            'user_id' => factory(User::class)->create(),
+            'code' => 'TESTCODE1234',
+        ]);
+
+        $response = $this->get('/invitations/TESTCODE1234');
+
+        $response->assertStatus(404);
     }
 }
