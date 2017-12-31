@@ -17,6 +17,7 @@ class AcceptInvitationTest extends TestCase
         $this->withoutExceptionHandling();
 
         $invitation = factory(Invitation::class)->create([
+            'user_id' => null,
             'code' => 'TESTCODE1234',
         ]);
 
