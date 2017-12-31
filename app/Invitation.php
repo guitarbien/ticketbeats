@@ -4,14 +4,25 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Invitation
+ * @package App
+ */
 class Invitation extends Model
 {
-    public static function findByCode(string $code)
+    /**
+     * @param string $code
+     * @return mixed
+     */
+    public static function findByCode(string $code): Invitation
     {
         return self::where('code', $code)->firstOrFail();
     }
 
-    public function hasBeenUsed()
+    /**
+     * @return bool
+     */
+    public function hasBeenUsed(): bool
     {
         return $this->user_id !== null;
     }

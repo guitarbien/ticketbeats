@@ -18,7 +18,7 @@ class AcceptInvitationTest extends TestCase
 
         $invitation = factory(Invitation::class)->create([
             'user_id' => null,
-            'code' => 'TESTCODE1234',
+            'code'    => 'TESTCODE1234',
         ]);
 
         $response = $this->get('/invitations/TESTCODE1234');
@@ -32,7 +32,7 @@ class AcceptInvitationTest extends TestCase
     {
         factory(Invitation::class)->create([
             'user_id' => factory(User::class)->create(),
-            'code' => 'TESTCODE1234',
+            'code'    => 'TESTCODE1234',
         ]);
 
         $response = $this->get('/invitations/TESTCODE1234');
