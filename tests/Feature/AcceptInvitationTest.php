@@ -3,11 +3,14 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Invitation;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AcceptInvitationTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_看到一個尚未使用的邀請()
     {
         $invitation = factory(Invitation::class)->create([
