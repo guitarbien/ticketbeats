@@ -39,4 +39,13 @@ class AcceptInvitationTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function test_查看一個不存在的邀請碼會得到404()
+    {
+        $this->withoutExceptionHandling();
+
+        $response = $this->get('/invitations/TESTCODE1234');
+
+        $response->assertStatus(404);
+    }
 }
