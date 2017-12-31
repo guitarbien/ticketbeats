@@ -140,4 +140,25 @@ class AcceptInvitationTest extends TestCase
         $response->assertSessionHasErrors('email');
         $this->assertEquals(0, User::count());
     }
+
+    public function test_email必須為唯一值()
+    {
+        factory(User::class)->create(['email' => 'john@example.com']);
+        $this->assertEquals(1, User::count());
+
+        factory(Invitation::class)->create([
+            'user_id' => null,
+            'code'    => 'TESTCODE1234',
+        ]);
+
+        $response = $this->from('/invitations/TESTCODE1234')->post('/register', [
+            'email'           => 'john@example.com',
+            'password'        => 'secret',
+            'invitation_code' => 'TESTCODE1234',
+        ]);
+
+        $response->assertRedirect('/invitations/TESTCODE1234');
+        $response->assertSessionHasErrors('email');
+        $this->assertEquals(1, User::count());
+    }
 }
