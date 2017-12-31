@@ -50,6 +50,8 @@ class AcceptInvitationTest extends TestCase
 
     public function test_使用合格的邀請碼註冊成功()
     {
+        $this->withoutExceptionHandling();
+
         $invitation = factory(Invitation::class)->create([
             'user_id' => null,
             'code'    => 'TESTCODE1234',
