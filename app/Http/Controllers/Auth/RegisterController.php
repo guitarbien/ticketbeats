@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Invitation;
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class RegisterController
@@ -24,6 +25,8 @@ class RegisterController extends Controller
         $invitation->update([
             'user_id' => $user->id,
         ]);
+
+        Auth::login($user);
 
         return redirect()->route('backstage.concerts.index');
     }

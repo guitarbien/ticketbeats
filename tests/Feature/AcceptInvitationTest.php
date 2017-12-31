@@ -68,6 +68,7 @@ class AcceptInvitationTest extends TestCase
         $this->assertEquals(1, User::count());
 
         $user = User::first();
+        $this->assertAuthenticatedAs($user);
         $this->assertEquals('john@example.com', $user->email);
         $this->assertTrue(Hash::check('secret', $user->password));
         $this->assertTrue($invitation->fresh()->user->is($user));
