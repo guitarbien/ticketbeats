@@ -104,4 +104,22 @@ class AcceptInvitationTest extends TestCase
         $response->assertStatus(404);
         $this->assertEquals(0, User::count());
     }
+
+    public function test_email為必填()
+    {
+        factory(Invitation::class)->create([
+            'user_id' => null,
+            'code'    => 'TESTCODE1234',
+        ]);
+
+        $response = $this->post('/register', [
+            'email'           => '',
+            'password'        => 'secret',
+            'invitation_code' => 'TESTCODE1234',
+        ]);
+
+        $response->assertRedirect('/invitations/TESTCODE1234');
+        $response->assertSessionHasErrors('email');
+        $this->assertEquals(0, User::count());
+    }
 }
