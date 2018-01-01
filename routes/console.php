@@ -2,6 +2,7 @@
 
 use App\Facades\InvitationCode;
 use App\Invitation;
+use App\Mail\InvitationEmail;
 use Illuminate\Foundation\Inspiring;
 
 /*

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Invitation;
 use App\Facades\InvitationCode;
+use App\Mail\InvitationEmail;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
