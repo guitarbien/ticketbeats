@@ -13,6 +13,6 @@ use Illuminate\Foundation\Inspiring;
 |
 */
 
-Artisan::command('invite-promoter', function () {
+Artisan::command('invite-promoter {email}', function ($email) {
     $this->comment(Inspiring::quote());
 })->describe('Invite a new promoter to create an account');
