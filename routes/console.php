@@ -17,6 +17,7 @@ use Illuminate\Foundation\Inspiring;
 
 Artisan::command('invite-promoter {email}', function ($email) {
     $invitation = Invitation::create([
-        'code' => InvitationCode::generate(),
+        'email' => $email,
+        'code'  => InvitationCode::generate(),
     ]);
 })->describe('Invite a new promoter to create an account');
