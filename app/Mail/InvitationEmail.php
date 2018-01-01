@@ -34,6 +34,7 @@ class InvitationEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.invitation-email');
+        return $this->view('emails.invitation-email')
+                    ->subject("You're invited to join TicketBeast!");
     }
 }
