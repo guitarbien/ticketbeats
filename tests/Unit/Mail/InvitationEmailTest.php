@@ -22,4 +22,13 @@ class InvitationEmailTest extends TestCase
 
         $this->assertContains(url('/invitations/TESTCODE1234'), $email->render());
     }
+
+    public function test_email主旨正確()
+    {
+        $invitation = factory(Invitation::class)->make();
+
+        $email = new InvitationEmail($invitation);
+
+        $this->assertEquals("You're invited to join TicketBeast!", $email->build()->subject);
+    }
 }
