@@ -20,4 +20,6 @@ Artisan::command('invite-promoter {email}', function ($email) {
         'email' => $email,
         'code'  => InvitationCode::generate(),
     ]);
+
+    Mail::to($email)->send(new InvitationEmail);
 })->describe('Invite a new promoter to create an account');
