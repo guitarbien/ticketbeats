@@ -80,5 +80,7 @@ $factory->define(App\Order::class, function(Faker\Generator $faker) {
 
 $factory->define(App\Invitation::class, function(Faker\Generator $faker) {
     return [
+        'email' => 'somebody@example.com',
+        'code'  => 'TESTCODE1234',
     ];
 });
