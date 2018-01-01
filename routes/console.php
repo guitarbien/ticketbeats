@@ -1,5 +1,6 @@
 <?php
 
+use App\Invitation;
 use Illuminate\Foundation\Inspiring;
 
 /*
@@ -14,5 +15,5 @@ use Illuminate\Foundation\Inspiring;
 */
 
 Artisan::command('invite-promoter {email}', function ($email) {
-    $this->comment(Inspiring::quote());
+    $invitation = Invitation::create();
 })->describe('Invite a new promoter to create an account');
