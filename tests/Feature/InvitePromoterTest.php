@@ -10,6 +10,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class InvitePromoterTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_使用cli邀請promoter()
     {
         InvitationCode::shouldReceive('generate')->andReturn('TESTCODE1234');
