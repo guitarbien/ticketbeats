@@ -43,7 +43,7 @@ script:
   #- php artisan dusk
 
 after_success:
-  - travis_retry php vendor/bin/coveralls
+  - travis_retry php vendor/bin/php-coveralls
 
 notifications:
   email: false
