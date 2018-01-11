@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "43afeb36e3ec6495661f61837657bffa",
+    "content-hash": "a942d4e1e030e3950f24b72935ebc57e",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -4104,16 +4104,16 @@
         },
         {
             "name": "satooshi/php-coveralls",
-            "version": "dev-master",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-coveralls/php-coveralls.git",
-                "reference": "a9c356100c095e07b004d32942c9ff5731459b49"
+                "reference": "3eaf7eb689cdf6b86801a3843940d974dc657068"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-coveralls/php-coveralls/zipball/a9c356100c095e07b004d32942c9ff5731459b49",
-                "reference": "a9c356100c095e07b004d32942c9ff5731459b49",
+                "url": "https://api.github.com/repos/php-coveralls/php-coveralls/zipball/3eaf7eb689cdf6b86801a3843940d974dc657068",
+                "reference": "3eaf7eb689cdf6b86801a3843940d974dc657068",
                 "shasum": ""
             },
             "require": {
@@ -4134,7 +4134,7 @@
                 "symfony/http-kernel": "Allows Symfony integration"
             },
             "bin": [
-                "bin/coveralls"
+                "bin/php-coveralls"
             ],
             "type": "library",
             "extra": {
@@ -4183,7 +4183,7 @@
                 "github",
                 "test"
             ],
-            "time": "2017-12-08T13:59:48+00:00"
+            "time": "2017-12-08T14:28:16+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -5166,8 +5166,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "mockery/mockery": 15,
-        "satooshi/php-coveralls": 20
+        "mockery/mockery": 15
     },
     "prefer-stable": false,
     "prefer-lowest": false,
