@@ -3,7 +3,7 @@ namespace PHPSTORM_META {
 
    /**
     * PhpStorm Meta file, to provide autocomplete information for PhpStorm
-    * Generated on 2017-12-17.
+    * Generated on 2018-01-11.
     *
     * @author Barry vd. Heuvel <barryvdh@gmail.com>
     * @see https://github.com/barryvdh/laravel-ide-helper
@@ -48,6 +48,7 @@ namespace PHPSTORM_META {
         'App\HashidsTicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'App\Billing\PaymentGateway' => \App\Billing\StripePaymentGateway::class,
         'App\OrderConfirmationNumberGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
+        'App\InvitationCodeGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
         'App\TicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -183,6 +184,7 @@ namespace PHPSTORM_META {
         'App\HashidsTicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'App\Billing\PaymentGateway' => \App\Billing\StripePaymentGateway::class,
         'App\OrderConfirmationNumberGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
+        'App\InvitationCodeGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
         'App\TicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -318,6 +320,7 @@ namespace PHPSTORM_META {
         'App\HashidsTicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'App\Billing\PaymentGateway' => \App\Billing\StripePaymentGateway::class,
         'App\OrderConfirmationNumberGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
+        'App\InvitationCodeGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
         'App\TicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -453,6 +456,7 @@ namespace PHPSTORM_META {
         'App\HashidsTicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'App\Billing\PaymentGateway' => \App\Billing\StripePaymentGateway::class,
         'App\OrderConfirmationNumberGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
+        'App\InvitationCodeGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
         'App\TicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -588,6 +592,7 @@ namespace PHPSTORM_META {
         'App\HashidsTicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'App\Billing\PaymentGateway' => \App\Billing\StripePaymentGateway::class,
         'App\OrderConfirmationNumberGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
+        'App\InvitationCodeGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
         'App\TicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -723,6 +728,7 @@ namespace PHPSTORM_META {
         'App\HashidsTicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'App\Billing\PaymentGateway' => \App\Billing\StripePaymentGateway::class,
         'App\OrderConfirmationNumberGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
+        'App\InvitationCodeGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
         'App\TicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
@@ -858,6 +864,7 @@ namespace PHPSTORM_META {
         'App\HashidsTicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'App\Billing\PaymentGateway' => \App\Billing\StripePaymentGateway::class,
         'App\OrderConfirmationNumberGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
+        'App\InvitationCodeGenerator' => \App\RandomOrderConfirmationNumberGenerator::class,
         'App\TicketCodeGenerator' => \App\HashidsTicketCodeGenerator::class,
         'blade.compiler' => \Illuminate\View\Compilers\BladeCompiler::class,
         'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
