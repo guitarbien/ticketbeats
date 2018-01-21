@@ -7,6 +7,10 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
+/**
+ * Class PromoterLoginTest
+ * @package Tests\Browser
+ */
 class PromoterLoginTest extends DuskTestCase
 {
     use DatabaseMigrations;
@@ -15,10 +19,12 @@ class PromoterLoginTest extends DuskTestCase
      * A basic browser test example.
      *
      * @return void
+     * @throws \Exception
+     * @throws \Throwable
      */
     public function test_登入成功()
     {
-        $user = factory(User::class)->create([
+        factory(User::class)->create([
             'email'    => 'jane@example.com',
             'password' => bcrypt('super-secret-password'),
         ]);
@@ -36,10 +42,12 @@ class PromoterLoginTest extends DuskTestCase
      * A basic browser test example.
      *
      * @return void
+     * @throws \Exception
+     * @throws \Throwable
      */
     public function test_登入失敗()
     {
-        $user = factory(User::class)->create([
+        factory(User::class)->create([
             'email'    => 'jane@example.com',
             'password' => bcrypt('super-secret-password'),
         ]);
