@@ -25,12 +25,13 @@ before_install:
   - nvm use 6.9.4
 
 install:
-  - composer install --prefer-dist --optimize-autoloader --quiet
+  #- composer install --prefer-dist --optimize-autoloader --quiet
+  - composer update
   - npm install
 
 before_script:
-  - cp .env.example .env
-  - php artisan key:generate
+  #- cp .env.example .env
+  #- php artisan key:generate
   # for dusk testing
   #- export DISPLAY=:99.0
   #- sh -e /etc/init.d/xvfb start
