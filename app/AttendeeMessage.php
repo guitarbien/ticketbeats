@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-
 /**
- * App\AttendeeMessage
- *
- * @mixin \Eloquent
+ * Class AttendeeMessage
+ * @package App
  */
 class AttendeeMessage extends Model
 {
