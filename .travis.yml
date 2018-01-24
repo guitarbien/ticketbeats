@@ -49,7 +49,7 @@ script:
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
-  - ./cc-test-reporter upload-coverage
+  - ./cc-test-reporter after-build
 
 notifications:
   email: false
