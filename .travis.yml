@@ -6,11 +6,11 @@ php:
   - 7.2
   #- nightly
 
-sudo: required
-dist: trusty
+#sudo: required
+#dist: trusty
 
-addons:
-  chrome: stable
+#addons:
+#  chrome: stable
 
 cache:
   directories:
@@ -35,12 +35,8 @@ before_script:
   - composer run-script post-root-package-install
   - composer run-script post-create-project-cmd
   # for dusk testing
-  #- export DISPLAY=:99.0
-  #- sh -e /etc/init.d/xvfb start
-  #- ./vendor/laravel/dusk/bin/chromedriver-linux &
+  #- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   #- php artisan serve &
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-  - php artisan serve &
 
 script:
   - npm run prod
