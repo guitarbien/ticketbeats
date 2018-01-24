@@ -37,14 +37,19 @@ before_script:
   # for dusk testing
   #- google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   #- php artisan serve &
+  # for codeclimate
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 
 script:
   - npm run prod
   - ./vendor/bin/phpunit -c phpunit.xml --exclude-group none --coverage-clover build/logs/clover.xml
-  - php artisan dusk
+  #- php artisan dusk
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
+  - ./cc-test-reporter after-build --exit-code build/logs/clover.xml
 
 notifications:
   email: false
