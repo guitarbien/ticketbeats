@@ -14,6 +14,14 @@ use Zttp\Zttp;
 class StripeConnectController extends Controller
 {
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function connect()
+    {
+        return view('backstage.stripe-connect.connect');
+    }
+
+    /**
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function authorizeRedirect()
