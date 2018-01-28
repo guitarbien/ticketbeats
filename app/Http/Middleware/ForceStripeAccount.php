@@ -23,6 +23,6 @@ class ForceStripeAccount
             return redirect()->route('backstage.stripe-connect.connect');
         }
 
-        return $next();
+        return $next($request);
     }
 }

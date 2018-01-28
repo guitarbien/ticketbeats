@@ -41,19 +41,29 @@ class ForceStripeAccountTest extends TestCase
             'stripe_account_id' => 'test_stripe_account_1234',
         ]));
 
+        $request = new Request;
+
         $next = new class {
             public $called = false;
 
-            public function __invoke()
+            /**
+             * @param $request
+             * @return mixed
+             */
+            public function __invoke($request)
             {
                 $this->called = true;
+                return $request;
             }
         };
 
         $middleware  = new ForceStripeAccount;
-        $response = $middleware->handle(new Request, $next);
+        $response = $middleware->handle($request, $next);
 
         // middleware 的第二個參數 $next 必須要被執行
         $this->assertTrue($next->called);
+
+        // 參數也有被正確傳入到 $next 中
+        $this->assertSame($response, $request);
     }
 }
