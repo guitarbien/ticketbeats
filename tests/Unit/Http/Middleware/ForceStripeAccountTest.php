@@ -32,6 +32,6 @@ class ForceStripeAccountTest extends TestCase
         });
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals(route('backstage.stripe-connect.authorize'), $response->getTargetUrl());
+        $this->assertEquals(route('backstage.stripe-connect.connect'), $response->getTargetUrl());
     }
 }
