@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Http\Middleware;
 
+use App\Http\Middleware\ForceStripeAccount;
 use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
