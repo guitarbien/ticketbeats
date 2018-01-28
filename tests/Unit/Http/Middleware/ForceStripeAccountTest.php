@@ -6,6 +6,7 @@ use App\Http\Middleware\ForceStripeAccount;
 use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -65,5 +66,27 @@ class ForceStripeAccountTest extends TestCase
 
         // 參數也有被正確傳入到 $next 中
         $this->assertSame($response, $request);
+    }
+
+    public function test_所有後台的routes都該走過此middleware()
+    {
+        $routes = [
+            'backstage.concerts.index',
+            'backstage.concerts.new',
+            'backstage.concerts.store',
+            'backstage.concerts.edit',
+            'backstage.concerts.update',
+            'backstage.published-concerts.store',
+            'backstage.published-concert-orders.index',
+            'backstage.concert-messages.new',
+            'backstage.concert-messages.store',
+        ];
+
+        foreach ($routes as $route) {
+            $this->assertContains(
+                ForceStripeAccount::class,
+                Route::getRoutes()->getByName($route)->gatherMiddleware()
+            );
+        }
     }
 }
