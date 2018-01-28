@@ -19,12 +19,10 @@ class ForceStripeAccountTest extends TestCase
 
     public function test_使用者必須和stripe_account綁定()
     {
-        $user = factory(User::class)->create([
-            'stripe_account_id' => null,
-        ]);
-
         // 同 ->actingAs($user)，模擬某個使用者的操作
-        $this->be($user);
+        $this->be(factory(User::class)->create([
+            'stripe_account_id' => null,
+        ]));
 
         $middleware  = new ForceStripeAccount;
         $response = $middleware->handle(new Request,  function($request) {
