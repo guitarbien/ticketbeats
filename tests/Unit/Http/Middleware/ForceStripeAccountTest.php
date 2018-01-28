@@ -34,4 +34,16 @@ class ForceStripeAccountTest extends TestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertEquals(route('backstage.stripe-connect.connect'), $response->getTargetUrl());
     }
+
+    public function test_使用者若已經綁定stripe_account則可以繼續操作()
+    {
+        $this->be(factory(User::class)->create([
+            'stripe_account_id' => 'test_stripe_account_1234',
+        ]));
+
+        $middleware  = new ForceStripeAccount;
+        $response = $middleware->handle($request,  $next);
+
+        // middleware 的第二個參數 $next 必須要被執行
+    }
 }
