@@ -73,11 +73,11 @@ class ReservationTest extends TestCase
 
         $paymentGateway = new FakePaymentGateway;
 
-        $order = $reservation->complete($paymentGateway, $paymentGateway->getValidTestToken());
+        $order = $reservation->complete($paymentGateway, $paymentGateway->getValidTestToken(), 'test_acct_1234');
 
         static::assertEquals('john@example.com', $order->email);
         static::assertEquals(3, $order->ticketQuantity());
         static::assertEquals(3600, $order->amount);
-        static::assertEquals(3600, $paymentGateway->totalCharges());
+        static::assertEquals(3600, $paymentGateway->totalChargesFor('test_acct_1234'));
     }
 }
