@@ -23,10 +23,11 @@ trait PaymentGatewayContractTests
     public function test_成功付款之後可以得到詳細資訊()
     {
         $paymentGateway = $this->getPaymentGateway();
-        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER));
+        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER), 'test_acct_1234');
 
         static::assertEquals(substr($paymentGateway::TEST_CARD_NUMBER, -4), $charge->cardLastFour());
         static::assertEquals(2500, $charge->amount());
+        static::assertEquals('test_acct_1234', $charge->destination());
     }
 
     public function test_可以透過callback取得付款的物件()
