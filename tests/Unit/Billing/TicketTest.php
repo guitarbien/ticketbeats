@@ -17,21 +17,21 @@ class TicketTest extends TestCase
     public function test_票券能被保留()
     {
         $ticket = factory(Ticket::class)->create();
-        $this->assertNull($ticket->reserved_at);
+        static::assertNull($ticket->reserved_at);
 
         $ticket->reserve();
 
-        $this->assertNotNull($ticket->fresh()->reserved_at);
+        static::assertNotNull($ticket->fresh()->reserved_at);
     }
 
     public function test_票券可以被釋出()
     {
         $ticket = factory(Ticket::class)->states('reserved')->create();
-        $this->assertNotNull($ticket->reserved_at);
+        static::assertNotNull($ticket->reserved_at);
 
         $ticket->release();
 
-        $this->assertNull($ticket->fresh()->reserved_at);
+        static::assertNull($ticket->fresh()->reserved_at);
     }
 
     public function test_票券可以被宣告為屬於某張訂單()
@@ -44,9 +44,9 @@ class TicketTest extends TestCase
         $ticket->claimFor($order);
 
         // Assert that the ticket is saved to the order
-        $this->assertContains($ticket->id, $order->tickets->pluck('id'));
+        static::assertContains($ticket->id, $order->tickets->pluck('id'));
 
         // Assert that the ticket had expected ticket code generated
-        $this->assertEquals('TICKETCODE1', $ticket->code);
+        static::assertEquals('TICKETCODE1', $ticket->code);
     }
 }

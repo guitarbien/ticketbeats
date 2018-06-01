@@ -76,22 +76,22 @@ class AddConcertTest extends TestCase
             $response->assertStatus(302);
             $response->assertRedirect("/backstage/concerts");
 
-            $this->assertTrue($concert->user->is($user));
+            static::assertTrue($concert->user->is($user));
 
-            $this->assertFalse($concert->isPublished());
+            static::assertFalse($concert->isPublished());
 
-            $this->assertEquals('No Warning', $concert->title);
-            $this->assertEquals('with Cruel Hand and Backtrack', $concert->subtitle);
-            $this->assertEquals("You must be 19 years of age to attend this concert.", $concert->additional_information);
-            $this->assertEquals(Carbon::parse('2017-11-18 8:00pm'), $concert->date);
-            $this->assertEquals('The Mosh Pit', $concert->venue);
-            $this->assertEquals('123 Fake St.', $concert->venue_address);
-            $this->assertEquals('Laraville', $concert->city);
-            $this->assertEquals('ON', $concert->state);
-            $this->assertEquals('12345', $concert->zip);
-            $this->assertEquals(3250, $concert->ticket_price);
-            $this->assertEquals(75, $concert->ticket_quantity);
-            $this->assertEquals(0, $concert->ticketsRemaining());
+            static::assertEquals('No Warning', $concert->title);
+            static::assertEquals('with Cruel Hand and Backtrack', $concert->subtitle);
+            static::assertEquals("You must be 19 years of age to attend this concert.", $concert->additional_information);
+            static::assertEquals(Carbon::parse('2017-11-18 8:00pm'), $concert->date);
+            static::assertEquals('The Mosh Pit', $concert->venue);
+            static::assertEquals('123 Fake St.', $concert->venue_address);
+            static::assertEquals('Laraville', $concert->city);
+            static::assertEquals('ON', $concert->state);
+            static::assertEquals('12345', $concert->zip);
+            static::assertEquals(3250, $concert->ticket_price);
+            static::assertEquals(75, $concert->ticket_quantity);
+            static::assertEquals(0, $concert->ticketsRemaining());
         });
     }
 
@@ -101,7 +101,7 @@ class AddConcertTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect("/login");
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_title欄位為必填()
@@ -115,7 +115,7 @@ class AddConcertTest extends TestCase
         $response->assertStatus(302);
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('title');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_subtitle欄位為非必填()
@@ -132,10 +132,10 @@ class AddConcertTest extends TestCase
             $response->assertStatus(302);
             $response->assertRedirect("/backstage/concerts");
 
-            $this->assertTrue($concert->user->is($user));
-            $this->assertFalse($concert->isPublished());
+            static::assertTrue($concert->user->is($user));
+            static::assertFalse($concert->isPublished());
 
-            $this->assertNull($concert->subtitle);
+            static::assertNull($concert->subtitle);
         });
     }
 
@@ -153,10 +153,10 @@ class AddConcertTest extends TestCase
             $response->assertStatus(302);
             $response->assertRedirect("/backstage/concerts");
 
-            $this->assertTrue($concert->user->is($user));
-            $this->assertFalse($concert->isPublished());
+            static::assertTrue($concert->user->is($user));
+            static::assertFalse($concert->isPublished());
 
-            $this->assertNull($concert->additional_information);
+            static::assertNull($concert->additional_information);
         });
     }
 
@@ -170,7 +170,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('date');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_date欄位格式必須為日期()
@@ -183,7 +183,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('date');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_時間為必填()
@@ -196,7 +196,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('time');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_time欄位格式必須為時間()
@@ -209,7 +209,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('time');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_venue為必填()
@@ -222,7 +222,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('venue');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_venue_address為必填()
@@ -235,7 +235,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('venue_address');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_city為必填()
@@ -247,7 +247,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('city');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_state為必填()
@@ -260,7 +260,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('state');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_zip為必填()
@@ -273,7 +273,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('zip');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_ticket_price為必填()
@@ -286,7 +286,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_price');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_ticket_price必須為數字()
@@ -299,7 +299,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_price');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_ticket_price至少要為5()
@@ -312,7 +312,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_price');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_ticket_quantity為必填()
@@ -325,7 +325,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_quantity');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_ticket_quantity必須是數字()
@@ -338,7 +338,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_quantity');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_ticket_quantity至少要為1()
@@ -351,7 +351,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_quantity');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_如果有選擇圖檔的話可以上傳成功()
@@ -368,11 +368,11 @@ class AddConcertTest extends TestCase
 
         tap(Concert::first(), function ($concert) use($file) {
             // make sure there's a file in the public folder that matches the file that we uploaded
-            $this->assertNotNull($concert->poster_image_path);
+            static::assertNotNull($concert->poster_image_path);
             Storage::disk('public')->assertExists($concert->poster_image_path);
 
             // make sure the content of the two files are the same
-            $this->assertFileEquals(
+            static::assertFileEquals(
                 $file->getPathname(),
                 Storage::disk('public')->path($concert->poster_image_path)
             );
@@ -391,7 +391,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('poster_image');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_poster_image寬度必須大於600px()
@@ -406,7 +406,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('poster_image');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_poster_image要符合某個長寬比例()
@@ -421,7 +421,7 @@ class AddConcertTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('poster_image');
-        $this->assertEquals(0, Concert::count());
+        static::assertEquals(0, Concert::count());
     }
 
     public function test_poster_image為非必填()
@@ -434,8 +434,8 @@ class AddConcertTest extends TestCase
 
         tap(Concert::first(), function ($concert) use($response, $user) {
             $response->assertRedirect('/backstage/concerts');
-            $this->assertTrue($concert->user->is($user));
-            $this->assertNull($concert->poster_image_path);
+            static::assertTrue($concert->user->is($user));
+            static::assertNull($concert->poster_image_path);
         });
     }
 

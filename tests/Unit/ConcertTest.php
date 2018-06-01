@@ -21,7 +21,7 @@ class ConcertTest extends TestCase
             'date' => Carbon::parse('2016-12-01 8:00pm'),
         ]);
 
-        $this->assertEquals('December 1, 2016', $concert->formatted_date);
+        static::assertEquals('December 1, 2016', $concert->formatted_date);
     }
 
     public function test_取得格式化的開始時間()
@@ -30,7 +30,7 @@ class ConcertTest extends TestCase
             'date' => Carbon::parse('2016-12-01 17:00:00'),
         ]);
 
-        $this->assertEquals('5:00pm', $concert->formatted_start_time);
+        static::assertEquals('5:00pm', $concert->formatted_start_time);
     }
 
     public function test_以美元顯示票價()
@@ -39,7 +39,7 @@ class ConcertTest extends TestCase
             'ticket_price' => 6750,
         ]);
 
-        $this->assertEquals('67.50', $concert->ticket_price_in_dollars);
+        static::assertEquals('67.50', $concert->ticket_price_in_dollars);
     }
 
     public function test_published_at有值的資料就是已經發佈了()
@@ -50,9 +50,9 @@ class ConcertTest extends TestCase
 
         $publishedConcerts = Concert::published()->get();
 
-        $this->assertTrue($publishedConcerts->contains($publishedConcertA));
-        $this->assertTrue($publishedConcerts->contains($publishedConcertB));
-        $this->assertFalse($publishedConcerts->contains($unpublishedConcertC));
+        static::assertTrue($publishedConcerts->contains($publishedConcertA));
+        static::assertTrue($publishedConcerts->contains($publishedConcertB));
+        static::assertFalse($publishedConcerts->contains($unpublishedConcertC));
     }
 
     public function test_concert可以被發佈()
@@ -61,13 +61,13 @@ class ConcertTest extends TestCase
             'published_at' => null,
             'ticket_quantity' => 5,
         ]);
-        $this->assertFalse($concert->isPublished());
-        $this->assertEquals(0, $concert->ticketsRemaining());
+        static::assertFalse($concert->isPublished());
+        static::assertEquals(0, $concert->ticketsRemaining());
 
         $concert->publish();
 
-        $this->assertTrue($concert->isPublished());
-        $this->assertEquals(5, $concert->ticketsRemaining());
+        static::assertTrue($concert->isPublished());
+        static::assertEquals(5, $concert->ticketsRemaining());
     }
 
     public function test_可購買的票券不應該包含已有訂單的票券()
@@ -76,7 +76,7 @@ class ConcertTest extends TestCase
         $concert->tickets()->saveMany(factory(Ticket::class, 3)->create(['order_id' => 1]));
         $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => null]));
 
-        $this->assertEquals(2, $concert->ticketsRemaining());
+        static::assertEquals(2, $concert->ticketsRemaining());
     }
 
     public function test_已售出的票券應關聯到訂單()
@@ -85,7 +85,7 @@ class ConcertTest extends TestCase
         $concert->tickets()->saveMany(factory(Ticket::class, 3)->create(['order_id' => 1]));
         $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => null]));
 
-        $this->assertEquals(3, $concert->ticketsSold());
+        static::assertEquals(3, $concert->ticketsSold());
     }
 
     public function test_全部的票券應包含所有票券狀態()
@@ -94,7 +94,7 @@ class ConcertTest extends TestCase
         $concert->tickets()->saveMany(factory(Ticket::class, 3)->create(['order_id' => 1]));
         $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => null]));
 
-        $this->assertEquals(5, $concert->totalTickets());
+        static::assertEquals(5, $concert->totalTickets());
     }
 
     public function test_計算票券售出百分比()
@@ -103,7 +103,7 @@ class ConcertTest extends TestCase
         $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => 1]));
         $concert->tickets()->saveMany(factory(Ticket::class, 5)->create(['order_id' => null]));
 
-        $this->assertEquals(28.57, $concert->percentSoldOut());
+        static::assertEquals(28.57, $concert->percentSoldOut());
     }
 
     public function test_計算票券售出總金額()
@@ -115,7 +115,7 @@ class ConcertTest extends TestCase
         $concert->tickets()->saveMany(factory(Ticket::class, 5)->create(['order_id' => $orderB->id]));
 
         // DB 欄位以 cent 為單位，畫面上是以 dollar 為單位
-        $this->assertEquals(134.75, $concert->revenueInDollars());
+        static::assertEquals(134.75, $concert->revenueInDollars());
     }
 
     public function test_保留超過可購買的票券數量會拋出例外()
@@ -125,8 +125,8 @@ class ConcertTest extends TestCase
         try {
             $reservation = $concert->reserveTickets(11, 'john@example.com');
         } catch (NotEnoughTicketsException $e) {
-            $this->assertFalse($concert->hasOrderFor('jane@example.com'));
-            $this->assertEquals(10, $concert->ticketsRemaining());
+            static::assertFalse($concert->hasOrderFor('jane@example.com'));
+            static::assertEquals(10, $concert->ticketsRemaining());
             return;
         }
 
@@ -136,13 +136,13 @@ class ConcertTest extends TestCase
     public function test_能保留可用票券()
     {
         $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
-        $this->assertEquals(3, $concert->ticketsRemaining());
+        static::assertEquals(3, $concert->ticketsRemaining());
 
         $reservation = $concert->reserveTickets(2, 'john@example.com');
 
-        $this->assertCount(2, $reservation->tickets());
-        $this->assertEquals('john@example.com', $reservation->email());
-        $this->assertEquals(1, $concert->ticketsRemaining());
+        static::assertCount(2, $reservation->tickets());
+        static::assertEquals('john@example.com', $reservation->email());
+        static::assertEquals(1, $concert->ticketsRemaining());
     }
 
     public function test_已經被購買的票券不能被保留()
@@ -154,7 +154,7 @@ class ConcertTest extends TestCase
         try {
             $concert->reserveTickets(2, 'john@example.com');
         } catch (NotEnoughTicketsException $e) {
-            $this->assertEquals(1, $concert->ticketsRemaining());
+            static::assertEquals(1, $concert->ticketsRemaining());
             return;
         }
 
@@ -169,7 +169,7 @@ class ConcertTest extends TestCase
         try {
             $concert->reserveTickets(2, 'john@example.com');
         } catch (NotEnoughTicketsException $e) {
-            $this->assertEquals(1, $concert->ticketsRemaining());
+            static::assertEquals(1, $concert->ticketsRemaining());
             return;
         }
 

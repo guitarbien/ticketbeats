@@ -20,7 +20,7 @@ class InvitationEmailTest extends TestCase
 
         $email = new InvitationEmail($invitation);
 
-        $this->assertContains(url('/invitations/TESTCODE1234'), $email->render());
+        static::assertContains(url('/invitations/TESTCODE1234'), $email->render());
     }
 
     public function test_email主旨正確()
@@ -29,6 +29,6 @@ class InvitationEmailTest extends TestCase
 
         $email = new InvitationEmail($invitation);
 
-        $this->assertEquals("You're invited to join TicketBeast!", $email->build()->subject);
+        static::assertEquals("You're invited to join TicketBeast!", $email->build()->subject);
     }
 }

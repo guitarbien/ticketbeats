@@ -21,7 +21,7 @@ class RandomOrderConfirmationNumberGeneratorTest extends TestCase
 
         $confirmationNumber = $generator->generate();
 
-        $this->assertEquals(24, strlen($confirmationNumber));
+        static::assertEquals(24, strlen($confirmationNumber));
     }
 
     public function test_確認碼只能有大寫英文字和數字()
@@ -30,7 +30,7 @@ class RandomOrderConfirmationNumberGeneratorTest extends TestCase
 
         $confirmationNumber = $generator->generate();
 
-        $this->assertRegexp('/^[A-Z0-9]+$/', $confirmationNumber);
+        static::assertRegexp('/^[A-Z0-9]+$/', $confirmationNumber);
     }
 
     public function test_確認碼不能有模糊字元()
@@ -39,10 +39,10 @@ class RandomOrderConfirmationNumberGeneratorTest extends TestCase
 
         $confirmationNumber = $generator->generate();
 
-        $this->assertFalse(strpos($confirmationNumber, 'I'));
-        $this->assertFalse(strpos($confirmationNumber, '1'));
-        $this->assertFalse(strpos($confirmationNumber, '0'));
-        $this->assertFalse(strpos($confirmationNumber, 'O'));
+        static::assertFalse(strpos($confirmationNumber, 'I'));
+        static::assertFalse(strpos($confirmationNumber, '1'));
+        static::assertFalse(strpos($confirmationNumber, '0'));
+        static::assertFalse(strpos($confirmationNumber, 'O'));
     }
 
     public function test_確認碼要是不重複唯一值()
@@ -53,6 +53,6 @@ class RandomOrderConfirmationNumberGeneratorTest extends TestCase
             return $generator->generate();
         });
 
-        $this->assertCount(100, $confirmationNumbers->unique());
+        static::assertCount(100, $confirmationNumbers->unique());
     }
 }

@@ -24,7 +24,7 @@ class ReservationTest extends TestCase
 
         $reservation = new Reservation($tickets, 'john@example.com');
 
-        $this->assertEquals(3600, $reservation->totalCost());
+        static::assertEquals(3600, $reservation->totalCost());
     }
 
     public function test_取得被保留的票券()
@@ -37,14 +37,14 @@ class ReservationTest extends TestCase
 
         $reservation = new Reservation($tickets, 'john@example.com');
 
-        $this->assertEquals($tickets, $reservation->tickets());
+        static::assertEquals($tickets, $reservation->tickets());
     }
 
     public function test_取得客戶email()
     {
         $reservation = new Reservation(collect(), 'john@example.com');
 
-        $this->assertEquals('john@example.com', $reservation->email());
+        static::assertEquals('john@example.com', $reservation->email());
     }
 
     public function test_取消保留後保留票券應也要被釋出()
@@ -75,9 +75,9 @@ class ReservationTest extends TestCase
 
         $order = $reservation->complete($paymentGateway, $paymentGateway->getValidTestToken());
 
-        $this->assertEquals('john@example.com', $order->email);
-        $this->assertEquals(3, $order->ticketQuantity());
-        $this->assertEquals(3600, $order->amount);
-        $this->assertEquals(3600, $paymentGateway->totalCharges());
+        static::assertEquals('john@example.com', $order->email);
+        static::assertEquals(3, $order->ticketQuantity());
+        static::assertEquals(3600, $order->amount);
+        static::assertEquals(3600, $paymentGateway->totalCharges());
     }
 }

@@ -16,8 +16,8 @@ trait PaymentGatewayContractTests
             $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
         });
 
-        $this->assertCount(1, $newCharges);
-        $this->assertEquals(2500, $newCharges->map->amount()->sum());
+        static::assertCount(1, $newCharges);
+        static::assertEquals(2500, $newCharges->map->amount()->sum());
     }
 
     public function test_成功付款之後可以得到詳細資訊()
@@ -25,8 +25,8 @@ trait PaymentGatewayContractTests
         $paymentGateway = $this->getPaymentGateway();
         $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER));
 
-        $this->assertEquals(substr($paymentGateway::TEST_CARD_NUMBER, -4), $charge->cardLastFour());
-        $this->assertEquals(2500, $charge->amount());
+        static::assertEquals(substr($paymentGateway::TEST_CARD_NUMBER, -4), $charge->cardLastFour());
+        static::assertEquals(2500, $charge->amount());
     }
 
     public function test_可以透過callback取得付款的物件()
@@ -41,8 +41,8 @@ trait PaymentGatewayContractTests
             $paymentGateway->charge(5000, $paymentGateway->getValidTestToken());
         });
 
-        $this->assertCount(2, $newCharges);
-        $this->assertEquals([5000, 4000], $newCharges->map->amount()->all());
+        static::assertCount(2, $newCharges);
+        static::assertEquals([5000, 4000], $newCharges->map->amount()->all());
     }
 
     public function test_以不合法token付款失敗()
@@ -60,6 +60,6 @@ trait PaymentGatewayContractTests
             $this->fail("Charging with an invalid payment token did not throw a PaymentFailedException.");
         });
 
-        $this->assertCount(0, $newCharges);
+        static::assertCount(0, $newCharges);
     }
 }

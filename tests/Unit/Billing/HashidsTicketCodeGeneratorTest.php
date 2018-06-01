@@ -13,7 +13,7 @@ class HashidsTicketCodeGeneratorTest extends TestCase
         $ticketCodeGenerator = new HashidsTicketCodeGenerator('testsalt1');
         $code = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
 
-        $this->assertTrue(strlen($code) >= 6);
+        static::assertTrue(strlen($code) >= 6);
     }
 
     public function test_票券代碼只能有大寫字母()
@@ -21,7 +21,7 @@ class HashidsTicketCodeGeneratorTest extends TestCase
         $ticketCodeGenerator = new HashidsTicketCodeGenerator('testsalt1');
         $code = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
 
-        $this->assertRegexp('/^[A-Z]+$/', $code);
+        static::assertRegexp('/^[A-Z]+$/', $code);
     }
 
     public function test_同一個票券id產生的票券代碼是一樣的()
@@ -31,7 +31,7 @@ class HashidsTicketCodeGeneratorTest extends TestCase
         $code1 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
         $code2 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
 
-        $this->assertEquals($code1, $code2);
+        static::assertEquals($code1, $code2);
     }
 
     public function test_不同票券id產生的票券代碼是不同的()
@@ -41,7 +41,7 @@ class HashidsTicketCodeGeneratorTest extends TestCase
         $code1 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 1]));
         $code2 = $ticketCodeGenerator->generateFor(new Ticket(['id' => 2]));
 
-        $this->assertNotEquals($code1, $code2);
+        static::assertNotEquals($code1, $code2);
     }
 
     public function test_不同salt產生的代碼是不同的()
@@ -52,6 +52,6 @@ class HashidsTicketCodeGeneratorTest extends TestCase
         $code1 = $ticketCodeGenerator1->generateFor(new Ticket(['id' => 1]));
         $code2 = $ticketCodeGenerator2->generateFor(new Ticket(['id' => 1]));
 
-        $this->assertNotEquals($code1, $code2);
+        static::assertNotEquals($code1, $code2);
     }
 }

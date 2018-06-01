@@ -32,8 +32,8 @@ class ForceStripeAccountTest extends TestCase
             $this->fail('Next middleware was called when it should not have been.');
         });
 
-        $this->assertInstanceOf(RedirectResponse::class, $response);
-        $this->assertEquals(route('backstage.stripe-connect.connect'), $response->getTargetUrl());
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertEquals(route('backstage.stripe-connect.connect'), $response->getTargetUrl());
     }
 
     public function test_使用者若已經綁定stripe_account則可以繼續操作()
@@ -62,10 +62,10 @@ class ForceStripeAccountTest extends TestCase
         $response = $middleware->handle($request, $next);
 
         // middleware 的第二個參數 $next 必須要被執行
-        $this->assertTrue($next->called);
+        static::assertTrue($next->called);
 
         // 參數也有被正確傳入到 $next 中
-        $this->assertSame($response, $request);
+        static::assertSame($response, $request);
     }
 
     public function test_所有後台的routes都該走過此middleware()
@@ -83,7 +83,7 @@ class ForceStripeAccountTest extends TestCase
         ];
 
         foreach ($routes as $route) {
-            $this->assertContains(
+            static::assertContains(
                 ForceStripeAccount::class,
                 Route::getRoutes()->getByName($route)->gatherMiddleware()
             );

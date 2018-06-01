@@ -26,8 +26,8 @@ class PromoterLoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/backstage/concerts');
-        $this->assertTrue(Auth::check());
-        $this->assertTrue(Auth::user()->is($user));
+        static::assertTrue(Auth::check());
+        static::assertTrue(Auth::user()->is($user));
     }
 
     public function test_以不合法資訊登入()
@@ -46,9 +46,9 @@ class PromoterLoginTest extends TestCase
 
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors('email');
-        $this->assertTrue(session()->hasOldInput('email'));
-        $this->assertFalse(session()->hasOldInput('password'));
-        $this->assertFalse(Auth::check());
+        static::assertTrue(session()->hasOldInput('email'));
+        static::assertFalse(session()->hasOldInput('password'));
+        static::assertFalse(Auth::check());
     }
 
     public function test_以不存在的帳號登入()
@@ -62,9 +62,9 @@ class PromoterLoginTest extends TestCase
 
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors('email');
-        $this->assertTrue(session()->hasOldInput('email'));
-        $this->assertFalse(session()->hasOldInput('password'));
-        $this->assertFalse(Auth::check());
+        static::assertTrue(session()->hasOldInput('email'));
+        static::assertFalse(session()->hasOldInput('password'));
+        static::assertFalse(Auth::check());
     }
 
     public function test_登出目前的使用者()
@@ -74,6 +74,6 @@ class PromoterLoginTest extends TestCase
         $response = $this->post('/logout');
 
         $response->assertRedirect('/login');
-        $this->assertFalse(Auth::check());
+        static::assertFalse(Auth::check());
     }
 }

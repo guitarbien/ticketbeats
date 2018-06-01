@@ -24,7 +24,7 @@ class ViewPublishedConcertOrdersTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('backstage.published-concert-orders.index');
-        $this->assertTrue($response->data('concert')->is($concert));
+        static::assertTrue($response->data('concert')->is($concert));
     }
 
     public function test_管理者可以看到最多十筆自己已發佈的音樂會的訂單()

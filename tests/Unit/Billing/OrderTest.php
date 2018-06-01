@@ -27,9 +27,9 @@ class OrderTest extends TestCase
 
         $order = Order::forTickets($tickets, 'jane@example.com', $charge);
 
-        $this->assertEquals('jane@example.com', $order->email);
-        $this->assertEquals(3600, $order->amount);
-        $this->assertEquals('1234', $order->card_last_four);
+        static::assertEquals('jane@example.com', $order->email);
+        static::assertEquals(3600, $order->amount);
+        static::assertEquals('1234', $order->card_last_four);
         $tickets->each->shouldHaveReceived('claimFor', [$order]);
     }
 
@@ -41,7 +41,7 @@ class OrderTest extends TestCase
 
         $foundOrder = Order::findByConfirmationNumber('ORDERCONFIRMATION1234');
 
-        $this->assertEquals($order->id, $foundOrder->id);
+        static::assertEquals($order->id, $foundOrder->id);
     }
 
     public function test_用確認碼查詢不存在的訂單資訊拋出例外()
@@ -66,7 +66,7 @@ class OrderTest extends TestCase
 
         $result = $order->toArray();
 
-        $this->assertEquals([
+        static::assertEquals([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
             'email'               => 'jane@example.com',
             'amount'              => 6000,

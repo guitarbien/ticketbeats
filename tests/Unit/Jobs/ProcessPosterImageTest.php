@@ -33,13 +33,13 @@ class ProcessPosterImageTest extends TestCase
         $resizedImage = Storage::disk('public')->get('posters/example-poster.png');
         list($width, $height) = getimagesizefromstring($resizedImage);
 
-        $this->assertEquals(600, $width);
+        static::assertEquals(600, $width);
         // 600/(8.5/11) = 776
-        $this->assertEquals(776, $height);
+        static::assertEquals(776, $height);
 
         $optimizedImageContents = Storage::disk('public')->get('posters/example-poster.png');
         $controlImageContents = file_get_contents(base_path('tests/__fixtures__/optimized-poster.png'));
-        $this->assertEquals($controlImageContents, $optimizedImageContents);
+        static::assertEquals($controlImageContents, $optimizedImageContents);
     }
 
     public function test_優化圖片大小()
@@ -58,10 +58,10 @@ class ProcessPosterImageTest extends TestCase
 
         $optimizedImageSize = Storage::disk('public')->size('posters/example-poster.png');
         $originalSize = filesize(base_path('tests/__fixtures__/small-unoptimized-poster.png'));
-        $this->assertLessThan($originalSize, $optimizedImageSize);
+        static::assertLessThan($originalSize, $optimizedImageSize);
 
         $optimizedImageContents = Storage::disk('public')->get('posters/example-poster.png');
         $controlImageContents = file_get_contents(base_path('tests/__fixtures__/optimized-poster.png'));
-        $this->assertEquals($controlImageContents, $optimizedImageContents);
+        static::assertEquals($controlImageContents, $optimizedImageContents);
     }
 }

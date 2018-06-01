@@ -21,11 +21,11 @@ class InvitePromoterTest extends TestCase
 
         $this->artisan('invite-promoter', ['email' => 'john@example.com']);
 
-        $this->assertEquals(1, Invitation::count());
+        static::assertEquals(1, Invitation::count());
 
         $invitation = Invitation::first();
-        $this->assertEquals('john@example.com', $invitation->email);
-        $this->assertEquals('TESTCODE1234', $invitation->code);
+        static::assertEquals('john@example.com', $invitation->email);
+        static::assertEquals('TESTCODE1234', $invitation->code);
 
         Mail::assertSent(InvitationEmail::class, function($mail) use($invitation) {
             return $mail->hasTo('john@example.com')

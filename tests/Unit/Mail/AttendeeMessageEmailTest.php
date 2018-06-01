@@ -17,8 +17,8 @@ class AttendeeMessageEmailTest extends TestCase
         ]);
         $email = new AttendeeMessageEmail($message);
 
-        $this->assertEquals("My subject", $email->build()->subject);
-        $this->assertEquals("My message", trim($this->render($email)));
+        static::assertEquals("My subject", $email->build()->subject);
+        static::assertEquals("My message", trim($this->render($email)));
     }
 
     private function render(Mailable $mailable)

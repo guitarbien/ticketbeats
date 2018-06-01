@@ -28,8 +28,8 @@ class PublishConcertTest extends TestCase
 
         $response->assertRedirect('backstage/concerts');
         $concert = $concert->fresh();
-        $this->assertTrue($concert->isPublished());
-        $this->assertEquals(3, $concert->ticketsRemaining());
+        static::assertTrue($concert->isPublished());
+        static::assertEquals(3, $concert->ticketsRemaining());
     }
 
     public function test_一場音樂會只能被發佈一次()
@@ -45,7 +45,7 @@ class PublishConcertTest extends TestCase
         ]);
 
         $response->assertStatus(422);
-        $this->assertEquals(3, $concert->fresh()->ticketsRemaining());
+        static::assertEquals(3, $concert->fresh()->ticketsRemaining());
     }
 
     public function test_管理者不能發佈別人的音樂會()
@@ -64,8 +64,8 @@ class PublishConcertTest extends TestCase
         $response->assertStatus(404);
 
         $concert = $concert->fresh();
-        $this->assertFalse($concert->isPublished());
-        $this->assertEquals(0, $concert->ticketsRemaining());
+        static::assertFalse($concert->isPublished());
+        static::assertEquals(0, $concert->ticketsRemaining());
     }
 
     public function test_一般使用者不能發佈音樂會()
@@ -81,8 +81,8 @@ class PublishConcertTest extends TestCase
         $response->assertRedirect('/login');
 
         $concert = $concert->fresh();
-        $this->assertFalse($concert->isPublished());
-        $this->assertEquals(0, $concert->ticketsRemaining());
+        static::assertFalse($concert->isPublished());
+        static::assertEquals(0, $concert->ticketsRemaining());
     }
 
     public function test_不存在的音樂會不能被發佈()

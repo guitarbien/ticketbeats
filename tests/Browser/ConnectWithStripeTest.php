@@ -38,14 +38,14 @@ class ConnectWithStripeTest extends DuskTestCase
                     ->assertRouteIs('backstage.concerts.index');
 
             tap($user->fresh(), function($user) {
-                $this->assertNotNull($user->stripe_account_id);
-                $this->assertNotNull($user->stripe_access_token);
+                static::assertNotNull($user->stripe_account_id);
+                static::assertNotNull($user->stripe_access_token);
 
                 $connectedAccount = \Stripe\Account::retrieve(null, [
                     'api_key' => $user->stripe_access_token
                 ]);
 
-                $this->assertEquals($connectedAccount->id, $user->stripe_account_id);
+                static::assertEquals($connectedAccount->id, $user->stripe_account_id);
             });
         });
     }

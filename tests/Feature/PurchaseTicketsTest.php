@@ -54,8 +54,8 @@ class PurchaseTicketsTest extends TestCase
 
     private function assertValidationError($field)
     {
-        $this->assertResponseStatus(422);
-        $this->assertArrayHasKey($field, $this->decodeResponseJson()['errors']);
+        static::assertResponseStatus(422);
+        static::assertArrayHasKey($field, $this->decodeResponseJson()['errors']);
     }
 
     public function test_使用者可以購票()
@@ -78,7 +78,7 @@ class PurchaseTicketsTest extends TestCase
         ]);
 
         // Assert
-        $this->assertResponseStatus(201);
+        static::assertResponseStatus(201);
 
         $this->seeJsonSubset([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
@@ -93,14 +93,14 @@ class PurchaseTicketsTest extends TestCase
 
         // Make sure the customer was charged the correct amount
         // 要付多少錢會決定 token，再拿 token 來問付了多少錢
-        $this->assertEquals(9750, $this->paymentGateway->totalCharges());
+        static::assertEquals(9750, $this->paymentGateway->totalCharges());
 
         // Make sure that an order exists for this customer
-        $this->assertTrue($concert->hasOrderFor('john@example.com'));
+        static::assertTrue($concert->hasOrderFor('john@example.com'));
 
         $order = $concert->ordersFor('john@example.com')->first();
 
-        $this->assertEquals(3, $order->ticketQuantity());
+        static::assertEquals(3, $order->ticketQuantity());
 
         // 傳入 mailable class
         mail::assertSent(OrderConfirmationEmail::class, function($mail) use($order) {
@@ -118,9 +118,9 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertResponseStatus(404);
-        $this->assertFalse($concert->hasOrderFor('john@example.com'));
-        $this->assertEquals(0, $this->paymentGateway->totalCharges());
+        static::assertResponseStatus(404);
+        static::assertFalse($concert->hasOrderFor('john@example.com'));
+        static::assertEquals(0, $this->paymentGateway->totalCharges());
     }
 
     public function test_不能超量購買()
@@ -133,10 +133,10 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertResponseStatus(422);
-        $this->assertFalse($concert->hasOrderFor('john@example.com'));
-        $this->assertEquals(0, $this->paymentGateway->totalCharges());
-        $this->assertEquals(50, $concert->ticketsRemaining());
+        static::assertResponseStatus(422);
+        static::assertFalse($concert->hasOrderFor('john@example.com'));
+        static::assertEquals(0, $this->paymentGateway->totalCharges());
+        static::assertEquals(50, $concert->ticketsRemaining());
     }
 
     public function test_票券若是在嘗試購買中則不能再被購買()
@@ -152,9 +152,9 @@ class PurchaseTicketsTest extends TestCase
                 'payment_token'   => $this->paymentGateway->getValidTestToken(),
             ]);
 
-            $this->assertResponseStatus(422);
-            $this->assertFalse($concert->hasOrderFor('personB@example.com'));
-            $this->assertEquals(0, $this->paymentGateway->totalCharges());
+            static::assertResponseStatus(422);
+            static::assertFalse($concert->hasOrderFor('personB@example.com'));
+            static::assertEquals(0, $this->paymentGateway->totalCharges());
         });
 
         $this->orderTickets($concert, [
@@ -163,9 +163,9 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertEquals(3600, $this->paymentGateway->totalCharges());
-        $this->assertTrue($concert->hasOrderFor('personA@example.com'));
-        $this->assertEquals(3, $concert->ordersFor('personA@example.com')->first()->ticketQuantity());
+        static::assertEquals(3600, $this->paymentGateway->totalCharges());
+        static::assertTrue($concert->hasOrderFor('personA@example.com'));
+        static::assertEquals(3, $concert->ordersFor('personA@example.com')->first()->ticketQuantity());
     }
 
     public function test_若付款失敗則不會產生訂單()
@@ -178,10 +178,10 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => 'invalid-payment-token',
         ]);
 
-        $this->assertResponseStatus(422);
+        static::assertResponseStatus(422);
 
-        $this->assertFalse($concert->hasOrderFor('john@example.com'));
-        $this->assertEquals(3, $concert->ticketsRemaining());
+        static::assertFalse($concert->hasOrderFor('john@example.com'));
+        static::assertEquals(3, $concert->ticketsRemaining());
     }
 
     public function test_下單時email為必填()
@@ -193,7 +193,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertValidationError('email');
+        static::assertValidationError('email');
     }
 
     public function test_驗證email格式()
@@ -206,7 +206,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertValidationError('email');
+        static::assertValidationError('email');
     }
 
     public function test_票券數量為必填()
@@ -218,7 +218,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token' => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertValidationError('ticket_quantity');
+        static::assertValidationError('ticket_quantity');
     }
 
     public function test_票券數量至少要為1()
@@ -231,7 +231,7 @@ class PurchaseTicketsTest extends TestCase
             'payment_token'   => $this->paymentGateway->getValidTestToken(),
         ]);
 
-        $this->assertValidationError('ticket_quantity');
+        static::assertValidationError('ticket_quantity');
     }
 
     public function test_token為必填()
@@ -243,6 +243,6 @@ class PurchaseTicketsTest extends TestCase
             'email'           => 'error-email-format',
         ]);
 
-        $this->assertValidationError('payment_token');
+        static::assertValidationError('payment_token');
     }
 }

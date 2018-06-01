@@ -26,7 +26,7 @@ class AcceptInvitationTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('invitations.show');
-        $this->assertTrue($response->data('invitation')->is($invitation));
+        static::assertTrue($response->data('invitation')->is($invitation));
     }
 
     public function test_查看一個已使用的邀請碼會得到404()
@@ -65,13 +65,13 @@ class AcceptInvitationTest extends TestCase
 
         $response->assertRedirect('/backstage/concerts');
 
-        $this->assertEquals(1, User::count());
+        static::assertEquals(1, User::count());
 
         $user = User::first();
-        $this->assertAuthenticatedAs($user);
-        $this->assertEquals('john@example.com', $user->email);
-        $this->assertTrue(Hash::check('secret', $user->password));
-        $this->assertTrue($invitation->fresh()->user->is($user));
+        static::assertAuthenticatedAs($user);
+        static::assertEquals('john@example.com', $user->email);
+        static::assertTrue(Hash::check('secret', $user->password));
+        static::assertTrue($invitation->fresh()->user->is($user));
     }
 
     public function test_使用已註冊過的邀請碼會得到404()
@@ -81,7 +81,7 @@ class AcceptInvitationTest extends TestCase
             'code'    => 'TESTCODE1234',
         ]);
 
-        $this->assertEquals(1, User::count());
+        static::assertEquals(1, User::count());
 
         $response = $this->post('/register', [
             'email'           => 'john@example.com',
@@ -90,7 +90,7 @@ class AcceptInvitationTest extends TestCase
         ]);
 
         $response->assertStatus(404);
-        $this->assertEquals(1, User::count());
+        static::assertEquals(1, User::count());
     }
 
     public function test_使用不存在的邀請碼會得到404()
@@ -102,7 +102,7 @@ class AcceptInvitationTest extends TestCase
         ]);
 
         $response->assertStatus(404);
-        $this->assertEquals(0, User::count());
+        static::assertEquals(0, User::count());
     }
 
     public function test_email為必填()
@@ -120,7 +120,7 @@ class AcceptInvitationTest extends TestCase
 
         $response->assertRedirect('/invitations/TESTCODE1234');
         $response->assertSessionHasErrors('email');
-        $this->assertEquals(0, User::count());
+        static::assertEquals(0, User::count());
     }
 
     public function test_email格式正確()
@@ -138,13 +138,13 @@ class AcceptInvitationTest extends TestCase
 
         $response->assertRedirect('/invitations/TESTCODE1234');
         $response->assertSessionHasErrors('email');
-        $this->assertEquals(0, User::count());
+        static::assertEquals(0, User::count());
     }
 
     public function test_email必須為唯一值()
     {
         factory(User::class)->create(['email' => 'john@example.com']);
-        $this->assertEquals(1, User::count());
+        static::assertEquals(1, User::count());
 
         factory(Invitation::class)->create([
             'user_id' => null,
@@ -159,7 +159,7 @@ class AcceptInvitationTest extends TestCase
 
         $response->assertRedirect('/invitations/TESTCODE1234');
         $response->assertSessionHasErrors('email');
-        $this->assertEquals(1, User::count());
+        static::assertEquals(1, User::count());
     }
 
     public function test_password為必填()
@@ -176,6 +176,6 @@ class AcceptInvitationTest extends TestCase
         ]);
 
         $response->assertRedirect('/invitations/TESTCODE1234');
-        $this->assertEquals(0, User::count());
+        static::assertEquals(0, User::count());
     }
 }

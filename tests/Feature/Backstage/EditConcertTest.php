@@ -52,12 +52,12 @@ class EditConcertTest extends TestCase
         $user = factory(User::class)->create();
         $concert = factory(Concert::class)->create(['user_id' => $user->id]);
 
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->actingAs($user)->get("/backstage/concerts/{$concert->id}/edit");
 
         $response->assertStatus(200);
-        $this->assertTrue($response->data('concert')->is($concert));
+        static::assertTrue($response->data('concert')->is($concert));
     }
 
     public function test_管理者不能看到自己已經發佈的音樂會修改頁()
@@ -65,7 +65,7 @@ class EditConcertTest extends TestCase
         $user = factory(User::class)->create();
         $concert = factory(Concert::class)->states('published')->create(['user_id' => $user->id]);
 
-        $this->assertTrue($concert->isPublished());
+        static::assertTrue($concert->isPublished());
 
         $response = $this->actingAs($user)->get("/backstage/concerts/{$concert->id}/edit");
         $response->assertStatus(403);
@@ -124,7 +124,7 @@ class EditConcertTest extends TestCase
             'ticket_quantity'        => 5,
         ]);
 
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->actingAs($user)->patch("/backstage/concerts/{$concert->id}", [
             'title'                  => 'new title',
@@ -143,17 +143,17 @@ class EditConcertTest extends TestCase
 
         $response->assertRedirect("/backstage/concerts");
         tap($concert->fresh(), function($concert) {
-            $this->assertEquals('new title', $concert->title);
-            $this->assertEquals('new subtitle', $concert->subtitle);
-            $this->assertEquals('new additional_information', $concert->additional_information);
-            $this->assertEquals(Carbon::parse('2018-12-12 8:00pm'), $concert->date);
-            $this->assertEquals('new venue', $concert->venue);
-            $this->assertEquals('new venue_address', $concert->venue_address);
-            $this->assertEquals('new city', $concert->city);
-            $this->assertEquals('new state', $concert->state);
-            $this->assertEquals('99999', $concert->zip);
-            $this->assertEquals(7250, $concert->ticket_price);
-            $this->assertEquals(10, $concert->ticket_quantity);
+            static::assertEquals('new title', $concert->title);
+            static::assertEquals('new subtitle', $concert->subtitle);
+            static::assertEquals('new additional_information', $concert->additional_information);
+            static::assertEquals(Carbon::parse('2018-12-12 8:00pm'), $concert->date);
+            static::assertEquals('new venue', $concert->venue);
+            static::assertEquals('new venue_address', $concert->venue_address);
+            static::assertEquals('new city', $concert->city);
+            static::assertEquals('new state', $concert->state);
+            static::assertEquals('99999', $concert->zip);
+            static::assertEquals(7250, $concert->ticket_price);
+            static::assertEquals(10, $concert->ticket_quantity);
         });
     }
 
@@ -166,13 +166,13 @@ class EditConcertTest extends TestCase
             'user_id' => $otherUser->id,
         ]));
 
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->actingAs($user)->patch("/backstage/concerts/{$concert->id}", $this->validParams());
 
         $response->assertStatus(404);
 
-        $this->assertArraySubset($this->oldAttributes([
+        static::assertArraySubset($this->oldAttributes([
             'user_id' => $otherUser->id
         ]), $concert->fresh()->getAttributes());
     }
@@ -185,12 +185,12 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
         ]));
 
-        $this->assertTrue($concert->isPublished());
+        static::assertTrue($concert->isPublished());
 
         $response = $this->actingAs($user)->patch("/backstage/concerts/{$concert->id}", $this->validParams());
 
         $response->assertStatus(403);
-        $this->assertArraySubset($this->oldAttributes([
+        static::assertArraySubset($this->oldAttributes([
             'user_id' => $user->id,
         ]), $concert->fresh()->getAttributes());
     }
@@ -203,12 +203,12 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
         ]));
 
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->patch("/backstage/concerts/{$concert->id}", $this->validParams());
 
         $response->assertRedirect('/login');
-        $this->assertArraySubset($this->oldAttributes([
+        static::assertArraySubset($this->oldAttributes([
             'user_id' => $user->id,
         ]), $concert->fresh()->getAttributes());
     }
@@ -222,7 +222,7 @@ class EditConcertTest extends TestCase
             'title'   => 'old title',
         ]);
 
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'title' => ''
@@ -231,7 +231,7 @@ class EditConcertTest extends TestCase
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('title');
         tap($concert->fresh(), function($concert) {
-            $this->assertEquals('old title', $concert->title);
+            static::assertEquals('old title', $concert->title);
         });
     }
 
@@ -242,13 +242,13 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'subtitle' => 'Old subtitle',
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'subtitle' => '',
         ]));
         $response->assertRedirect("/backstage/concerts");
         tap($concert->fresh(), function ($concert) {
-            $this->assertNull($concert->subtitle);
+            static::assertNull($concert->subtitle);
         });
     }
 
@@ -259,13 +259,13 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'additional_information' => 'Old additional information',
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'additional_information' => '',
         ]));
         $response->assertRedirect("/backstage/concerts");
         tap($concert->fresh(), function ($concert) {
-            $this->assertNull($concert->additional_information);
+            static::assertNull($concert->additional_information);
         });
     }
 
@@ -276,14 +276,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'date' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('date');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
+            static::assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
         });
     }
 
@@ -294,14 +294,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'date' => 'not a date',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('date');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
+            static::assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
         });
     }
 
@@ -312,14 +312,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'time' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('time');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
+            static::assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
         });
     }
 
@@ -330,14 +330,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'time' => 'not-a-time',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('time');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
+            static::assertEquals(Carbon::parse('2018-01-01 8:00pm'), $concert->date);
         });
     }
 
@@ -348,14 +348,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'venue' => 'Old venue',
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'venue' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('venue');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals('Old venue', $concert->venue);
+            static::assertEquals('Old venue', $concert->venue);
         });
     }
 
@@ -366,14 +366,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'venue_address' => 'Old address',
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'venue_address' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('venue_address');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals('Old address', $concert->venue_address);
+            static::assertEquals('Old address', $concert->venue_address);
         });
     }
 
@@ -384,14 +384,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'city' => 'Old city',
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'city' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('city');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals('Old city', $concert->city);
+            static::assertEquals('Old city', $concert->city);
         });
     }
 
@@ -402,14 +402,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'state' => 'Old state',
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'state' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('state');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals('Old state', $concert->state);
+            static::assertEquals('Old state', $concert->state);
         });
     }
 
@@ -420,14 +420,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'zip' => 'Old zip',
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'zip' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('zip');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals('Old zip', $concert->zip);
+            static::assertEquals('Old zip', $concert->zip);
         });
     }
 
@@ -438,14 +438,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'ticket_price' => 5250,
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'ticket_price' => '',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('ticket_price');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(5250, $concert->ticket_price);
+            static::assertEquals(5250, $concert->ticket_price);
         });
     }
 
@@ -456,14 +456,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'ticket_price' => 5250,
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'ticket_price' => 'not a price',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('ticket_price');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(5250, $concert->ticket_price);
+            static::assertEquals(5250, $concert->ticket_price);
         });
     }
 
@@ -474,14 +474,14 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'ticket_price' => 5250,
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'ticket_price' => '4.99',
         ]));
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('ticket_price');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(5250, $concert->ticket_price);
+            static::assertEquals(5250, $concert->ticket_price);
         });
     }
 
@@ -492,7 +492,7 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'ticket_quantity' => 5,
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'ticket_quantity' => '',
@@ -501,7 +501,7 @@ class EditConcertTest extends TestCase
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('ticket_quantity');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(5, $concert->ticket_quantity);
+            static::assertEquals(5, $concert->ticket_quantity);
         });
     }
 
@@ -512,7 +512,7 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'ticket_quantity' => 5,
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'ticket_quantity' => '7.8',
@@ -521,7 +521,7 @@ class EditConcertTest extends TestCase
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('ticket_quantity');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(5, $concert->ticket_quantity);
+            static::assertEquals(5, $concert->ticket_quantity);
         });
     }
 
@@ -532,7 +532,7 @@ class EditConcertTest extends TestCase
             'user_id' => $user->id,
             'ticket_quantity' => 5,
         ]);
-        $this->assertFalse($concert->isPublished());
+        static::assertFalse($concert->isPublished());
 
         $response = $this->actingAs($user)->from("/backstage/concerts/{$concert->id}/edit")->patch("/backstage/concerts/{$concert->id}", $this->validParams([
             'ticket_quantity' => '0',
@@ -541,7 +541,7 @@ class EditConcertTest extends TestCase
         $response->assertRedirect("/backstage/concerts/{$concert->id}/edit");
         $response->assertSessionHasErrors('ticket_quantity');
         tap($concert->fresh(), function ($concert) {
-            $this->assertEquals(5, $concert->ticket_quantity);
+            static::assertEquals(5, $concert->ticket_quantity);
         });
     }
 }

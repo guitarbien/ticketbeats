@@ -22,14 +22,14 @@ class OrderConfirmationEmailTest extends TestCase
         // In Laravel 5.5
         // $rendered = $email->render();
 
-        $this->assertContains(url('/orders/ORDERCONFIRMATION1234'), $rendered);
+        static::assertContains(url('/orders/ORDERCONFIRMATION1234'), $rendered);
     }
 
     public function test_email要有主旨()
     {
         $order = factory(Order::class)->make();
         $email = new OrderConfirmationEmail($order);
-        $this->assertEquals('Your TicketBeats Order', $email->build()->subject);
+        static::assertEquals('Your TicketBeats Order', $email->build()->subject);
     }
 
     private function render($mailable)

@@ -28,7 +28,7 @@ class MessageAttendeesTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('backstage.concert-messages.new');
-        $this->assertTrue($response->data('concert')->is($concert));
+        static::assertTrue($response->data('concert')->is($concert));
     }
 
     public function test_管理者不能看到任何別的管理者的音樂會訊息()
@@ -73,9 +73,9 @@ class MessageAttendeesTest extends TestCase
         $response->assertSessionHas('flash');
 
         $message = AttendeeMessage::first();
-        $this->assertEquals($concert->id, $message->concert_id);
-        $this->assertEquals('My subject', $message->subject);
-        $this->assertEquals('My message', $message->message);
+        static::assertEquals($concert->id, $message->concert_id);
+        static::assertEquals('My subject', $message->subject);
+        static::assertEquals('My message', $message->message);
 
         Queue::assertPushed(SendAttendeeMessage::class, function($job) use($message) {
             return $job->attendeeMessage->is($message);
@@ -98,7 +98,7 @@ class MessageAttendeesTest extends TestCase
         ]);
 
         $response->assertStatus(404);
-        $this->assertEquals(0, AttendeeMessage::count());
+        static::assertEquals(0, AttendeeMessage::count());
         Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 
@@ -113,7 +113,7 @@ class MessageAttendeesTest extends TestCase
         ]);
 
         $response->assertRedirect('/login');
-        $this->assertEquals(0, AttendeeMessage::count());
+        static::assertEquals(0, AttendeeMessage::count());
         Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 
@@ -137,7 +137,7 @@ class MessageAttendeesTest extends TestCase
 
         $response->assertRedirect("/backstage/concerts/{$concert->id}/messages/new");
         $response->assertSessionHasErrors('subject');
-        $this->assertEquals(0, AttendeeMessage::count());
+        static::assertEquals(0, AttendeeMessage::count());
         Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 
@@ -161,7 +161,7 @@ class MessageAttendeesTest extends TestCase
 
         $response->assertRedirect("/backstage/concerts/{$concert->id}/messages/new");
         $response->assertSessionHasErrors('message');
-        $this->assertEquals(0, AttendeeMessage::count());
+        static::assertEquals(0, AttendeeMessage::count());
         Queue::assertNotPushed(SendAttendeeMessage::class);
     }
 }
