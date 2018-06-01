@@ -8,6 +8,7 @@ use App\Concert;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
 use App\Mail\OrderConfirmationEmail;
+use App\User;
 use ConcertFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
@@ -69,8 +70,14 @@ class PurchaseTicketsTest extends TestCase
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
 
         // Arrange
+        $user = factory(User::class)->create(['stripe_account_id' => 'test_acct_1234']);
+
         // Create a concert
-        $concert = ConcertFactory::createPublished(['ticket_price' => 3250, 'ticket_quantity' => 3]);
+        $concert = ConcertFactory::createPublished([
+            'ticket_price'    => 3250,
+            'ticket_quantity' => 3,
+            'user_id'         => $user,
+        ]);
 
         // Action
         // Purchase concert tickets\
@@ -96,7 +103,7 @@ class PurchaseTicketsTest extends TestCase
 
         // Make sure the customer was charged the correct amount
         // 要付多少錢會決定 token，再拿 token 來問付了多少錢
-        static::assertEquals(9750, $this->paymentGateway->totalCharges());
+        static::assertEquals(9750, $this->paymentGateway->totalChargesFor('test_acct_1234'));
 
         // Make sure that an order exists for this customer
         static::assertTrue($concert->hasOrderFor('john@example.com'));
