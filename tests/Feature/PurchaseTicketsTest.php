@@ -17,6 +17,9 @@ class PurchaseTicketsTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /** @var FakePaymentGateway */
+    private $paymentGateway;
+
     protected function setUp()
     {
         parent::setUp();
