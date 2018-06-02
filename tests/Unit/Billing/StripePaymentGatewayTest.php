@@ -29,5 +29,6 @@ class StripePaymentGatewayTest extends TestCase
         )->data);
 
         static::assertEquals(5000, $lastStripeCharge['amount']);
+        static::assertEquals(env('STRIPE_TEST_PROMOTER_ID'), $lastStripeCharge['destination']);
     }
 }
