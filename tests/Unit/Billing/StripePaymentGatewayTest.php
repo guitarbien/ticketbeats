@@ -30,5 +30,8 @@ class StripePaymentGatewayTest extends TestCase
 
         static::assertEquals(5000, $lastStripeCharge['amount']);
         static::assertEquals(env('STRIPE_TEST_PROMOTER_ID'), $lastStripeCharge['destination']);
+
+        $transfer = \Stripe\Transfer::retrieve($lastStripeCharge['transfer'], ['api_key' => config('services.stripe.secret')]);
+        static::assertEquals(4500, $transfer['amount']);
     }
 }

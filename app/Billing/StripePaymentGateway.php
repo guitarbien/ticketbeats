@@ -22,9 +22,9 @@ class StripePaymentGateway implements PaymentGateway
                 "amount"      => $amount,
                 "currency"    => "usd",
                 "source"      => $token,
-                "description" => null,
                 "destination" => [
                     "account" => $destinationAccountId,
+                    "amount"  => ($amount * .9),
                 ],
             ], ['api_key' => $this->apiKey]);
 
