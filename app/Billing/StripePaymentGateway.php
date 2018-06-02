@@ -56,7 +56,7 @@ class StripePaymentGateway implements PaymentGateway
      * @param string $cardNumber
      * @return string
      */
-    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
+    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER): string
     {
         return \Stripe\Token::create([
             "card" => [
