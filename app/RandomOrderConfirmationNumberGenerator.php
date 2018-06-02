@@ -2,8 +2,15 @@
 
 namespace App;
 
+/**
+ * Class RandomOrderConfirmationNumberGenerator
+ * @package App
+ */
 class RandomOrderConfirmationNumberGenerator implements OrderConfirmationNumberGenerator, InvitationCodeGenerator
 {
+    /**
+     * @return bool|string
+     */
     public function generate()
     {
         $pool = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';

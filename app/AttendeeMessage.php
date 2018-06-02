@@ -15,16 +15,26 @@ class AttendeeMessage extends Model
 {
     protected $guarded = [];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function concert()
     {
         return $this->belongsTo(Concert::class);
     }
 
+    /**
+     * @return Builder
+     */
     public function orders(): Builder
     {
         return $this->concert->orders();
     }
 
+    /**
+     * @param int $chunkSize
+     * @param Closure $callback
+     */
     public function withChunkedRecipients(int $chunkSize, Closure $callback)
     {
         $this->orders()->chunk($chunkSize, function(Collection $orders) use($callback) {

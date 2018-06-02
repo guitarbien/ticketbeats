@@ -56,31 +56,51 @@ class Concert extends Model
         $this->addTickets($this->ticket_quantity);
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedDateAttribute()
     {
         return $this->date->format('F j, Y');
     }
 
+    /**
+     * @return string
+     */
     public function getFormattedStartTimeAttribute()
     {
         return $this->date->format('g:ia');
     }
 
+    /**
+     * @return string
+     */
     public function getTicketPriceInDollarsAttribute()
     {
         return number_format($this->ticket_price / 100, 2);
     }
 
+    /**
+     * @return Order
+     */
     public function orders()
     {
         return Order::whereIn('id', $this->tickets()->pluck('order_id'));
     }
 
+    /**
+     * @param $customerEmail
+     * @return bool
+     */
     public function hasOrderFor($customerEmail)
     {
         return $this->orders()->where('email', $customerEmail)->count() > 0;
     }
 
+    /**
+     * @param $customerEmail
+     * @return Order[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function ordersFor($customerEmail)
     {
         return $this->orders()->where('email', $customerEmail)->get();
@@ -94,6 +114,11 @@ class Concert extends Model
         return $this->hasMany(Ticket::class);
     }
 
+    /**
+     * @param $quantity
+     * @param $email
+     * @return Reservation
+     */
     public function reserveTickets($quantity, $email)
     {
         $tickets = $this->findTickets($quantity)->each(function(Ticket $ticket) {
@@ -103,6 +128,10 @@ class Concert extends Model
         return new Reservation($tickets, $email);
     }
 
+    /**
+     * @param $quantity
+     * @return Ticket[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|Builder[]|\Illuminate\Support\Collection
+     */
     public function findTickets($quantity)
     {
         $tickets = $this->tickets()->available()->take($quantity)->get();
@@ -115,6 +144,10 @@ class Concert extends Model
         return $tickets;
     }
 
+    /**
+     * @param $quantity
+     * @return $this
+     */
     public function addTickets($quantity)
     {
         foreach (range(1, $quantity) as $i)
@@ -125,36 +158,57 @@ class Concert extends Model
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function ticketsRemaining()
     {
         return $this->tickets()->available()->count();
     }
 
+    /**
+     * @return int
+     */
     public function ticketsSold()
     {
         return $this->tickets()->sold()->count();
     }
 
+    /**
+     * @return int
+     */
     public function totalTickets()
     {
         return $this->tickets()->count();
     }
 
+    /**
+     * @return string
+     */
     public function percentSoldOut()
     {
         return number_format(($this->ticketsSold() / $this->totalTickets()) * 100, 2);
     }
 
+    /**
+     * @return float|int
+     */
     public function revenueInDollars()
     {
         return $this->orders()->sum('amount') / 100;
     }
 
+    /**
+     * @return bool
+     */
     public function hasPoster()
     {
         return $this->poster_image_path !== null;
     }
 
+    /**
+     * @return string
+     */
     public function posterUrl()
     {
         return Storage::disk('public')->url($this->poster_image_path);

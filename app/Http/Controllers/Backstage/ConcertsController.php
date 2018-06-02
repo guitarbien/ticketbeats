@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Backstage;
 
 use App\Events\ConcertAdded;
+use App\Http\Controllers\Controller;
 use App\NullFile;
 use Carbon\Carbon;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 

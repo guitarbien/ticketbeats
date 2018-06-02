@@ -6,8 +6,11 @@ use App\AttendeeMessage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * Class AttendeeMessageEmail
+ * @package App\Mail
+ */
 class AttendeeMessageEmail extends Mailable
 {
     use Queueable, SerializesModels;

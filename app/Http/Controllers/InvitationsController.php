@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Invitation;
-use Illuminate\Http\Request;
 
 /**
  * Class InvitationsController

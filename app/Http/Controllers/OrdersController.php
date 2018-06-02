@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Order;
-use Illuminate\Http\Request;
 
+/**
+ * Class OrdersController
+ * @package App\Http\Controllers
+ */
 class OrdersController extends Controller
 {
-    public function show($confirmationNumber)
+    /**
+     * @param string $confirmationNumber
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function show(string $confirmationNumber)
     {
         $order = Order::findByConfirmationNumber($confirmationNumber);
         return view('orders.show', ['order' => $order]);

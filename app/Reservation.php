@@ -2,17 +2,29 @@
 
 namespace App;
 
+/**
+ * Class Reservation
+ * @package App
+ */
 class Reservation
 {
     private $tickets;
     private $email;
 
+    /**
+     * Reservation constructor.
+     * @param $tickets
+     * @param $email
+     */
     public function __construct($tickets, $email)
     {
         $this->tickets = $tickets;
         $this->email   = $email;
     }
 
+    /**
+     * @return mixed
+     */
     public function totalCost()
     {
         return $this->tickets->sum('price');
@@ -28,6 +40,12 @@ class Reservation
         return $this->email;
     }
 
+    /**
+     * @param $paymentGateway
+     * @param $paymentToken
+     * @param string $destinationAccountId
+     * @return Order
+     */
     public function complete($paymentGateway, $paymentToken, string $destinationAccountId)
     {
         $charge = $paymentGateway->charge($this->totalCost(), $paymentToken, $destinationAccountId);

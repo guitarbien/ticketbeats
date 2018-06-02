@@ -7,20 +7,29 @@ use App\Billing\PaymentGateway;
 use App\Concert;
 use App\Exceptions\NotEnoughTicketsException;
 use App\Mail\OrderConfirmationEmail;
-use App\Order;
-use App\Reservation;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * Class ConcertOrdersController
+ * @package App\Http\Controllers
+ */
 class ConcertOrdersController extends Controller
 {
     private $paymentGateway;
 
+    /**
+     * ConcertOrdersController constructor.
+     * @param PaymentGateway $paymentGateway
+     */
     public function __construct(PaymentGateway $paymentGateway)
     {
         $this->paymentGateway = $paymentGateway;
     }
 
+    /**
+     * @param $concertId
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store($concertId)
     {
         $concert = Concert::published()->findOrFail($concertId);

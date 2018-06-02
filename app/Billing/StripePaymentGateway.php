@@ -4,17 +4,31 @@ namespace App\Billing;
 
 use Stripe\Error\InvalidRequest;
 
+/**
+ * Class StripePaymentGateway
+ * @package App\Billing
+ */
 class StripePaymentGateway implements PaymentGateway
 {
     const TEST_CARD_NUMBER = '4242424242424242';
 
     private $apiKey;
 
+    /**
+     * StripePaymentGateway constructor.
+     * @param $apiKey
+     */
     public function __construct($apiKey)
     {
         $this->apiKey = $apiKey;
     }
 
+    /**
+     * @param $amount
+     * @param $token
+     * @param string $destinationAccountId
+     * @return Charge|mixed
+     */
     public function charge($amount, $token, string $destinationAccountId)
     {
         try {
@@ -38,6 +52,10 @@ class StripePaymentGateway implements PaymentGateway
         }
     }
 
+    /**
+     * @param string $cardNumber
+     * @return string
+     */
     public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
     {
         return \Stripe\Token::create([
@@ -51,6 +69,10 @@ class StripePaymentGateway implements PaymentGateway
         ], ['api_key' => $this->apiKey])->id;
     }
 
+    /**
+     * @param $callback
+     * @return \Illuminate\Support\Collection
+     */
     public function newChargesDuring($callback)
     {
         $lastCharge = $this->lastCharge();
@@ -65,6 +87,9 @@ class StripePaymentGateway implements PaymentGateway
         });
     }
 
+    /**
+     * @return mixed
+     */
     private function lastCharge()
     {
         return array_first(\Stripe\Charge::all(
@@ -73,6 +98,10 @@ class StripePaymentGateway implements PaymentGateway
         )->data);
     }
 
+    /**
+     * @param null $charge
+     * @return \Illuminate\Support\Collection
+     */
     private function newChargesSince($charge = null)
     {
         $newCharges = \Stripe\Charge::all(

@@ -3,21 +3,32 @@
 namespace App\Http\Controllers\Backstage;
 
 use App\Concert;
-use App\Jobs\SendAttendeeMessage;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendAttendeeMessage;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class ConcertMessagesController
+ * @package App\Http\Controllers\Backstage
+ */
 class ConcertMessagesController extends Controller
 {
-    public function create($id)
+    /**
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function create(string $id)
     {
         $concert = Auth::user()->concerts()->findOrFail($id);
 
         return view('backstage.concert-messages.new', ['concert' => $concert]);
     }
 
-    public function store($id)
+    /**
+     * @param string $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(string $id)
     {
         /** @var Concert $concert */
         $concert = Auth::user()->concerts()->findOrFail($id);

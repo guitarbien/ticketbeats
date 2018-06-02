@@ -16,25 +16,42 @@ class FakePaymentGateway implements PaymentGateway
         $this->tokens = collect();
     }
 
-    public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
+    /**
+     * @param string $cardNumber
+     * @return string
+     */
+    public function getValidTestToken(string $cardNumber = self::TEST_CARD_NUMBER): string
     {
         $token = 'fake-tok_' . str_random(24);
         $this->tokens[$token] = $cardNumber;
         return $token;
     }
 
-    public function totalCharges()
+    /**
+     * @return int
+     */
+    public function totalCharges(): int
     {
         return $this->charges->map->amount()->sum();
     }
 
-    public function totalChargesFor(string $accountId)
+    /**
+     * @param string $accountId
+     * @return int
+     */
+    public function totalChargesFor(string $accountId): int
     {
         return $this->charges->filter(function ($charge) use ($accountId) {
             return $charge->destination() === $accountId;
         })->map->amount()->sum();
     }
 
+    /**
+     * @param $amount
+     * @param $token
+     * @param string $destinationAccountId
+     * @return Charge|mixed
+     */
     public function charge($amount, $token, string $destinationAccountId)
     {
         if ($this->beforeFirstChargeCallback !== null)

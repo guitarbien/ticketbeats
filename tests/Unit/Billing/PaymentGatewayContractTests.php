@@ -4,6 +4,10 @@ namespace Tests\Unit\Billing;
 
 use App\Billing\PaymentFailedException;
 
+/**
+ * Trait PaymentGatewayContractTests
+ * @package Tests\Unit\Billing
+ */
 trait PaymentGatewayContractTests
 {
     abstract protected function getPaymentGateway();
