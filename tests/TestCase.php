@@ -2,13 +2,14 @@
 
 namespace Tests;
 
-use App\Exceptions\DisableExceptionHandler;
-use App\Exceptions\Handler;
-use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Foundation\Testing\TestResponse;
 use PHPUnit\Framework\Assert;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
+/**
+ * Class TestCase
+ * @package Tests
+ */
 abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
 {
     use CreatesApplication;
@@ -20,7 +21,7 @@ abstract class TestCase extends \Illuminate\Foundation\Testing\TestCase
      */
     protected $baseUrl = 'http://localhost';
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         \Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
