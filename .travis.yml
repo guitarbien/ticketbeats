@@ -1,11 +1,7 @@
 language: php
 php:
-  #- 5.6
-  #- 7.0
-  #- 7.1
   - 7.2
   - 7.3
-#  - nightly
 
 #sudo: required
 #dist: trusty
@@ -25,8 +21,6 @@ services:
 
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS homestead;'
-  - nvm install 6.9.4
-  - nvm use 6.9.4
 
 install:
   - composer update
