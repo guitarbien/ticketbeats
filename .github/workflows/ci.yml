@@ -17,26 +17,25 @@ jobs:
         run: npm run prod
       - name: Run tests
         run: vendor/bin/phpunit
-      - name: Notify slack
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.ci_slack_notify }}
         uses: pullreminders/slack-action@master
-#   dusk-php-latest:
-#     runs-on: ubuntu-latest
-#     container: docker://zaherg/laravel-dusk:latest
-#     steps:
-#       - uses: actions/checkout@master
-#         with:
-#           fetch-depth: 1
-#       - name: Prepare the environment
-#         run: cp .env.example .env
-#       - name: Install Composer dependencies
-#         run: |
-#           composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
-#           php artisan key:generate
-#       - name: Run dusk tests
-#         run: |
-#           php artisan dusk:chrome-driver
-#           nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &'
-#           nohup bash -c 'php artisan serve > /dev/null 2>&1 &'
-#           php artisan dusk
+  dusk-php-latest:
+    runs-on: ubuntu-latest
+    container: docker://zaherg/laravel-dusk:latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Copy env
+        run: cp .env.example .env
+      - name: Install Composer dependencies
+        run: |
+          composer install --prefer-dist --optimize-autoloader
+          npm install
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Package npm for production
+        run: npm run prod
+      - name: Run dusk tests
+        run: |
+          php artisan dusk:chrome-driver
+          nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &'
+          nohup bash -c 'php artisan serve > /dev/null 2>&1 &'
+          php artisan dusk
