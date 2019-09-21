@@ -1,0 +1,34 @@
+name: CI
+on: [push]
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Prepare the environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist
+      - name: Run tests
+        run: php vendor/bin/phpunit
+#   dusk-php-latest:
+#     runs-on: ubuntu-latest
+#     container: docker://zaherg/laravel-dusk:latest
+#     steps:
+#       - uses: actions/checkout@master
+#         with:
+#           fetch-depth: 1
+#       - name: Prepare the environment
+#         run: cp .env.example .env
+#       - name: Install Composer dependencies
+#         run: |
+#           composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+#           php artisan key:generate
+#       - name: Run dusk tests
+#         run: |
+#           php artisan dusk:chrome-driver
+#           nohup bash -c './vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &'
+#           nohup bash -c 'php artisan serve > /dev/null 2>&1 &'
+#           php artisan dusk
