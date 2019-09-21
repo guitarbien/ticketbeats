@@ -5,14 +5,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Prepare the environment
-        run: |
-          cp .env.example .env
-          php artisan key:generate
+      - name: Copy env
+        run: cp .env.example .env
       - name: Install Composer dependencies
         run: composer install --prefer-dist
+      - name: Generate key
+          php artisan key:generate
       - name: Run tests
-        run: php vendor/bin/phpunit
+        run: vendor/bin/phpunit
 #   dusk-php-latest:
 #     runs-on: ubuntu-latest
 #     container: docker://zaherg/laravel-dusk:latest
