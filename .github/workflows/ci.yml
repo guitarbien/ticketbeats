@@ -10,7 +10,7 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --prefer-dist
       - name: Generate key
-          php artisan key:generate
+        run: php artisan key:generate
       - name: Run tests
         run: vendor/bin/phpunit
 #   dusk-php-latest:
