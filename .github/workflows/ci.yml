@@ -19,7 +19,6 @@ jobs:
         run: vendor/bin/phpunit
   dusk-php-latest:
     runs-on: ubuntu-latest
-    container: docker://zaherg/laravel-dusk:latest
     steps:
       - uses: actions/checkout@master
       - name: Copy env
