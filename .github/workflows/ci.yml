@@ -24,14 +24,18 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
+          MYSQL_DATABASE: homestead
           MYSQL_ROOT_PASSWORD:
         ports:
-          - 3306
+          - '3306:3306'
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: show php version
         run: php -v
+      - name: create database
+        run: mysql -h 127.0.0.1 --port 3306 -u root -e 'CREATE DATABASE IF NOT EXISTS homestead'
       - name: Checkout
         uses: actions/checkout@master
       - name: Copy env
