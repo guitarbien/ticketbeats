@@ -2,22 +2,12 @@ name: CI
 on: [push]
 jobs:
   phpunit:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      max-parallel: 15
-      matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ['7.2', '7.3']
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     steps:
+      - name: show php version
+        run: php -v
       - name: Checkout
         uses: actions/checkout@master
-      - name: Installing PHP
-        uses: shivammathur/setup-php@master
-        with:
-          php-version: ${{ matrix.php-versions }}
-          extension-csv: mbstring, xdebug #optional
-          coverage: xdebug #optional
       - name: Copy env
         run: cp .env.example .env
       - name: Install dependencies
@@ -31,7 +21,7 @@ jobs:
       - name: Run tests
         run: vendor/bin/phpunit
   dusk-php-latest:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:5.7
@@ -39,13 +29,9 @@ jobs:
           MYSQL_ROOT_PASSWORD:
         ports:
           - 3306
-    strategy:
-      max-parallel: 15
-      matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
-        php-versions: ['7.2', '7.3']
-    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
     steps:
+      - name: show php version
+        run: php -v
       - name: Checkout
         uses: actions/checkout@master
       - name: Copy env
