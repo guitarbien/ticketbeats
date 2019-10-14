@@ -29,8 +29,8 @@ jobs:
         run: php artisan key:generate
       - name: Install npm dependencies
         run: npm install
-      - name: Upgrade Chrome Driver
-        run: php artisan dusk:chrome-driver
+      - name: Install laravel dusk
+        run: php artisan dusk:install
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
       - name: Run Laravel Server
