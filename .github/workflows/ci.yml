@@ -6,7 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest, ubuntu-16.04]
         php: [7.2, 7.3]
     steps:
       - name: Checkout
@@ -29,7 +29,7 @@ jobs:
       - name: show php version
         run: php -v
       - name: create database
-        run: mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS homestead;'
+        run: mysql --user="root" --password="root" -e "CREATE DATABASE homestead character set UTF8mb4 collate utf8mb4_bin;"
       - name: Checkout
         uses: actions/checkout@master
       - name: Copy env
