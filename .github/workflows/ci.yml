@@ -10,13 +10,14 @@ jobs:
         php-versions: ['7.1', '7.2', '7.3']
     name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
     steps:
-      - uses: actions/checkout@master
+      - name: Checkout
+        uses: actions/checkout@master
       - name: Installing PHP
-      uses: shivammathur/setup-php@master
-      with:
-        php-version: ${{ matrix.php-versions }}
-        extension-csv: mbstring, xdebug #optional
-        coverage: xdebug #optional
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extension-csv: mbstring, xdebug #optional
+          coverage: xdebug #optional
       - name: Copy env
         run: cp .env.example .env
       - name: Install dependencies
@@ -32,7 +33,8 @@ jobs:
 #  dusk-php-latest:
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@master
+#      - name: Checkout
+#        uses: actions/checkout@master
 #      - name: Copy env
 #        run: cp .env.example .env
 #      - name: Install Composer dependencies
