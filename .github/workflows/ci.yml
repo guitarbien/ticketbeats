@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-latest]
         php-versions: [7.2, 7.3]
     steps:
       - name: Checkout
@@ -25,6 +25,12 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           coverage: pcov
+      - name: Check PHP Version
+        run: php -v
+      - name: Check Composer Version
+        run: composer -V
+      - name: Check PHP Extensions
+        run: php -m
       - name: Install dependencies
         env:
           APP_ENV: testing
@@ -44,7 +50,7 @@ jobs:
           php artisan route:clear
           php artisan optimize:clear
       - name: run phpunit
-        run: vendor/bin/phpunit --coverage-text
+        run: vendor/bin/phpunit --coverage-html
         shell: pwsh
 #      - name: Test & publish code coverage
 #        uses: paambaati/codeclimate-action@v2.2.1
