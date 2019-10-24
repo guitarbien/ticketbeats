@@ -21,19 +21,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Setup PHP, with composer and extensions
-        uses: shivammathur/setup-php@master #https://github.com/shivammathur/setup-php
+        uses: shivammathur/setup-php@master
         with:
           php-version: ${{ matrix.php-versions }}
-          extension-csv: mbstring, dom, fileinfo, mysql
-          coverage: xdebug #optional
+          coverage: pcov
+      - name: Install dependencies
+        env:
+          APP_ENV: testing
+        run: |
+          composer install --prefer-dist --optimize-autoloader
+          npm install
       - name: Prepare the application
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate
-      - name: Install dependencies
-        run: |
-          composer install --prefer-dist --optimize-autoloader
-          npm install
       - name: Package npm for production
         run: npm run prod
       - name: Clear Config
