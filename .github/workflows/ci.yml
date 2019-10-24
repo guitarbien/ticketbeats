@@ -7,7 +7,7 @@ on:
     branches:
       - master
   schedule:
-    - cron:  '* * * * */1'
+    - cron:  '0 4 * * sun'
 jobs:
   phpunit:
     runs-on: ${{ matrix.os }}
@@ -26,18 +26,22 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extension-csv: mbstring, dom, fileinfo, mysql
           coverage: xdebug #optional
+      - name: Prepare the application
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php artisan key:generate
       - name: Install dependencies
         run: |
           composer install --prefer-dist --optimize-autoloader
           npm install
-      - name: Prepare the application
-        run: |
-          php -r "copy('.env.example', '.env');"
-          php artisan key:generate
       - name: Package npm for production
         run: npm run prod
       - name: Clear Config
-        run: php artisan config:clear
+        run: |
+          php artisan cache:clear
+          php artisan config:clear
+          php artisan route:clear
+          php artisan optimize:clear
       - name: run phpunit
         run: vendor/bin/phpunit --coverage-clover
 #      - name: Test & publish code coverage
