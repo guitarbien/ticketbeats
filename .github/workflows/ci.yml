@@ -31,6 +31,12 @@ jobs:
         run: composer -V
       - name: Check PHP Extensions
         run: php -m
+      - name: for code climate
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+        #shell: pwsh
       - name: Install dependencies
         env:
           APP_ENV: testing
@@ -49,15 +55,15 @@ jobs:
           php artisan config:clear
           php artisan route:clear
           php artisan optimize:clear
-      - name: Test & publish code coverage
+      - name: run phpunit
+        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+        shell: pwsh
+      - name: publish code coverage
         uses: paambaati/codeclimate-action@v2.2.1
         env:
           CC_TEST_REPORTER_ID: <7b746575241d81908d30ac64ff990607172b06d40017cda9f47dde08b1a42402>
         with:
-          coverageCommand: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-#      - name: run phpunit
-#        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-#        shell: pwsh
+          coverageCommand: ./cc-test-reporter after-build
 #  dusk-php-latest:
 #    runs-on: ubuntu-latest
 #    steps:
