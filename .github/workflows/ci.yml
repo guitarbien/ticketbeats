@@ -56,14 +56,10 @@ jobs:
           php artisan route:clear
           php artisan optimize:clear
       - name: run phpunit
-        run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+        run: |
+          vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+          ./cc-test-reporter after-build --id 7b746575241d81908d30ac64ff990607172b06d40017cda9f47dde08b1a42402
         shell: pwsh
-      - name: publish code coverage
-        uses: paambaati/codeclimate-action@v2.2.1
-        env:
-          CC_TEST_REPORTER_ID: <7b746575241d81908d30ac64ff990607172b06d40017cda9f47dde08b1a42402>
-        with:
-          coverageCommand: ./cc-test-reporter after-build
 #  dusk-php-latest:
 #    runs-on: ubuntu-latest
 #    steps:
