@@ -36,7 +36,7 @@ jobs:
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           ./cc-test-reporter before-build
-        #shell: pwsh
+        shell: pwsh
       - name: Install dependencies
         env:
           APP_ENV: testing
@@ -47,6 +47,7 @@ jobs:
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
           php artisan key:generate
+        shell: pwsh
       - name: Package npm for production
         run: npm run prod
       - name: Clear Config
