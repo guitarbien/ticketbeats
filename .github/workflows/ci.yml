@@ -58,6 +58,14 @@ jobs:
         run: |
           vendor/bin/phpunit --coverage-clover build/logs/clover.xml
           ./cc-test-reporter after-build --id 7b746575241d81908d30ac64ff990607172b06d40017cda9f47dde08b1a42402
+      - name: notification
+        uses: 8398a7/action-slack@v2
+        with:
+          status: ${{ job.status }}
+          author_name: integretion test
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ci_slack_notify }} # required
+        if: always() # Pick up events even if the job fails or is canceled.
 #  dusk-php-latest:
 #    runs-on: ubuntu-latest
 #    steps:
