@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/guitarbien/ticketbeast.svg?branch=laravel54)](https://travis-ci.org/guitarbien/ticketbeast)
-[![Coverage Status](https://coveralls.io/repos/github/guitarbien/ticketbeats/badge.svg?branch=master)](https://coveralls.io/github/guitarbien/ticketbeats?branch=master)
+![](https://github.com/guitarbien/ticketbeast/workflows/build/badge.svg)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9497ee4766c2dbe824f0/maintainability)](https://codeclimate.com/github/guitarbien/ticketbeast/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9497ee4766c2dbe824f0/test_coverage)](https://codeclimate.com/github/guitarbien/ticketbeast/test_coverage)
 
 ## TescCases
 - Features
