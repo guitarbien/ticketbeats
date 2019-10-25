@@ -63,7 +63,7 @@ jobs:
         if: always()
         with:
           type: ${{ job.status }}
-          job_name: '*integration test*'
+          job_name: '*integration test* ${{ matrix.php-versions }} on ${{ matrix.os }}'
           url: ${{ secrets.SLACK_WEBHOOK }}
           mention_if: 'failure'
 #  dusk-php-latest:
