@@ -64,7 +64,7 @@ jobs:
         with:
           type: ${{ job.status }}
           job_name: '*integration test*'
-          url: ${{ secrets.ci_slack_notify }}
+          url: ${{ secrets.SLACK_WEBHOOK }}
           mention_if: 'failure'
 #  dusk-php-latest:
 #    runs-on: ubuntu-latest
