@@ -1,4 +1,4 @@
-![](https://github.com/guitarbien/ticketbeast/workflows/build/badge.svg)
+![build status](https://github.com/guitarbien/ticketbeast/workflows/build/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/9497ee4766c2dbe824f0/maintainability)](https://codeclimate.com/github/guitarbien/ticketbeast/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/9497ee4766c2dbe824f0/test_coverage)](https://codeclimate.com/github/guitarbien/ticketbeast/test_coverage)
 
