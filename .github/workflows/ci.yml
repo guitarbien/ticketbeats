@@ -55,6 +55,8 @@ jobs:
           php artisan config:clear
           php artisan route:clear
           php artisan optimize:clear
+      - name: migration
+        run: php artisan migrate
       - name: run phpunit
         run: |
           vendor/bin/phpunit --coverage-clover build/logs/clover.xml
