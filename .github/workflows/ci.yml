@@ -56,10 +56,7 @@ jobs:
           php artisan route:clear
           php artisan optimize:clear
       - name: migration
-        run: |
-          mkdir -p database
-          touch database/database.sqlite
-          php artisan migrate
+        run: php artisan migrate
       - name: run phpunit
         run: |
           vendor/bin/phpunit --coverage-clover build/logs/clover.xml
