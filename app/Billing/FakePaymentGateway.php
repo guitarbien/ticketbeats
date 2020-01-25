@@ -2,9 +2,16 @@
 
 namespace App\Billing;
 
+use Illuminate\Support\Str;
+use Tightenco\Collect\Support\Collection;
+
+/**
+ * Class FakePaymentGateway
+ * @package App\Billing
+ */
 class FakePaymentGateway implements PaymentGateway
 {
-    const TEST_CARD_NUMBER = '4242424242424242';
+    public const TEST_CARD_NUMBER = '4242424242424242';
 
     private $charges;
     private $tokens;
@@ -22,7 +29,8 @@ class FakePaymentGateway implements PaymentGateway
      */
     public function getValidTestToken(string $cardNumber = self::TEST_CARD_NUMBER): string
     {
-        $token = 'fake-tok_' . str_random(24);
+        $token = 'fake-tok_' . Str::random(24);
+
         $this->tokens[$token] = $cardNumber;
         return $token;
     }
@@ -73,6 +81,10 @@ class FakePaymentGateway implements PaymentGateway
         ]);
     }
 
+    /**
+     * @param $callback
+     * @return \Illuminate\Support\Collection|Collection
+     */
     public function newChargesDuring($callback)
     {
         $chargesFrom = $this->charges->count();
@@ -82,7 +94,10 @@ class FakePaymentGateway implements PaymentGateway
         return $this->charges->slice($chargesFrom)->reverse()->values();
     }
 
-    public function beforeFirstCharge($callback)
+    /**
+     * @param $callback
+     */
+    public function beforeFirstCharge($callback): void
     {
         $this->beforeFirstChargeCallback = $callback;
     }
