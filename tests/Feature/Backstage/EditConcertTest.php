@@ -172,9 +172,12 @@ class EditConcertTest extends TestCase
 
         $response->assertStatus(404);
 
-        static::assertArraySubset($this->oldAttributes([
-            'user_id' => $otherUser->id
-        ]), $concert->fresh()->getAttributes());
+        $oldConcert = $this->oldAttributes(['user_id' => $otherUser->id]);
+        $freshConcert = $concert->fresh()->getAttributes();
+
+        foreach ($oldConcert as $key => $value) {
+            self::assertEquals($value, $freshConcert[$key]);
+        }
     }
 
     public function test_管理者不能編輯已經發布的音樂會()
@@ -190,9 +193,13 @@ class EditConcertTest extends TestCase
         $response = $this->actingAs($user)->patch("/backstage/concerts/{$concert->id}", $this->validParams());
 
         $response->assertStatus(403);
-        static::assertArraySubset($this->oldAttributes([
-            'user_id' => $user->id,
-        ]), $concert->fresh()->getAttributes());
+
+        $oldConcert = $this->oldAttributes(['user_id' => $user->id]);
+        $freshConcert = $concert->fresh()->getAttributes();
+
+        foreach ($oldConcert as $key => $value) {
+            self::assertEquals($value, $freshConcert[$key]);
+        }
     }
 
     public function test_一般使用者不能編輯音樂會()
@@ -208,9 +215,13 @@ class EditConcertTest extends TestCase
         $response = $this->patch("/backstage/concerts/{$concert->id}", $this->validParams());
 
         $response->assertRedirect('/login');
-        static::assertArraySubset($this->oldAttributes([
-            'user_id' => $user->id,
-        ]), $concert->fresh()->getAttributes());
+
+        $oldConcert = $this->oldAttributes(['user_id' => $user->id]);
+        $freshConcert = $concert->fresh()->getAttributes();
+
+        foreach ($oldConcert as $key => $value) {
+            self::assertEquals($value, $freshConcert[$key]);
+        }
     }
 
     public function test_title欄位為必填()

@@ -16,7 +16,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.0",
-        "codedungeon/phpunit-result-printer": "^0.24.1",
+        "codedungeon/phpunit-result-printer": "^0.26.0",
         "doctrine/dbal": "^2.6",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
