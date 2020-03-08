@@ -20,7 +20,7 @@ class InvitationEmailTest extends TestCase
 
         $email = new InvitationEmail($invitation);
 
-        static::assertContains(url('/invitations/TESTCODE1234'), $email->render());
+        static::assertStringContainsString(url('/invitations/TESTCODE1234'), $email->render());
     }
 
     public function test_email主旨正確()

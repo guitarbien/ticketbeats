@@ -22,7 +22,7 @@ class OrderConfirmationEmailTest extends TestCase
         // In Laravel 5.5
         // $rendered = $email->render();
 
-        static::assertContains(url('/orders/ORDERCONFIRMATION1234'), $rendered);
+        static::assertStringContainsString(url('/orders/ORDERCONFIRMATION1234'), $rendered);
     }
 
     public function test_email要有主旨()

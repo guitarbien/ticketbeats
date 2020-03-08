@@ -44,7 +44,7 @@ class TicketTest extends TestCase
         $ticket->claimFor($order);
 
         // Assert that the ticket is saved to the order
-        static::assertContains($ticket->id, $order->tickets->pluck('id'));
+        static::assertStringContainsString($ticket->id, $order->tickets->pluck('id'));
 
         // Assert that the ticket had expected ticket code generated
         static::assertEquals('TICKETCODE1', $ticket->code);
