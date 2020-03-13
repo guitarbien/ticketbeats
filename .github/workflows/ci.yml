@@ -104,3 +104,11 @@ jobs:
         run: php artisan serve > /dev/null 2>&1 &
       - name: Run Dusk Tests
         run: php artisan dusk
+      - name: Slack Notification
+      uses: homoluctus/slatify@master
+      if: always()
+      with:
+        type: ${{ job.status }}
+        job_name: '*browser test* ${{ matrix.php-versions }} on ${{ matrix.os }}'
+        url: ${{ secrets.SLACK_WEBHOOK }}
+        mention_if: 'failure'
