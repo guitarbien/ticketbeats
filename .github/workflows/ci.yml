@@ -90,7 +90,7 @@ jobs:
       - name: Package npm for production
         run: npm run prod
       - name: Install laravel dusk
-        run: php artisan dusk:install
+        run: php artisan dusk:chrome-driver
       - name: Start Chrome Driver
         run: ./vendor/laravel/dusk/bin/chromedriver-linux > /dev/null 2>&1 &
       - name: Run Laravel Server
