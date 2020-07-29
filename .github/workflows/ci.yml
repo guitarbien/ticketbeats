@@ -82,7 +82,7 @@ jobs:
 
       - name: run phpunit
         run: |
-          php artisan test --coverage-clover build/logs/clover.xml
+          php artisan test --coverage-clover build/logs/clover.xml --coverage-html report/
           ./cc-test-reporter after-build --id 7b746575241d81908d30ac64ff990607172b06d40017cda9f47dde08b1a42402
         env:
           DB_CONNECTION: pgsql
@@ -90,6 +90,12 @@ jobs:
           DB_DATABASE: test
           DB_USERNAME: postgres
           DB_PASSWORD: postgres
+
+      - name: persist testing result
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: report
 
       - name: Slack Notification
         uses: homoluctus/slatify@master
