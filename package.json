@@ -28,6 +28,7 @@
     "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
+    "node-forge": "^0.10.0",
     "set-value": "^2.0.1"
   }
 }
