@@ -1,6 +1,12 @@
 name: codacy-coverage-reporter
 
-on: ["push"]
+on:
+  workflow_run:
+    workflows: ["build"]
+    branches: [master]
+    types:
+      - completed
+      - requested
 
 jobs:
   codacy-coverage-reporter:
