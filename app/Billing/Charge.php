@@ -8,16 +8,12 @@ namespace App\Billing;
  */
 class Charge
 {
-    /** @var array */
-    private $data;
-
     /**
      * Charge constructor.
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct(private array $data)
     {
-        $this->data = $data;
     }
 
     public function amount()

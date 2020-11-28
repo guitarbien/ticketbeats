@@ -16,17 +16,13 @@ class SendAttendeeMessage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @var AttendeeMessage $attendeeMessage */
-    public $attendeeMessage;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(AttendeeMessage $attendeeMessage)
+    public function __construct(public AttendeeMessage $attendeeMessage)
     {
-        $this->attendeeMessage = $attendeeMessage;
     }
 
     /**

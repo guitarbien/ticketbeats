@@ -15,11 +15,8 @@ class ProcessPosterImage implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $concert;
-
-    public function __construct($concert)
+    public function __construct(public $concert)
     {
-        $this->concert = $concert;
     }
 
     public function handle()

@@ -8,18 +8,13 @@ namespace App;
  */
 class Reservation
 {
-    private $tickets;
-    private $email;
-
     /**
      * Reservation constructor.
      * @param $tickets
      * @param $email
      */
-    public function __construct($tickets, $email)
+    public function __construct(private $tickets, private $email)
     {
-        $this->tickets = $tickets;
-        $this->email   = $email;
     }
 
     /**

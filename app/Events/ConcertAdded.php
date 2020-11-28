@@ -10,14 +10,11 @@ class ConcertAdded
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $concert;
-
     /**
      * ConcertAdded constructor.
      * @param $concert
      */
-    public function __construct($concert)
+    public function __construct(public $concert)
     {
-        $this->concert = $concert;
     }
 }

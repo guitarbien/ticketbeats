@@ -15,15 +15,12 @@ class InvitationEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $invitation;
-
     /**
      * InvitationEmail constructor.
      * @param Invitation $invitation
      */
-    public function __construct(Invitation $invitation)
+    public function __construct(public Invitation $invitation)
     {
-        $this->invitation = $invitation;
     }
 
     /**
