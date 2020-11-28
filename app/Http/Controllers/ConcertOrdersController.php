@@ -15,15 +15,12 @@ use Illuminate\Support\Facades\Mail;
  */
 class ConcertOrdersController extends Controller
 {
-    private $paymentGateway;
-
     /**
      * ConcertOrdersController constructor.
      * @param PaymentGateway $paymentGateway
      */
-    public function __construct(PaymentGateway $paymentGateway)
+    public function __construct(private PaymentGateway $paymentGateway)
     {
-        $this->paymentGateway = $paymentGateway;
     }
 
     /**
@@ -47,10 +44,10 @@ class ConcertOrdersController extends Controller
             Mail::to($order->email)->send(new OrderConfirmationEmail($order));
 
             return response()->json($order, 201);
-        } catch (PaymentFailedException $e) {
+        } catch (PaymentFailedException) {
             $reservation->cancel();
             return response()->json([], 422);
-        } catch (NotEnoughTicketsException $e) {
+        } catch (NotEnoughTicketsException) {
             return response()->json([], 422);
         }
     }

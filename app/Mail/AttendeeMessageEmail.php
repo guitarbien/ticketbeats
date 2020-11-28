@@ -15,16 +15,13 @@ class AttendeeMessageEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $attendeeMessage;
-
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(AttendeeMessage $attendeeMessage)
+    public function __construct(public AttendeeMessage $attendeeMessage)
     {
-        $this->attendeeMessage = $attendeeMessage;
     }
 
     /**

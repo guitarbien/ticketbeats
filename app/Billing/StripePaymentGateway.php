@@ -12,15 +12,12 @@ class StripePaymentGateway implements PaymentGateway
 {
     const TEST_CARD_NUMBER = '4242424242424242';
 
-    private $apiKey;
-
     /**
      * StripePaymentGateway constructor.
      * @param $apiKey
      */
-    public function __construct($apiKey)
+    public function __construct(private $apiKey)
     {
-        $this->apiKey = $apiKey;
     }
 
     /**
@@ -47,7 +44,7 @@ class StripePaymentGateway implements PaymentGateway
                 'card_last_four' => $stripeCharge['source']['last4'],
                 'destination'    => $destinationAccountId,
             ]);
-        } catch (InvalidRequest $e) {
+        } catch (InvalidRequest) {
             throw new PaymentFailedException;
         }
     }
