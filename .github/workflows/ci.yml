@@ -73,9 +73,7 @@ jobs:
           APP_ENV: testing
 
       - name: Prepare the application
-        run: |
-          php -r "copy('.env.example', '.env.testing');"
-          php artisan key:generate
+        run: php -r "copy('.env.example', '.env.testing');"
 
       - name: Package npm for production
         run: npm run prod
