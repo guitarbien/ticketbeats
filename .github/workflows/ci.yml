@@ -74,7 +74,7 @@ jobs:
 
       - name: Prepare the application
         run: |
-          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php -r "copy('.env.example', '.env.testing');"
           php artisan key:generate
 
       - name: Package npm for production
