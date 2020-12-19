@@ -80,7 +80,7 @@ jobs:
 
       - name: run phpunit
         run: |
-          ./vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml --coverage-html report/
+          ./vendor/bin/phpunit --exclude-group none --coverage-text --coverage-clover build/logs/clover.xml --coverage-html report/
           ./cc-test-reporter after-build --id 7b746575241d81908d30ac64ff990607172b06d40017cda9f47dde08b1a42402
         env:
           DB_CONNECTION: pgsql
@@ -88,6 +88,8 @@ jobs:
           DB_DATABASE: test
           DB_USERNAME: postgres
           DB_PASSWORD: postgres
+          STRIPE_SECRET : ${{ secrets.CI_STRIPE_SECRET }}
+          STRIPE_TEST_PROMOTER_ID : ${{ secrets.CI_STRIPE_TEST_PROMOTER_ID }}
 
       - name: persist testing result
         uses: actions/upload-artifact@v2
