@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Jobs;
 
+use App\Concert;
 use App\Jobs\ProcessPosterImage;
-use ConcertFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * Class ProcessPosterImageTest
@@ -24,14 +24,14 @@ class ProcessPosterImageTest extends TestCase
             file_get_contents(base_path('tests/__fixtures__/full-size-poster.png'))
         );
 
-        $concert = ConcertFactory::createUnpublished([
+        $concert = Concert::factory()->unpublished()->create([
             'poster_image_path' => 'posters/example-poster.png',
         ]);
 
         ProcessPosterImage::dispatch($concert);
 
         $resizedImage = Storage::disk('public')->get('posters/example-poster.png');
-        list($width, $height) = getimagesizefromstring($resizedImage);
+        [$width, $height] = getimagesizefromstring($resizedImage);
 
         static::assertEquals(600, $width);
         // 600/(8.5/11) = 776
@@ -50,7 +50,7 @@ class ProcessPosterImageTest extends TestCase
             file_get_contents(base_path('tests/__fixtures__/small-unoptimized-poster.png'))
         );
 
-        $concert = ConcertFactory::createUnpublished([
+        $concert = Concert::factory()->unpublished()->create([
             'poster_image_path' => 'posters/example-poster.png',
         ]);
 

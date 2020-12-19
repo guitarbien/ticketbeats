@@ -6,6 +6,10 @@ use App\HashidsTicketCodeGenerator;
 use App\Ticket;
 use Tests\TestCase;
 
+/**
+ * Class HashidsTicketCodeGeneratorTest
+ * @package Tests\Unit\Billing
+ */
 class HashidsTicketCodeGeneratorTest extends TestCase
 {
     public function test_票券代碼至少為六位數()

@@ -7,6 +7,10 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
+/**
+ * Class PromoterLoginTest
+ * @package Tests\Feature\Backstage
+ */
 class PromoterLoginTest extends TestCase
 {
     use DatabaseMigrations;
@@ -15,7 +19,7 @@ class PromoterLoginTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'email'    => 'jane@example.com',
             'password' => bcrypt('super-secret-password'),
         ]);
@@ -34,7 +38,7 @@ class PromoterLoginTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'email'    => 'jane@example.com',
             'password' => bcrypt('super-secret-password'),
         ]);
@@ -69,7 +73,7 @@ class PromoterLoginTest extends TestCase
 
     public function test_登出目前的使用者()
     {
-        Auth::login(factory(User::class)->create());
+        Auth::login(User::factory()->create());
 
         $response = $this->post('/logout');
 

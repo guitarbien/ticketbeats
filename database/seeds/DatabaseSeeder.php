@@ -1,10 +1,16 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Concert;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
+/**
+ * Class DatabaseSeeder
+ * @package Database\Seeders
+ */
 class DatabaseSeeder extends Seeder
 {
     /**

@@ -2,12 +2,17 @@
 
 namespace Tests\Unit\Listeners;
 
+use App\Concert;
 use App\Events\ConcertAdded;
 use App\Jobs\ProcessPosterImage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * Class SchedulePosterImageProcessingTest
+ * @package Tests\Unit\Listeners
+ */
 class SchedulePosterImageProcessingTest extends TestCase
 {
     use RefreshDatabase;
@@ -16,7 +21,7 @@ class SchedulePosterImageProcessingTest extends TestCase
     {
         Queue::fake();
 
-        $concert = \ConcertFactory::createUnpublished([
+        $concert = Concert::factory()->unpublished()->create([
             'poster_image_path' => 'posters/example-poster.png',
         ]);
 
@@ -32,7 +37,7 @@ class SchedulePosterImageProcessingTest extends TestCase
     {
         Queue::fake();
 
-        $concert = \ConcertFactory::createUnpublished([
+        $concert = Concert::factory()->unpublished()->create([
             'poster_image_path' => null,
         ]);
 

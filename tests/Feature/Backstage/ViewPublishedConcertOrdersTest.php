@@ -4,20 +4,22 @@ namespace Tests\Feature\Backstage;
 
 use App\User;
 use Carbon\Carbon;
-use ConcertFactory;
-use OrderFactory;
+use Database\Factories\ConcertFactory;
+use Database\Factories\OrderFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
+/**
+ * Class ViewPublishedConcertOrdersTest
+ * @package Tests\Feature\Backstage
+ */
 class ViewPublishedConcertOrdersTest extends TestCase
 {
     use DatabaseMigrations;
 
     public function test_管理者可以看到自己已發佈的音樂會的訂單()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $concert = ConcertFactory::createPublished(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)->get("/backstage/published-concerts/{$concert->id}/orders");
@@ -29,7 +31,7 @@ class ViewPublishedConcertOrdersTest extends TestCase
 
     public function test_管理者可以看到最多十筆自己已發佈的音樂會的訂單()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $concert = ConcertFactory::createPublished(['user_id' => $user->id]);
 
         $oldOrder = OrderFactory::createForConcert($concert, ['created_at' => Carbon::parse('11 days ago')]);
@@ -63,7 +65,7 @@ class ViewPublishedConcertOrdersTest extends TestCase
 
     public function test_管理者不能看尚未發佈的音樂會的訂單()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $concert = ConcertFactory::createUnpublished(['user_id' => $user->id]);
 
@@ -73,8 +75,8 @@ class ViewPublishedConcertOrdersTest extends TestCase
 
     public function test_管理者不能看別人已發佈的音樂會的訂單()
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
 
         $concert = ConcertFactory::createPublished(['user_id' => $otherUser->id]);
 

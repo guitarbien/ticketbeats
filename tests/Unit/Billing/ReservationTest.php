@@ -7,9 +7,13 @@ use App\Concert;
 use App\Reservation;
 use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use \Mockery;
+use Mockery;
 use Tests\TestCase;
 
+/**
+ * Class ReservationTest
+ * @package Tests\Unit\Billing
+ */
 class ReservationTest extends TestCase
 {
     use DatabaseMigrations;
@@ -66,8 +70,8 @@ class ReservationTest extends TestCase
 
     public function test_完成保留操作()
     {
-        $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 1200]);
-        $tickets = factory(Ticket::class, 3)->create(['concert_id' => $concert->id]);
+        $concert = Concert::factory()->published()->create(['ticket_price' => 1200]);
+        $tickets = Ticket::factory()->count(3)->create(['concert_id' => $concert->id]);
 
         $reservation = new Reservation($tickets, 'john@example.com');
 

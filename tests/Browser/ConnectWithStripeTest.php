@@ -21,7 +21,7 @@ class ConnectWithStripeTest extends DuskTestCase
      */
     public function test_可以成功連結stripe_account()
     {
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'stripe_account_id'   => null,
             'stripe_access_token' => null,
         ]);

@@ -7,6 +7,10 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
+/**
+ * Class ViewConcertListingTest
+ * @package Tests\Feature
+ */
 class ViewConcertListingTest extends TestCase
 {
     // use migration trait
@@ -16,7 +20,7 @@ class ViewConcertListingTest extends TestCase
     {
         // Arrange
         // Create a concert
-        $concert = factory(Concert::class)->states('published')->create([
+        $concert = Concert::factory()->published()->create([
             'title'                  => 'The Red Chord',
             'subtitle'               => 'with Animosity and Lethargy',
             'date'                   => Carbon::parse('December 13, 2016 8:00pm'),
@@ -49,7 +53,7 @@ class ViewConcertListingTest extends TestCase
 
     public function test_若音樂會尚未發佈則使用者只能看到404頁面()
     {
-        $concert = factory(Concert::class)->states('unpublished')->create();
+        $concert = Concert::factory()->unpublished()->create();
 
         $response = $this->get('/concerts/' . $concert->id);
 

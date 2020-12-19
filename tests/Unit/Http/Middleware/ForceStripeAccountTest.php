@@ -4,12 +4,11 @@ namespace Tests\Unit\Http\Middleware;
 
 use App\Http\Middleware\ForceStripeAccount;
 use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
  * Class ForceStripeAccountTest
@@ -22,7 +21,7 @@ class ForceStripeAccountTest extends TestCase
     public function test_使用者必須和stripe_account綁定()
     {
         // 同 ->actingAs($user)，模擬某個使用者的操作
-        $this->be(factory(User::class)->create([
+        $this->be(User::factory()->create([
             'stripe_account_id' => null,
         ]));
 
@@ -38,7 +37,7 @@ class ForceStripeAccountTest extends TestCase
 
     public function test_使用者若已經綁定stripe_account則可以繼續操作()
     {
-        $this->be(factory(User::class)->create([
+        $this->be(User::factory()->create([
             'stripe_account_id' => 'test_stripe_account_1234',
         ]));
 

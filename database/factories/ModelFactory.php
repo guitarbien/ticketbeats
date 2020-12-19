@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\factories;
+
 use Carbon\Carbon;
 
 /*

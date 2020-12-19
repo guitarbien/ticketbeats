@@ -9,11 +9,14 @@ use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
 use App\Mail\OrderConfirmationEmail;
 use App\User;
-use ConcertFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
+/**
+ * Class PurchaseTicketsTest
+ * @package Tests\Feature
+ */
 class PurchaseTicketsTest extends TestCase
 {
     use DatabaseMigrations;
@@ -70,10 +73,10 @@ class PurchaseTicketsTest extends TestCase
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
 
         // Arrange
-        $user = factory(User::class)->create(['stripe_account_id' => 'test_acct_1234']);
+        $user = User::factory()->create(['stripe_account_id' => 'test_acct_1234']);
 
         // Create a concert
-        $concert = ConcertFactory::createPublished([
+        $concert = \Database\Factories\ConcertFactory::createPublished([
             'ticket_price'    => 3250,
             'ticket_quantity' => 3,
             'user_id'         => $user,
@@ -120,7 +123,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_不能購買尚未發佈的票()
     {
-        $concert = factory(Concert::class)->states('unpublished')->create(['ticket_price' => 3250, 'ticket_quantity' => 3]);
+        $concert = Concert::factory()->unpublished()->create(['ticket_price' => 3250, 'ticket_quantity' => 3]);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
@@ -135,7 +138,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_不能超量購買()
     {
-        $concert = ConcertFactory::createPublished(['ticket_quantity' => 50]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_quantity' => 50]);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
@@ -153,7 +156,7 @@ class PurchaseTicketsTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $concert = ConcertFactory::createPublished(['ticket_price' => 1200, 'ticket_quantity' => 3]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_price' => 1200, 'ticket_quantity' => 3]);
 
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use($concert) {
             $this->orderTickets($concert, [
@@ -180,7 +183,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_若付款失敗則不會產生訂單()
     {
-        $concert = ConcertFactory::createPublished(['ticket_price' => 3250, 'ticket_quantity' => 3]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_price' => 3250, 'ticket_quantity' => 3]);
 
         $this->orderTickets($concert, [
             'email'           => 'john@example.com',
@@ -196,7 +199,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_下單時email為必填()
     {
-        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_quantity' => 3]);
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 3,
@@ -208,7 +211,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_驗證email格式()
     {
-        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_quantity' => 3]);
 
         $this->orderTickets($concert, [
             'email'           => 'error-email-format',
@@ -221,7 +224,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_票券數量為必填()
     {
-        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_quantity' => 3]);
 
         $this->orderTickets($concert, [
             'email'         => 'error-email-format',
@@ -233,7 +236,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_票券數量至少要為1()
     {
-        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_quantity' => 3]);
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 0,
@@ -246,7 +249,7 @@ class PurchaseTicketsTest extends TestCase
 
     public function test_token為必填()
     {
-        $concert = ConcertFactory::createPublished(['ticket_quantity' => 3]);
+        $concert = \Database\Factories\ConcertFactory::createPublished(['ticket_quantity' => 3]);
 
         $this->orderTickets($concert, [
             'ticket_quantity' => 3,

@@ -1,11 +1,16 @@
 <?php
 namespace Tests\Feature\Backstage;
-use App\User;
-use App\Concert;
-use Carbon\Carbon;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
+use App\Concert;
+use App\User;
+use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
+
+/**
+ * Class EditConcertTest
+ * @package Tests\Feature\Backstage
+ */
 class EditConcertTest extends TestCase
 {
     use DatabaseMigrations;
@@ -49,8 +54,8 @@ class EditConcertTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create(['user_id' => $user->id]);
 
         static::assertFalse($concert->isPublished());
 
@@ -62,8 +67,8 @@ class EditConcertTest extends TestCase
 
     public function test_管理者不能看到自己已經發佈的音樂會修改頁()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->states('published')->create(['user_id' => $user->id]);
+        $user = User::factory()->create();
+        $concert = Concert::factory()->published()->create(['user_id' => $user->id]);
 
         static::assertTrue($concert->isPublished());
 
@@ -73,9 +78,9 @@ class EditConcertTest extends TestCase
 
     public function test_管理者不能看到別人的音樂會修改頁()
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
-        $concert = factory(Concert::class)->create(['user_id' => $otherUser->id]);
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $concert = Concert::factory()->create(['user_id' => $otherUser->id]);
 
         $response = $this->actingAs($user)->get("/backstage/concerts/{$concert->id}/edit");
         $response->assertStatus(404);
@@ -83,15 +88,15 @@ class EditConcertTest extends TestCase
 
     public function test_管理者不能看到不存在的音樂會修改頁()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->get("/backstage/concerts/999/edit");
         $response->assertStatus(404);
     }
 
     public function test_一般使用者要看任何音樂會修改頁都必須導到登入頁()
     {
-        $otherUser = factory(User::class)->create();
-        $concert = factory(Concert::class)->create(['user_id' => $otherUser->id]);
+        $otherUser = User::factory()->create();
+        $concert = Concert::factory()->create(['user_id' => $otherUser->id]);
         $response = $this->get("/backstage/concerts/{$concert->id}/edit");
         $response->assertStatus(302);
         $response->assertRedirect('/login');
@@ -107,9 +112,9 @@ class EditConcertTest extends TestCase
     public function test_管理者可以編輯自己尚未發布的音樂會()
     {
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $concert = factory(Concert::class)->create([
+        $concert = Concert::factory()->create([
             'user_id'                => $user->id,
             'title'                  => 'old title',
             'subtitle'               => 'old subtitle',
@@ -159,10 +164,10 @@ class EditConcertTest extends TestCase
 
     public function test_管理者不能編輯別人尚未發布的音樂會()
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
 
-        $concert = factory(Concert::class)->create($this->oldAttributes([
+        $concert = Concert::factory()->create($this->oldAttributes([
             'user_id' => $otherUser->id,
         ]));
 
@@ -182,9 +187,9 @@ class EditConcertTest extends TestCase
 
     public function test_管理者不能編輯已經發布的音樂會()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $concert = factory(Concert::class)->states('published')->create($this->oldAttributes([
+        $concert = Concert::factory()->published()->create($this->oldAttributes([
             'user_id' => $user->id,
         ]));
 
@@ -204,9 +209,9 @@ class EditConcertTest extends TestCase
 
     public function test_一般使用者不能編輯音樂會()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $concert = factory(Concert::class)->create($this->oldAttributes([
+        $concert = Concert::factory()->create($this->oldAttributes([
             'user_id' => $user->id,
         ]));
 
@@ -226,9 +231,9 @@ class EditConcertTest extends TestCase
 
     public function test_title欄位為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
-        $concert = factory(Concert::class)->create([
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'title'   => 'old title',
         ]);
@@ -248,8 +253,8 @@ class EditConcertTest extends TestCase
 
     public function test_subtitle欄位為非必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'subtitle' => 'Old subtitle',
         ]);
@@ -265,8 +270,8 @@ class EditConcertTest extends TestCase
 
     public function test_additional_information欄位為非必填()
     {$this->withoutExceptionHandling();
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'additional_information' => 'Old additional information',
         ]);
@@ -282,8 +287,8 @@ class EditConcertTest extends TestCase
 
     public function test_date欄位為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
@@ -300,8 +305,8 @@ class EditConcertTest extends TestCase
 
     public function test_date欄位格式必須為日期()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
@@ -318,8 +323,8 @@ class EditConcertTest extends TestCase
 
     public function test_時間為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
@@ -336,8 +341,8 @@ class EditConcertTest extends TestCase
 
     public function test_time欄位格式必須為時間()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'date' => Carbon::parse('2018-01-01 8:00pm'),
         ]);
@@ -354,8 +359,8 @@ class EditConcertTest extends TestCase
 
     public function test_venue為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'venue' => 'Old venue',
         ]);
@@ -372,8 +377,8 @@ class EditConcertTest extends TestCase
 
     public function test_venue_address為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'venue_address' => 'Old address',
         ]);
@@ -390,8 +395,8 @@ class EditConcertTest extends TestCase
 
     public function test_city為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'city' => 'Old city',
         ]);
@@ -408,8 +413,8 @@ class EditConcertTest extends TestCase
 
     public function test_state為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'state' => 'Old state',
         ]);
@@ -426,8 +431,8 @@ class EditConcertTest extends TestCase
 
     public function test_zip為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'zip' => 'Old zip',
         ]);
@@ -444,8 +449,8 @@ class EditConcertTest extends TestCase
 
     public function test_ticket_price為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'ticket_price' => 5250,
         ]);
@@ -462,8 +467,8 @@ class EditConcertTest extends TestCase
 
     public function test_ticket_price必須為數字()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'ticket_price' => 5250,
         ]);
@@ -480,8 +485,8 @@ class EditConcertTest extends TestCase
 
     public function test_ticket_price至少要為5()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'ticket_price' => 5250,
         ]);
@@ -498,8 +503,8 @@ class EditConcertTest extends TestCase
 
     public function test_ticket_quantity為必填()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'ticket_quantity' => 5,
         ]);
@@ -518,8 +523,8 @@ class EditConcertTest extends TestCase
 
     public function test_ticket_quantity必須為數字()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'ticket_quantity' => 5,
         ]);
@@ -538,8 +543,8 @@ class EditConcertTest extends TestCase
 
     public function test_ticket_quantity至少要為1()
     {
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->create([
             'user_id' => $user->id,
             'ticket_quantity' => 5,
         ]);

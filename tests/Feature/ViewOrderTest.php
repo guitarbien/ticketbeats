@@ -9,6 +9,10 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
+/**
+ * Class ViewOrderTest
+ * @package Tests\Feature
+ */
 class ViewOrderTest extends TestCase
 {
     use DatabaseMigrations;
@@ -16,7 +20,7 @@ class ViewOrderTest extends TestCase
     public function test_使用者可以查看訂單確認頁()
     {
         // create a concert
-        $concert = factory(Concert::class)->create([
+        $concert = Concert::factory()->create([
             'title'         => 'The Red Chord',
             'subtitle'      => 'with Animosity and Lethargy',
             'date'          => Carbon::parse('March 12, 2017 8:00pm'),
@@ -29,19 +33,19 @@ class ViewOrderTest extends TestCase
         ]);
 
         // create a order
-        $order = factory(Order::class)->create([
+        $order = Order::factory()->create([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
             'card_last_four'      => '1881',
             'amount'              => 8500,
             'email'               => 'john@example.com',
         ]);
         // create tickets
-        $ticketA = factory(Ticket::class)->create([
+        $ticketA = Ticket::factory()->create([
             'concert_id' => $concert->id,
             'order_id'   => $order->id,
             'code'       => 'TICKETCODE123',
         ]);
-        $ticketB = factory(Ticket::class)->create([
+        $ticketB = Ticket::factory()->create([
             'concert_id' => $concert->id,
             'order_id'   => $order->id,
             'code'       => 'TICKETCODE456',

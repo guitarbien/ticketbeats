@@ -6,11 +6,15 @@ use App\Mail\OrderConfirmationEmail;
 use App\Order;
 use Tests\TestCase;
 
+/**
+ * Class OrderConfirmationEmailTest
+ * @package Tests\Unit\Mail
+ */
 class OrderConfirmationEmailTest extends TestCase
 {
     public function test_email內含有連到確認頁的連結()
     {
-        $order = factory(Order::class)->make([
+        $order = Order::factory()->make([
             'confirmation_number' => 'ORDERCONFIRMATION1234'
         ]);
 
@@ -27,7 +31,7 @@ class OrderConfirmationEmailTest extends TestCase
 
     public function test_email要有主旨()
     {
-        $order = factory(Order::class)->make();
+        $order = Order::factory()->make();
         $email = new OrderConfirmationEmail($order);
         static::assertEquals('Your TicketBeats Order', $email->build()->subject);
     }

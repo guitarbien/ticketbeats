@@ -2,14 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Invitation;
 use App\Facades\InvitationCode;
+use App\Invitation;
 use App\Mail\InvitationEmail;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * Class InvitePromoterTest
+ * @package Tests\Feature
+ */
 class InvitePromoterTest extends TestCase
 {
     use RefreshDatabase;

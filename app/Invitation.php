@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Mail\InvitationEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Mail;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Mail;
  */
 class Invitation extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     /**

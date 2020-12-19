@@ -5,6 +5,10 @@ namespace Tests\Unit;
 use App\RandomOrderConfirmationNumberGenerator;
 use Tests\TestCase;
 
+/**
+ * Class RandomOrderConfirmationNumberGeneratorTest
+ * @package Tests\Unit
+ */
 class RandomOrderConfirmationNumberGeneratorTest extends TestCase
 {
     // Must be unique

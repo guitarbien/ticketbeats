@@ -4,6 +4,7 @@ namespace App;
 
 use App\Billing\Charge;
 use App\Facades\OrderConfirmationNumber;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Order extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
 
     public static function forTickets($tickets, $email, Charge $charge): Order

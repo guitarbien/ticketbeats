@@ -5,6 +5,10 @@ namespace Tests\Unit\Billing;
 use App\Billing\FakePaymentGateway;
 use Tests\TestCase;
 
+/**
+ * Class FakePaymentGatewayTest
+ * @package Tests\Unit\Billing
+ */
 class FakePaymentGatewayTest extends TestCase
 {
     use PaymentGatewayContractTests;

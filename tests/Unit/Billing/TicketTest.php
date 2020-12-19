@@ -2,21 +2,23 @@
 
 namespace Tests\Unit\Billing;
 
-use App\Concert;
 use App\Facades\TicketCode;
 use App\Order;
 use App\Ticket;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
+/**
+ * Class TicketTest
+ * @package Tests\Unit\Billing
+ */
 class TicketTest extends TestCase
 {
     use DatabaseMigrations;
 
     public function test_票券能被保留()
     {
-        $ticket = factory(Ticket::class)->create();
+        $ticket = Ticket::factory()->create();
         static::assertNull($ticket->reserved_at);
 
         $ticket->reserve();
@@ -26,7 +28,7 @@ class TicketTest extends TestCase
 
     public function test_票券可以被釋出()
     {
-        $ticket = factory(Ticket::class)->states('reserved')->create();
+        $ticket = Ticket::factory()->reserved()->create();
         static::assertNotNull($ticket->reserved_at);
 
         $ticket->release();
@@ -36,8 +38,8 @@ class TicketTest extends TestCase
 
     public function test_票券可以被宣告為屬於某張訂單()
     {
-        $order  = factory(Order::class)->create();
-        $ticket = factory(Ticket::class)->create(['code' => null]);
+        $order  = Order::factory()->create();
+        $ticket = Ticket::factory()->create(['code' => null]);
 
         TicketCode::shouldReceive('generateFor')->with($ticket)->andReturn('TICKETCODE1');
 

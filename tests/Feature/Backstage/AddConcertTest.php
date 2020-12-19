@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
+/**
+ * Class AddConcertTest
+ * @package Tests\Feature\Backstage
+ */
 class AddConcertTest extends TestCase
 {
     use DatabaseMigrations;
@@ -36,7 +40,7 @@ class AddConcertTest extends TestCase
 
     public function test_管理者可以看到新增音樂會的表單新增頁()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/backstage/concerts/new');
 
@@ -55,7 +59,7 @@ class AddConcertTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/backstage/concerts', [
             'title'                  => 'No Warning',
@@ -106,7 +110,7 @@ class AddConcertTest extends TestCase
 
     public function test_title欄位為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'title' => ''
@@ -122,7 +126,7 @@ class AddConcertTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
             'subtitle' => ''
@@ -143,7 +147,7 @@ class AddConcertTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
             'additional_information' => '',
@@ -162,7 +166,7 @@ class AddConcertTest extends TestCase
 
     public function test_date欄位為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'date' => '',
@@ -175,7 +179,7 @@ class AddConcertTest extends TestCase
 
     public function test_date欄位格式必須為日期()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'date' => 'not a date',
@@ -188,7 +192,7 @@ class AddConcertTest extends TestCase
 
     public function test_時間為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'time' => '',
@@ -201,7 +205,7 @@ class AddConcertTest extends TestCase
 
     public function test_time欄位格式必須為時間()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'time' => 'not-a-time',
@@ -214,7 +218,7 @@ class AddConcertTest extends TestCase
 
     public function test_venue為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'venue' => '',
@@ -227,7 +231,7 @@ class AddConcertTest extends TestCase
 
     public function test_venue_address為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'venue_address' => '',
@@ -240,7 +244,7 @@ class AddConcertTest extends TestCase
 
     public function test_city為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'city' => '',
         ]));
@@ -252,7 +256,7 @@ class AddConcertTest extends TestCase
 
     public function test_state為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'state' => '',
@@ -265,7 +269,7 @@ class AddConcertTest extends TestCase
 
     public function test_zip為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'zip' => '',
@@ -278,7 +282,7 @@ class AddConcertTest extends TestCase
 
     public function test_ticket_price為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'ticket_price' => '',
@@ -291,7 +295,7 @@ class AddConcertTest extends TestCase
 
     public function test_ticket_price必須為數字()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'ticket_price' => 'not a price',
@@ -304,7 +308,7 @@ class AddConcertTest extends TestCase
 
     public function test_ticket_price至少要為5()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'ticket_price' => '4.99',
@@ -317,7 +321,7 @@ class AddConcertTest extends TestCase
 
     public function test_ticket_quantity為必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'ticket_quantity' => '',
@@ -330,7 +334,7 @@ class AddConcertTest extends TestCase
 
     public function test_ticket_quantity必須是數字()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'ticket_quantity' => 'not a number',
@@ -343,7 +347,7 @@ class AddConcertTest extends TestCase
 
     public function test_ticket_quantity至少要為1()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
             'ticket_quantity' => '0',
@@ -359,7 +363,7 @@ class AddConcertTest extends TestCase
         Event::fake([ConcertAdded::class]);
         Storage::fake('public');
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $file = File::image('concert-poster.png', 850, 1100);
         $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
@@ -382,7 +386,7 @@ class AddConcertTest extends TestCase
     public function test_poster_image必須要是image()
     {
         Storage::fake('public');
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $file = File::create('not-a-poster.pdf');
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
@@ -397,7 +401,7 @@ class AddConcertTest extends TestCase
     public function test_poster_image寬度必須大於600px()
     {
         Storage::fake('public');
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $file = File::image('poster.png', 599, 775);
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
@@ -412,7 +416,7 @@ class AddConcertTest extends TestCase
     public function test_poster_image要符合某個長寬比例()
     {
         Storage::fake('public');
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $file = File::image('poster.png', 851, 1100);
 
         $response = $this->actingAs($user)->from('/backstage/concerts/new')->post('/backstage/concerts', $this->validParams([
@@ -426,7 +430,7 @@ class AddConcertTest extends TestCase
 
     public function test_poster_image為非必填()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
             'poster_image' => null,
@@ -445,7 +449,7 @@ class AddConcertTest extends TestCase
 
         Event::fake([ConcertAdded::class]);
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams());
 

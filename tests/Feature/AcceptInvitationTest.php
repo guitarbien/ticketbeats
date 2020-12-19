@@ -2,13 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Invitation;
 use App\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
-use App\Invitation;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
+/**
+ * Class AcceptInvitationTest
+ * @package Tests\Feature
+ */
 class AcceptInvitationTest extends TestCase
 {
     use RefreshDatabase;
@@ -17,7 +20,7 @@ class AcceptInvitationTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $invitation = factory(Invitation::class)->create([
+        $invitation = Invitation::factory()->create([
             'user_id' => null,
             'code'    => 'TESTCODE1234',
         ]);
@@ -31,8 +34,8 @@ class AcceptInvitationTest extends TestCase
 
     public function test_查看一個已使用的邀請碼會得到404()
     {
-        factory(Invitation::class)->create([
-            'user_id' => factory(User::class)->create(),
+        Invitation::factory()->create([
+            'user_id' => User::factory()->create(),
             'code'    => 'TESTCODE1234',
         ]);
 
@@ -52,7 +55,7 @@ class AcceptInvitationTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $invitation = factory(Invitation::class)->create([
+        $invitation = Invitation::factory()->create([
             'user_id' => null,
             'code'    => 'TESTCODE1234',
         ]);
@@ -76,8 +79,8 @@ class AcceptInvitationTest extends TestCase
 
     public function test_使用已註冊過的邀請碼會得到404()
     {
-        factory(Invitation::class)->create([
-            'user_id' => factory(User::class)->create(),
+        Invitation::factory()->create([
+            'user_id' => User::factory()->create(),
             'code'    => 'TESTCODE1234',
         ]);
 
@@ -107,7 +110,7 @@ class AcceptInvitationTest extends TestCase
 
     public function test_email為必填()
     {
-        factory(Invitation::class)->create([
+        Invitation::factory()->create([
             'user_id' => null,
             'code'    => 'TESTCODE1234',
         ]);
@@ -125,7 +128,7 @@ class AcceptInvitationTest extends TestCase
 
     public function test_email格式正確()
     {
-        factory(Invitation::class)->create([
+        Invitation::factory()->create([
             'user_id' => null,
             'code'    => 'TESTCODE1234',
         ]);
@@ -143,10 +146,10 @@ class AcceptInvitationTest extends TestCase
 
     public function test_email必須為唯一值()
     {
-        factory(User::class)->create(['email' => 'john@example.com']);
+        User::factory()->create(['email' => 'john@example.com']);
         static::assertEquals(1, User::count());
 
-        factory(Invitation::class)->create([
+        Invitation::factory()->create([
             'user_id' => null,
             'code'    => 'TESTCODE1234',
         ]);
@@ -164,7 +167,7 @@ class AcceptInvitationTest extends TestCase
 
     public function test_password為必填()
     {
-        factory(Invitation::class)->create([
+        Invitation::factory()->create([
             'user_id' => null,
             'code'    => 'TESTCODE1234',
         ]);

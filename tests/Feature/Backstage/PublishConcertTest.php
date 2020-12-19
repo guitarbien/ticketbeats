@@ -4,10 +4,13 @@ namespace Feature\Backstage;
 
 use App\Concert;
 use App\User;
-use ConcertFactory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
+/**
+ * Class PublishConcertTest
+ * @package Feature\Backstage
+ */
 class PublishConcertTest extends TestCase
 {
     use DatabaseMigrations;
@@ -16,8 +19,8 @@ class PublishConcertTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
-        $concert = factory(Concert::class)->states('unpublished')->create([
+        $user = User::factory()->create();
+        $concert = Concert::factory()->unpublished()->create([
             'user_id' => $user->id,
             'ticket_quantity' => 3,
         ]);
@@ -34,8 +37,8 @@ class PublishConcertTest extends TestCase
 
     public function test_一場音樂會只能被發佈一次()
     {
-        $user = factory(User::class)->create();
-        $concert = ConcertFactory::createPublished([
+        $user = User::factory()->create();
+        $concert = \Database\Factories\ConcertFactory::createPublished([
             'user_id' => $user->id,
             'ticket_quantity' => 3,
         ]);
@@ -50,9 +53,9 @@ class PublishConcertTest extends TestCase
 
     public function test_管理者不能發佈別人的音樂會()
     {
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
-        $concert = factory(Concert::class)->states('unpublished')->create([
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $concert = Concert::factory()->unpublished()->create([
             'user_id' => $otherUser->id,
             'ticket_quantity' => 3,
         ]);
@@ -70,7 +73,7 @@ class PublishConcertTest extends TestCase
 
     public function test_一般使用者不能發佈音樂會()
     {
-        $concert = factory(Concert::class)->states('unpublished')->create([
+        $concert = Concert::factory()->unpublished()->create([
             'ticket_quantity' => 3,
         ]);
 
@@ -87,7 +90,7 @@ class PublishConcertTest extends TestCase
 
     public function test_不存在的音樂會不能被發佈()
     {
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/backstage/published-concerts', [
             'concert_id' => 999,

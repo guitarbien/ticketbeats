@@ -6,11 +6,14 @@ use App\AttendeeMessage;
 use App\Concert;
 use App\Jobs\SendAttendeeMessage;
 use App\User;
-use ConcertFactory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
+/**
+ * Class MessageAttendeesTest
+ * @package Tests\Feature\Backstage
+ */
 class MessageAttendeesTest extends TestCase
 {
     use DatabaseMigrations;
@@ -19,8 +22,8 @@ class MessageAttendeesTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
-        $concert = ConcertFactory::createPublished([
+        $user = User::factory()->create();
+        $concert = \Database\Factories\ConcertFactory::createPublished([
             'user_id' => $user->id,
         ]);
 
@@ -33,9 +36,9 @@ class MessageAttendeesTest extends TestCase
 
     public function test_管理者不能看到任何別的管理者的音樂會訊息()
     {
-        $user = factory(User::class)->create();
-        $concert = ConcertFactory::createPublished([
-            'user_id' => factory(User::class)->create(),
+        $user = User::factory()->create();
+        $concert = \Database\Factories\ConcertFactory::createPublished([
+            'user_id' => User::factory()->create(),
         ]);
 
         $response = $this->actingAs($user)->get("/backstage/concerts/{$concert->id}/messages/new");
@@ -45,7 +48,7 @@ class MessageAttendeesTest extends TestCase
 
     public function test_消費者不能進入看到任何音樂會訊息()
     {
-        $concert = ConcertFactory::createPublished();
+        $concert = \Database\Factories\ConcertFactory::createPublished();
         $response = $this->get("/backstage/concerts/{$concert->id}/messages/new");
         $response->assertRedirect('/login');
     }
@@ -57,10 +60,10 @@ class MessageAttendeesTest extends TestCase
         Queue::fake();
 
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         /** @var Concert $concert */
-        $concert = ConcertFactory::createPublished([
+        $concert = \Database\Factories\ConcertFactory::createPublished([
             'user_id' => $user->id
         ]);
 
@@ -85,10 +88,10 @@ class MessageAttendeesTest extends TestCase
     public function test_管理者不能發訊息到別人的音樂會()
     {
         Queue::fake();
-        $user = factory(User::class)->create();
-        $otherUser = factory(User::class)->create();
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
 
-        $concert = ConcertFactory::createPublished([
+        $concert = \Database\Factories\ConcertFactory::createPublished([
             'user_id' => $otherUser->id,
         ]);
 
@@ -105,7 +108,7 @@ class MessageAttendeesTest extends TestCase
     public function test_一般使用者不能發訊息到任何一個音樂會()
     {
         Queue::fake();
-        $concert = ConcertFactory::createPublished();
+        $concert = \Database\Factories\ConcertFactory::createPublished();
 
         $response = $this->post("/backstage/concerts/{$concert->id}/messages", [
             'subject' => 'My subject',
@@ -121,10 +124,10 @@ class MessageAttendeesTest extends TestCase
     {
         Queue::fake();
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         /** @var Concert $concert */
-        $concert = ConcertFactory::createPublished([
+        $concert = \Database\Factories\ConcertFactory::createPublished([
             'user_id' => $user->id,
         ]);
 
@@ -145,10 +148,10 @@ class MessageAttendeesTest extends TestCase
     {
         Queue::fake();
         /** @var User $user */
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
 
         /** @var Concert $concert */
-        $concert = ConcertFactory::createPublished([
+        $concert = \Database\Factories\ConcertFactory::createPublished([
             'user_id' => $user->id,
         ]);
 

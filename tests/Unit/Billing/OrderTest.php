@@ -3,15 +3,17 @@
 namespace Tests\Unit\Billing;
 
 use App\Billing\Charge;
-use App\Concert;
 use App\Order;
-use App\Reservation;
 use App\Ticket;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use \Mockery;
+use Mockery;
 use Tests\TestCase;
 
+/**
+ * Class OrderTest
+ * @package Tests\Unit\Billing
+ */
 class OrderTest extends TestCase
 {
     use DatabaseMigrations;
@@ -35,7 +37,7 @@ class OrderTest extends TestCase
 
     public function test_用確認碼取得訂單資訊()
     {
-        $order = factory(Order::class)->create([
+        $order = Order::factory()->create([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
         ]);
 
@@ -52,16 +54,16 @@ class OrderTest extends TestCase
 
     public function test_轉換成array()
     {
-        $order = factory(Order::class)->create([
+        $order = Order::factory()->create([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
             'email'               => 'jane@example.com',
             'amount'              => 6000,
         ]);
 
         $order->tickets()->saveMany([
-            factory(Ticket::class)->create(['code' => 'TICKETCODE1']),
-            factory(Ticket::class)->create(['code' => 'TICKETCODE2']),
-            factory(Ticket::class)->create(['code' => 'TICKETCODE3']),
+            Ticket::factory()->create(['code' => 'TICKETCODE1']),
+            Ticket::factory()->create(['code' => 'TICKETCODE2']),
+            Ticket::factory()->create(['code' => 'TICKETCODE3']),
         ]);
 
         $result = $order->toArray();
