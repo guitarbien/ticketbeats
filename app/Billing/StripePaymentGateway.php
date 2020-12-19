@@ -2,6 +2,7 @@
 
 namespace App\Billing;
 
+use Illuminate\Support\Arr;
 use Stripe\Error\InvalidRequest;
 
 /**
@@ -89,7 +90,7 @@ class StripePaymentGateway implements PaymentGateway
      */
     private function lastCharge()
     {
-        return array_first(\Stripe\Charge::all(
+        return Arr::first(\Stripe\Charge::all(
             ["limit" => 1],
             ['api_key' => $this->apiKey]
         )->data);
