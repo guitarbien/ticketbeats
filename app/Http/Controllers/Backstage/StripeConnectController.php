@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backstage;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Zttp\Zttp;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Class StripeConnectController
@@ -42,7 +42,9 @@ class StripeConnectController extends Controller
      */
     public function redirect()
     {
-        $accessTokenResponse = Zttp::asFormParams()-> post('https://connect.stripe.com/oauth/token', [
+        $accessTokenResponse = Http::withHeaders([
+            'Content-type' => "application/x-www-form-urlencoded",
+        ])->post('https://connect.stripe.com/oauth/token', [
             'grant_type'    => 'authorization_code',
             'code'          => request('code'),
             'client_secret' => config('services.stripe.secret'),
