@@ -17,6 +17,10 @@ Route::get('/', function() {
     return 'Laravel';
 });
 
+Route::get('/debug-sentry', function () {
+    throw new \Exception('My first Sentry error!');
+});
+
 Route::get('/concerts/{id}', 'ConcertsController@show')->name('concerts.show');
 Route::post('/concerts/{id}/orders', 'ConcertOrdersController@store');
 Route::get('/orders/{confirmationNumber}', 'OrdersController@show');
