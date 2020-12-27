@@ -9,7 +9,7 @@
                 <div class="m-xs-b-5">
                     <div class="media-object">
                         <div class="media-left">
-                            @icon('calendar')
+                            @svg('zondicon-calendar')
                         </div>
                         <div class="media-body p-xs-l-2">
                             <span class="wt-medium">{{ $concert->formatted_date }}</span>
@@ -19,7 +19,7 @@
                 <div class="m-xs-b-5">
                     <div class="media-object">
                         <div class="media-left">
-                            @icon('time')
+                            @svg('zondicon-time')
                         </div>
                         <div class="media-body p-xs-l-2">
                             <span class="wt-medium block">Doors at {{ $concert->formatted_start_time }}</span>
@@ -29,7 +29,7 @@
                 <div class="m-xs-b-5">
                     <div class="media-object">
                         <div class="media-left">
-                            @icon('currency-dollar')
+                            @svg('zondicon-currency-dollar')
                         </div>
                         <div class="media-body p-xs-l-2">
                             <span class="wt-medium block">{{ $concert->ticket_price_in_dollars }}</span>
@@ -39,7 +39,7 @@
                 <div class="text-dark-soft m-xs-b-5">
                     <div class="media-object">
                         <div class="media-left">
-                            @icon('location')
+                            @svg('zondicon-location')
                         </div>
                         <div class="media-body p-xs-l-2">
                             <h3 class="text-base wt-medium text-dark">{{ $concert->venue }}</h3>
@@ -51,7 +51,7 @@
                 <div class="text-dark-soft">
                     <div class="media-object">
                         <div class="media-left">
-                            @icon('information-solid')
+                            @svg('zondicon-information-solid')
                         </div>
                         <div class="media-body p-xs-l-2">
                             <h3 class="text-base wt-medium text-dark">Additional Information</h3>

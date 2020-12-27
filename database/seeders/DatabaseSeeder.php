@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Concert;
 use App\User;
 use Carbon\Carbon;
+use Database\Factories\ConcertFactory;
 use Illuminate\Database\Seeder;
 
 /**
@@ -14,7 +15,7 @@ use Illuminate\Database\Seeder;
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeders.
      *
      * @return void
      */
@@ -23,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $faker   = \Faker\Factory::create();
         $gateway = new \App\Billing\FakePaymentGateway;
 
-        $user = factory(User::class)->create([
+        $user = User::factory()->create([
             'email'    => 'bien@example.com',
             'password' => bcrypt('secret'),
         ]);
@@ -52,7 +53,7 @@ class DatabaseSeeder extends Seeder
 
         Carbon::setTestNow();
 
-        factory(Concert::class)->create([
+        Concert::factory()->create([
             'user_id'                => $user->id,
             'title'                  => "Slayer",
             'subtitle'               => "with Forbidden and Testament",

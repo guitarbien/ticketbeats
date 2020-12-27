@@ -11,6 +11,7 @@
         "php": "^8.0",
         "ext-mbstring": "*",
         "ext-zip": "*",
+        "blade-ui-kit/blade-zondicons": "^0.2.0",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
