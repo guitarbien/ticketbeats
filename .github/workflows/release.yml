@@ -39,8 +39,6 @@ jobs:
         restore-keys: ${{ runner.os }}-composer-
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - run: ls -al
-    - run: php -v
     - name: Generate key
       run: php application key:generate
     - name: Extract branch name
@@ -51,4 +49,4 @@ jobs:
       run: php application releasing ${{ steps.extract_branch.outputs.branch }} ${{ github.event.inputs.ProjectsColumnName }} ${{ github.event.inputs.Tag }}
       env:
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: "${GITHUB_REPOSITORY}"
+        GITHUB_REPO: $GITHUB_REPOSITORY
