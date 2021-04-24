@@ -51,4 +51,4 @@ jobs:
       run: php application releasing ${{ steps.extract_branch.outputs.branch }} ${{ github.event.inputs.ProjectsColumnName }} ${{ github.event.inputs.Tag }}
       env:
         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: ${{ GITHUB_REPOSITORY }}
+        GITHUB_REPO: ${GITHUB_REPOSITORY}
