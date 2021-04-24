@@ -49,3 +49,5 @@ jobs:
       id: extract_branch
     - name: Exec command
       run: php application releasing ${{ steps.extract_branch.outputs.branch }} ${{ github.event.inputs.ProjectsColumnName }} ${{ github.event.inputs.Tag }}
+      env:
+        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
