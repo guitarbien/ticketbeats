@@ -17,10 +17,12 @@ jobs:
     steps:
       - uses: actions/github-script@v4
         with:
-#           github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.rest.projects.listForRepo({
-              context.repo.owner,
-              context.repo.repo,
-            })
+            console.log(
+              github.rest.projects.listForRepo({
+                context.repo.owner,
+                context.repo.repo,
+              })
+            )
             console.log(context)
