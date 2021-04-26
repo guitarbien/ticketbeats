@@ -19,10 +19,8 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(
-              github.rest.projects.listForRepo({
-                context.repo.owner,
-                context.repo.repo,
-              })
-            )
-            console.log(context)
+            const projects = github.projects.listForRepo({
+              context.repo.owner,
+              context.repo.repo,
+            })
+            console.log(projects)
