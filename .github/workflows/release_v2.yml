@@ -19,7 +19,7 @@ jobs:
         with:
 #           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const project = github.projects.get({
+            const project = github.rest.projects.get({
               project_id: 2
             })
             console.log(project)
