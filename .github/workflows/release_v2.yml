@@ -1,4 +1,4 @@
-name: create a draft release note (js)
+name: create a draft release note (github-script)
 
 on:
   workflow_dispatch:
@@ -10,23 +10,12 @@ on:
         description: 'the tag you want to use in this release (e.g. v1.0.0)'
         required: true
 
+
 jobs:
-  create-draft-release-note-in-js:
-
+  create-draft-release-note-in-github-script:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    - name: releasing step
-      id: release
-      uses: guitarbien/draft-release-note@master
-      with:
-        branch-name: ${{ steps.extract_branch.outputs.branch }}
-        project-column-name: ${{ github.event.inputs.ProjectsColumnName }}
-        release-tag: ${{ github.event.inputs.Tag }}
-      env:
-        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: ${{ github.repository }}
+      - uses: actions/github-script@v4
+        with:
+#           github-token: ${{secrets.GITHUB_TOKEN}}
+          script: console.log(context)
