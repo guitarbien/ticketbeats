@@ -1,4 +1,4 @@
-name: create a draft release note
+name: create a draft release note (js)
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  create-draft-release-note:
+  create-draft-release-note-in-js:
 
     runs-on: ubuntu-latest
 
