@@ -17,9 +17,9 @@ jobs:
     steps:
       - uses: actions/github-script@v4
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+#           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const project = github.projects.get({
               project_id: 2
             })
-            console.log(project, context)
+            console.log(project)
