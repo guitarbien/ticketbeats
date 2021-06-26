@@ -1,62 +1,71 @@
-name: create a draft release note
+name: Create Release
 
 on:
   workflow_dispatch:
     inputs:
-      ProjectsColumnName:
-        description: 'target column name in github projects (e.g. stage)'
+      tag_name:
+        description: 'tags'
         required: true
-      Tag:
-        description: 'the tag you want to use in this release (e.g. v1.0.0)'
+      commitish:
+        description: 'branch or commit id'
         required: true
-
+        default: 'master'
+      project_column:
+        description: 'project_column'
+        required: true
+        default: 'stage'
 jobs:
-  create-draft-release-note:
-
+  build:
+    name: Create Release
     runs-on: ubuntu-latest
-
     steps:
-#     - uses: shivammathur/setup-php@v2
-#       with:
-#         php-version: 7.3
-#         extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
-#         tools: composer:v2
-#     - uses: actions/checkout@v2
-#       with:
-#         repository: 'guitarbien/working-cli-tools'
-#     - name: Copy .env
-#       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-#     - name: Get composer cache directory
-#       id: composercache
-#       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-#     - name: Cache composer dependencies
-#       uses: actions/cache@v2
-#       with:
-#         path: ${{ steps.composercache.outputs.dir }}
-#         # Use composer.json for key, if composer.lock is not committed.
-#         # key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-#         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-#         restore-keys: ${{ runner.os }}-composer-
-#     - name: Install Dependencies
-#       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-#     - name: Generate key
-#       run: php application key:generate
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-    - name: releasing step
-      id: release
-      uses: guitarbien/working-cli-tools@master
-      with:
-        branch-name: ${{ steps.extract_branch.outputs.branch }}
-        project-column-name: ${{ github.event.inputs.ProjectsColumnName }}
-        release-tag: ${{ github.event.inputs.Tag }}
-      env:
-        GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        GITHUB_REPO: ${{ github.repository }}
-#     - name: Exec command
-#       run: php application releasing ${{ steps.extract_branch.outputs.branch }} ${{ github.event.inputs.ProjectsColumnName }} ${{ github.event.inputs.Tag }}
-#       env:
-#         GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         GITHUB_REPO: ${{ github.repository }}
+      - uses: actions/github-script@v4
+        id: get-body
+        env:
+          PROJECT_COLUMN: ${{ github.event.inputs.project_column }}
+        with:
+          result-encoding: string
+          script: |
+            console.log(context)
+            const {PROJECT_COLUMN} = process.env;
+            console.log(PROJECT_COLUMN);
+            const query = 'query ($owner: String!, $name: String!) { repository(owner: $owner, name: $name) { projects (first:2, states: OPEN) { nodes { name url id columns (first:100) { nodes { id name cards (first:100) { pageInfo { hasNextPage endCursor hasPreviousPage startCursor } totalCount edges { cursor } nodes { content { __typename ... on Issue { title id number } ... on PullRequest { title id } } } } } } } } } } ';
+
+            const variables = {
+              owner: context.repo.owner,
+              name: context.repo.repo,
+            }
+            const result = await github.graphql(query, variables)
+            console.log(result);
+            let str = '';
+            for (column of result.repository.projects.nodes[0].columns.nodes) {
+              console.log(column.name,PROJECT_COLUMN, column.name === `${PROJECT_COLUMN}`);
+              if (column.name === `${PROJECT_COLUMN}`) {
+                for (card of column.cards.nodes) {
+                  console.log(card)
+                  if (card.content.__typename === 'Issue') {
+                    str += ' - ' + card.content.title + " #" + card.content.number + "\n"
+                  }
+                }
+              }
+            }
+            console.log(str)
+            if (str === '') {
+              throw '找不到對應的issues'
+            }
+            return str
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.event.inputs.tag_name }}
+          release_name: regular release
+          commitish: ${{ github.event.inputs.commitish }}
+          body: ${{ steps.get-body.outputs.result }}
+          draft: true
+          prerelease: true
